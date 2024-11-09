@@ -42,8 +42,9 @@ public class UsuarioController extends HttpServlet {
         Usuario usuario = servicioUsuario.loginUsuario(correo, contrasena);
 
         if (usuario != null) {
+            // Guarda el usuario en la sesión
             request.getSession().setAttribute("usuario", usuario);
-            response.sendRedirect("index.xhtml");
+            response.sendRedirect("perfil.xhtml");
         } else {
             response.sendRedirect("autenticacion.html?error=true");
         }
@@ -56,13 +57,11 @@ public class UsuarioController extends HttpServlet {
         String correo = request.getParameter("email");
         String contrasena = request.getParameter("pass");
 
-        // Verificar si el correo ya está registrado
         if (servicioUsuario.existeCorreo(correo)) {
             response.sendRedirect("autenticacion.html?registroError=true");
             return;
         }
 
-        // Crear un nuevo usuario
         Usuario nuevoUsuario = new Usuario();
         nuevoUsuario.setNombre(nombre);
         nuevoUsuario.setApellidos(apellidos);
@@ -70,8 +69,6 @@ public class UsuarioController extends HttpServlet {
         nuevoUsuario.setContrasena(contrasena);
 
         servicioUsuario.crearUsuario(nuevoUsuario);
-
         response.sendRedirect("autenticacion.html?registroExitoso=true");
     }
-
 }
