@@ -11,31 +11,67 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Usuario;
-import service.ServicioUsuario;
+import servicio.ServicioUsuario;
 
 /**
  *
  * @author Mauricio
  */
-@WebServlet("/login")
+@WebServlet({"/login", "/register"})
 public class UsuarioController extends HttpServlet {
-    
+
     private ServicioUsuario servicioUsuario = new ServicioUsuario();
-    
+
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getServletPath();
+
+        if ("/login".equals(action)) {
+            loginUsuario(request, response);
+        } else if ("/register".equals(action)) {
+            registrarUsuario(request, response);
+        }
+    }
+
+    private void loginUsuario(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String correo = request.getParameter("correo");
         String contrasena = request.getParameter("clave");
 
-        Usuario usuario = servicioUsuario.autenticar(correo, contrasena);
+        Usuario usuario = servicioUsuario.loginUsuario(correo, contrasena);
+
         if (usuario != null) {
-            // Login exitoso, redirecciona o guarda la sesión
-            request.getSession().setAttribute("correo", usuario);
-            response.sendRedirect("home.html"); // Redirige a la página principal
+            request.getSession().setAttribute("usuario", usuario);
+            response.sendRedirect("index.xhtml");
         } else {
-            // Error de login
-            response.sendRedirect("login.html?error=1"); // Redirige de vuelta con un mensaje de error
+            response.sendRedirect("autenticacion.html?error=true");
         }
     }
-    
+
+    private void registrarUsuario(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String nombre = request.getParameter("nombre");
+        String apellidos = request.getParameter("apellidos");
+        String correo = request.getParameter("email");
+        String contrasena = request.getParameter("pass");
+
+        // Verificar si el correo ya está registrado
+        if (servicioUsuario.existeCorreo(correo)) {
+            response.sendRedirect("autenticacion.html?registroError=true");
+            return;
+        }
+
+        // Crear un nuevo usuario
+        Usuario nuevoUsuario = new Usuario();
+        nuevoUsuario.setNombre(nombre);
+        nuevoUsuario.setApellidos(apellidos);
+        nuevoUsuario.setCorreo(correo);
+        nuevoUsuario.setContrasena(contrasena);
+
+        servicioUsuario.crearUsuario(nuevoUsuario);
+
+        response.sendRedirect("autenticacion.html?registroExitoso=true");
+    }
+
 }

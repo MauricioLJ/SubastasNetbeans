@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Subastas</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <link rel="stylesheet" href="resources/css/autenticacion.css?v=1.0">
+    </head>
+    <body>
+        <div id="particles-js"></div>
+        <div class="container" id="container">
+            <div class="form-container sign-up">
+                <form action="register" method="post">
+                    <h1>Crear Cuenta</h1>
+
+                    <!-- Mensaje de error para el registro -->
+                    <div id="menaje-error-registro">
+                        Error al registrar usuario, email ya registrado.
+                    </div>
+
+                    <input type="text" placeholder="Nombre" name="nombre" autocomplete="off" required>
+                    <input type="text" placeholder="Apellidos" name="apellidos" autocomplete="off" required>
+                    <input type="email" placeholder="Email" name="email" autocomplete="off" required>
+                    <input type="password" placeholder="Contraseña" name="pass" autocomplete="off" required>
+                    <button>Sing Up</button>
+                </form>
+            </div>
+            <div class="form-container sign-in">
+                <form action="login" method="post">
+                    <h1>Iniciar Sesión</h1>
+                    <!-- Aquí muestra el mensaje de error si existe -->
+                    <div id="error-message">
+                        Credenciales incorrectas, intente de nuevo.
+                    </div>
+
+                    <div id="registro-exitoso">
+                        ¡Registro exitoso! Ahora puedes iniciar sesión.
+                    </div>
+
+                    <input type="email" placeholder="Email" name="correo" autocomplete="off" required>
+                    <input type="password" placeholder="Contraseña" name="clave" autocomplete="off" required>
+                    <a href="#">¡Olvidé mi contraseña!</a>
+                    <button type="submit">Log in</button>
+                </form>
+            </div>
+            <div class="toggle-container">
+                <div class="toggle">
+                    <div class="toggle-panel toggle-left">
+                        <h1>Bienvenido!</h1>
+                        <p>Ingresa tus datos para hacer uso de todas nuestras funciones</p>
+                        <button class="hidden" id="login">Log in</button>
+                    </div>
+                    <div class="toggle-panel toggle-right">
+                        <h1>¿No tienes cuenta?</h1>
+                        <p>Registrate con tus datos para usar todas nuestras funciones</p>
+                        <button class="hidden" id="register">Sing up</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="resources/js/autenticacion.js"></script>
+        <script src="resources/js/particles.js"></script>
+        <script src="resources/js/app.js"></script>
+
+    </body>
+</html>
