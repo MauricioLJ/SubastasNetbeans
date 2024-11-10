@@ -10,18 +10,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import model.Subasta;
 import model.Usuario;
 import org.primefaces.model.file.UploadedFile;
 import servicio.ServicioSubasta;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import model.Categoria;
+import servicio.ServicioCategoria;
 
 /**
  *
@@ -35,8 +39,11 @@ public class SubastaController implements Serializable {
     private UsuarioBean usuarioBean;
 
     private ServicioSubasta servicioSubasta = new ServicioSubasta();
+    private ServicioCategoria servicioCategoria = new ServicioCategoria();
     private Subasta selectSubasta = new Subasta();
+    private Subasta subasta = new Subasta();
     private List<Subasta> listaSubasta;
+    private List<Categoria> categoriasLista;
     private UploadedFile files;
     private String query;
     private String uploadedFilePath;
@@ -48,7 +55,8 @@ public class SubastaController implements Serializable {
     @PostConstruct
     public void init() {
         try {
-
+            listarSubastas();
+            categoriasLista = servicioCategoria.listarCategorias();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -66,6 +74,7 @@ public class SubastaController implements Serializable {
         System.out.println(this.selectSubasta);
         if (this.selectSubasta.getIdSubasta() == null) {
 
+            selectSubasta.setFechaInicio(new Date());
             selectSubasta.setEstadoSubasta("Activo");
 
             if (files != null) {
@@ -93,6 +102,22 @@ public class SubastaController implements Serializable {
 
     }
 
+    public void eliminarSubasta() {
+        try {
+            if (selectSubasta != null) {
+                servicioSubasta.eliminarSubasta(selectSubasta.getIdSubasta());
+                listarSubastas();
+                this.selectSubasta = new Subasta();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Subasta eliminada", ""));
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado ninguna subasta"));
+            }
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo eliminar la subasta"));
+            e.printStackTrace();
+        }
+    }
+
     public void handleFileUpload() {
         try {
             System.out.println("===>>> " + this.files);
@@ -100,7 +125,7 @@ public class SubastaController implements Serializable {
             String rutaImagen = this.copyFile(this.files.getFileName(), this.files.getInputStream(), false);
 
             selectSubasta.setImagen(rutaImagen);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Éxito", "Se subió éxitosamente la imagen"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "Se subió éxitosamente la imagen"));
 
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Hubo un problema al subir la imagen."));
@@ -196,6 +221,30 @@ public class SubastaController implements Serializable {
 
     public void setUploadedFilePath(String uploadedFilePath) {
         this.uploadedFilePath = uploadedFilePath;
+    }
+
+    public ServicioCategoria getServicioCategoria() {
+        return servicioCategoria;
+    }
+
+    public void setServicioCategoria(ServicioCategoria servicioCategoria) {
+        this.servicioCategoria = servicioCategoria;
+    }
+
+    public List<Categoria> getCategoriasLista() {
+        return categoriasLista;
+    }
+
+    public void setCategoriasLista(List<Categoria> categoriasLista) {
+        this.categoriasLista = categoriasLista;
+    }
+
+    public Subasta getSubasta() {
+        return subasta;
+    }
+
+    public void setSubasta(Subasta subasta) {
+        this.subasta = subasta;
     }
 
 }
