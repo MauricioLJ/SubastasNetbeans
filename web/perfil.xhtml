@@ -1,27 +1,180 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Perfil</title>
+        <link rel="stylesheet" href="resources/css/perfil.css" />
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"/>
     </h:head>
     <h:body>
-        <!-- Esto es algo muy basico para que bean como medio funciona -->
-        <h:form>
-            <h2>Bienvenido, #{usuarioBean.usuario.nombre}!</h2>
 
-            <h:panelGrid columns="2">
-                <h:outputLabel value="Nombre:" />
-                <h:outputText value="#{usuarioBean.usuario.nombre}" />
-                <h:outputLabel value="Correo:" />
-                <h:outputText value="#{usuarioBean.usuario.correo}" />
-            </h:panelGrid>
+        <div class="min-vh-100 bg-light">
+            <header class="bg-teal-600 text-white p-4">
+                <div class="container d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-light btn-inicio">Inicio</button>
+                        <h1 class="ms-3 h4">Subasta App</h1>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <input type="search" class="form-control w-50 bg-teal-700 text-white border-0 me-2" placeholder="Busca por categoría, nombre del producto..." />
+                        <button class="btn btn-outline-light btn-buscar">Buscar</button>
+                    </div>
 
-            <h:commandButton value="Cerrar Sesión" action="#{usuarioBean.logout}" />
-        </h:form>
+                    <nav>
+                        <ul class="list-unstyled d-flex mb-0">
+                            <li><a href="#" class="text-white me-3">Ayuda</a></li>
+                            <li><a href="#" class="text-white me-3">Vender</a></li>
+                            <li><a href="autenticacion.html" class="text-white me-3">Login</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
 
-        <form>
-            <h2>Hola, #{usuarioBean.usuario.nombre}</h2>
-        </form>
+            <main class="container mt-4">
+                <div class="row g-4">
+                    <!-- perfil -->
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                         
+                                           
+                                      
+          <h:graphicImage value="#{usuarioBean.usuario.fotoPerfil != null ? usuarioBean.usuario.fotoPerfil : 'https://cdn-icons-png.flaticon.com/512/1144/1144760.png'}"
+                 alt="Avatar" class="card-img-top rounded-circle w-50 mx-auto mt-3"/>
+   
+                            <div class="card-body">
+                                  <h5> #{usuarioBean.usuario.nombre}</h5>
+                                  <p>#{usuarioBean.usuario.apellidos} </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información de usuario -->
+                    <div class="col-md-9">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="card-title">Información de Usuario</h5>
+                                    <p:commandButton value="Editar perfil" 
+                                                     oncomplete="PF('editarPerfilDialog').show()" 
+                                                     update=":formEditarPerfil:formEditarPerfilContent" 
+                                                     icon="pi pi-user-edit"
+                                                     styleClass="btn btn-outline-primary" />
+                                </div>
+                                <div class="mb-3">
+                                    <p class="text-muted mb-0">Correo electrónico</p>
+                                    <p>#{usuarioBean.usuario.correo}</p>
+                                </div>
+                                <div class="mb-3">
+                                    <p class="text-muted mb-0">Pais</p>
+                                    <p>#{usuarioBean.usuario.pais}</p>
+                                </div>
+                                <div>
+                                    <p class="text-muted mb-0">Mi calificación</p>
+                                    <div class="d-flex align-items-center">
+                                        <span class="text-warning me-1">&#9733;</span>
+                                        <span>1.0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Historial de transacciones -->
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title mb-3">Historial de transacciones</h5>
+                                <button class="btn btn-outline-primary w-100">Ver historial de transacciones</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- editar perfil -->
+        <p:dialog header="Editar Perfil" widgetVar="editarPerfilDialog" modal="true" responsive="true"
+                  dynamic="true" styleClass="custom-dialog">
+            <h:form id="formEditarPerfil">
+                <p:outputPanel id="formEditarPerfilContent" class="ui-fluid">
+
+                    <div class="col-md-3">
+                        <h:graphicImage value="#{usuarioBean.usuario.fotoPerfil != null ? usuarioBean.usuario.fotoPerfil : 'https://cdn-icons-png.flaticon.com/512/1144/1144760.png'}"
+                                        alt="Avatar" class="card-img-top rounded-circle w-50 mx-auto mt-3"/>
+                    </div>
+
+                    <div class="form-group">
+                       
+                        <!-- Botón para subir la imagen -->
+                      <div class="field">
+                                <h:outputLabel for="files" value="Imagen" />
+                                <p:fileUpload id="files" required="true" requiredMessage="Por favor, seleccione una imagen para la subasta." value="#{usuarioBean.files}" mode="simple" skinSimple="true" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|docx?)$/" />
+                                <p:commandButton value="Submit" actionListener="#{usuarioBean.handleFileUpload}" styleClass="mt-3 ui-button-outlined block" process="@form"/>
+                            </div>
+                         </div>
+                    
+                    <div class="form-group">
+                        <h:outputLabel for="nombre" value="Nombre" />
+                        <p:inputText id="nombre" value="#{usuarioBean.usuario.nombre}" styleClass="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <h:outputLabel for="apellidos" value="Apellidos" />
+                        <p:inputText id="apellidos" value="#{usuarioBean.usuario.apellidos}" styleClass="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <h:outputLabel for="correo" value="Correo electrónico" />
+                        <p:inputText id="correo" value="#{usuarioBean.usuario.correo}" styleClass="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <h:outputLabel for="pais" value="País" />
+                        <p:selectOneMenu id="pais" value="#{usuarioBean.usuario.pais}" styleClass="form-control">
+                            <f:selectItem itemLabel="Seleccione un país" itemValue="" />
+                            <f:selectItem itemLabel="México" itemValue="México" />
+                            <f:selectItem itemLabel="Colombia" itemValue="Colombia" />
+                            <f:selectItem itemLabel="Argentina" itemValue="Argentina" />
+                            <f:selectItem itemLabel="Chile" itemValue="Chile" />
+                            <f:selectItem itemLabel="Perú" itemValue="Perú" />
+                        </p:selectOneMenu>
+                    </div>
+
+                    <!-- Botón Actualizar perfil que muestra el cuadro de confirmación -->
+                    <p:commandButton value="Actualizar perfil" 
+                                     oncomplete="PF('confirmUpdateDialog').show()" 
+                                     styleClass="btn btn-primary mt-3" />
+                </p:outputPanel>
+
+           
+            </h:form>
+        </p:dialog>
+
+        <!-- Diálogo de confirmación -->
+  <p:confirmDialog header="Confirmación" message="¿Está seguro de que desea actualizar sus datos?" 
+                         widgetVar="confirmUpdateDialog" >
+            <h:form>
+                <!-- Botón Sí -->
+                <p:commandButton value="Sí" icon="pi pi-check" 
+                                 action="#{usuarioBean.actualizarPerfil}" 
+                                 update=":formEditarPerfil:formEditarPerfilContent"
+                                 oncomplete="PF('confirmUpdateDialog').hide(); PF('editarPerfilDialog').hide(); window.location.reload();"
+                                 styleClass="ui-button-success" />
+
+                <!-- Botón No -->
+                <p:commandButton value="No" icon="pi pi-times" 
+                                 onclick="PF('confirmUpdateDialog').hide()" 
+                                 styleClass="ui-button-secondary" type="button" />
+            </h:form>
+        </p:confirmDialog>
+
+
+
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybBogGzOg6f8/4cPz4B3tX1p2OmZdE0NXmkOGDX7i2KekFrGb" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-cu5tdc1cnH4pIaU6y7zyT2E/1LFHi3r+icGkBvnfPBZ/nfWWi6YJgtX0KCC5Sl1p" crossorigin="anonymous"></script>
+
     </h:body>
 </html>
