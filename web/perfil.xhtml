@@ -38,15 +38,13 @@
                     <!-- perfil -->
                     <div class="col-md-3">
                         <div class="card text-center">
-                         
-                                           
-                                      
-          <h:graphicImage value="#{usuarioBean.usuario.fotoPerfil != null ? usuarioBean.usuario.fotoPerfil : 'https://cdn-icons-png.flaticon.com/512/1144/1144760.png'}"
-                 alt="Avatar" class="card-img-top rounded-circle w-50 mx-auto mt-3"/>
-   
+
+                            <h:graphicImage value="#{usuarioBean.usuario.fotoPerfil != null ? usuarioBean.usuario.fotoPerfil : 'https://cdn-icons-png.flaticon.com/512/1144/1144760.png'}"
+                                            alt="Avatar" class="card-img-top rounded-circle w-50 mx-auto mt-3"/>
+
                             <div class="card-body">
-                                  <h5> #{usuarioBean.usuario.nombre}</h5>
-                                  <p>#{usuarioBean.usuario.apellidos} </p>
+                                <h5> #{usuarioBean.usuario.nombre}</h5>
+                                <p>#{usuarioBean.usuario.apellidos} </p>
                             </div>
                         </div>
                     </div>
@@ -98,7 +96,7 @@
         <!-- editar perfil -->
         <p:dialog header="Editar Perfil" widgetVar="editarPerfilDialog" modal="true" responsive="true"
                   dynamic="true" styleClass="custom-dialog">
-            <h:form id="formEditarPerfil">
+            <h:form id="formEditarPerfil" enctype="multipart/form-data">
                 <p:outputPanel id="formEditarPerfilContent" class="ui-fluid">
 
                     <div class="col-md-3">
@@ -107,15 +105,17 @@
                     </div>
 
                     <div class="form-group">
-                       
+
                         <!-- Botón para subir la imagen -->
-                      <div class="field">
-                                <h:outputLabel for="files" value="Imagen" />
-                                <p:fileUpload id="files" required="true" requiredMessage="Por favor, seleccione una imagen para la subasta." value="#{usuarioBean.files}" mode="simple" skinSimple="true" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|docx?)$/" />
-                                <p:commandButton value="Submit" actionListener="#{usuarioBean.handleFileUpload}" styleClass="mt-3 ui-button-outlined block" process="@form"/>
-                            </div>
-                         </div>
-                    
+                        <div class="field">
+                            <h:outputLabel for="files" value="Imagen" />
+                            <p:fileUpload id="files" required="true" requiredMessage="Por favor, seleccione una imagen." 
+                                          value="#{usuarioBean.files}" mode="simple" skinSimple="true" 
+                                          allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                            <p:commandButton value="Submit" actionListener="#{usuarioBean.handleFileUpload}" styleClass="mt-3 ui-button-outlined block" process="@form"/>
+                        </div>
+
+                    </div>
                     <div class="form-group">
                         <h:outputLabel for="nombre" value="Nombre" />
                         <p:inputText id="nombre" value="#{usuarioBean.usuario.nombre}" styleClass="form-control" />
@@ -145,16 +145,16 @@
 
                     <!-- Botón Actualizar perfil que muestra el cuadro de confirmación -->
                     <p:commandButton value="Actualizar perfil" 
-                                     oncomplete="PF('confirmUpdateDialog').show()" 
+                                     oncomplete="PF('confirmUpdateDialog').show()"
                                      styleClass="btn btn-primary mt-3" />
                 </p:outputPanel>
 
-           
+
             </h:form>
         </p:dialog>
 
         <!-- Diálogo de confirmación -->
-  <p:confirmDialog header="Confirmación" message="¿Está seguro de que desea actualizar sus datos?" 
+        <p:confirmDialog header="Confirmación" message="¿Está seguro de que desea actualizar sus datos?" 
                          widgetVar="confirmUpdateDialog" >
             <h:form>
                 <!-- Botón Sí -->

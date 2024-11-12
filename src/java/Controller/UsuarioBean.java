@@ -23,18 +23,16 @@ import servicio.ServicioUsuario;
 /**
  * @author Mauricio
  */
-@ManagedBean (name = "usuarioBean")
+@ManagedBean(name = "usuarioBean")
 @SessionScoped
-public class UsuarioBean implements Serializable{
-    
+public class UsuarioBean implements Serializable {
+
     private ServicioUsuario servicioUsuario = new ServicioUsuario();
     private Usuario usuario;
     private Usuario selectUsuario = new Usuario();
     private UploadedFile files;
     private String uploadedFilePath;
 
-    
-    
     public UsuarioBean() {
         HttpSession session = SessionUtils.getSession();
         this.usuario = (Usuario) session.getAttribute("usuario");
@@ -42,7 +40,7 @@ public class UsuarioBean implements Serializable{
 
     public Usuario getUsuario() {
         if (usuario == null) {
-            HttpSession  session = SessionUtils.getSession();
+            HttpSession session = SessionUtils.getSession();
             usuario = (Usuario) session.getAttribute("usuario");
         }
         return usuario;
@@ -52,15 +50,14 @@ public class UsuarioBean implements Serializable{
         SessionUtils.getSession().invalidate();
         return "autenticacion.xhtml?faces-redirect=true";
     }
-    
 
     public void actualizarPerfil() {
         try {
-            
-             if (files != null) {
+
+            if (files != null) {
                 handleFileUpload();
             }
-            
+
             if (usuario != null) {
                 servicioUsuario.actualizarUsuario(usuario);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Perfil actualizado con éxito"));
@@ -72,9 +69,8 @@ public class UsuarioBean implements Serializable{
             e.printStackTrace();
         }
     }
-    
-    
-      public void handleFileUpload() {
+
+    public void handleFileUpload() {
         try {
             System.out.println("===>>> " + this.files);
             System.out.println("===>>> " + this.files.getFileName() + " size: " + this.files.getSize());
@@ -88,13 +84,11 @@ public class UsuarioBean implements Serializable{
             e.printStackTrace();
         }
     }
-      
-      
 
-      protected String copyFile(String fileName, InputStream in, boolean esTemporal) {
+    protected String copyFile(String fileName, InputStream in, boolean esTemporal) {
         try {
             if (fileName != null) {
-                String destinationFile = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/imagenes/");
+                String destinationFile = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/fotosPer/");
 
                 String[] partesArchivo = fileName.split(Pattern.quote("."));
                 String nombreArchivo = partesArchivo[0];
@@ -117,7 +111,7 @@ public class UsuarioBean implements Serializable{
                 in.close();
                 out.flush();
                 out.close();
-                return "/resources/imagenes/" + nombreArchivo + "." + extensionArchivo;
+                return "/resources/fotosPer/" + nombreArchivo + "." + extensionArchivo;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -156,11 +150,5 @@ public class UsuarioBean implements Serializable{
     public void setUploadedFilePath(String uploadedFilePath) {
         this.uploadedFilePath = uploadedFilePath;
     }
-    
-      
-    
+
 }
-
-
-
-
