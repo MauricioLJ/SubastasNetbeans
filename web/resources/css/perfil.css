@@ -1,0 +1,85 @@
+/* Estilos generales */
+body, .min-vh-100 {
+    background-color: #f8f9fa; /* Fondo claro */
+    color: #333; /* Texto oscuro */
+}
+
+/* Encabezado */
+header.bg-teal-600 {
+    background-color: #20c997; /* Color teal personalizado */
+}
+
+
+
+/* Tarjeta de perfil */
+.card {
+    border-radius: 0.5rem;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+.card h5.card-title {
+    font-weight: bold;
+}
+.card.text-center {
+    background-color: #ffffff;
+}
+.card-img-top {
+    border-radius: 50%; /* Imagen redondeada */
+    border: 4px solid #20c997; /* Borde alrededor del avatar */
+}
+
+/* Información de usuario */
+.card-body p.text-muted {
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+}
+
+/* Botón "Editar mi perfil" */
+.btn-outline-primary {
+    border-color: #20c997;
+    color: #20c997;
+}
+.btn-outline-primary:hover {
+    background-color: #20c997;
+    color: #ffffff;
+}
+
+/* Estrellas de calificación */
+.text-warning {
+    font-size: 1.25rem; /* Tamaño de la estrella */
+}
+
+/* Historial de transacciones */
+.w-100 {
+    font-weight: bold;
+    border-radius: 0.25rem;
+}
+
+/* Estilos específicos para el botón de Inicio */
+.btn-inici {
+    background-color: #008B8B; /* Color específico */
+    color: white;
+}
+
+/* Estilos específicos para el botón de Buscar */
+.btn-buscar {
+    background-color: #20c997; /* Color diferente */
+    color: white;
+}
+
+/* Estilos específicos para el botón de Inicio */
+.btn btn-light btn-inicio {
+    background-color: #20c997; /* Color específico para el botón Inicio */
+    color: white; /* Color de texto */
+}
+
+/* Estilos específicos para el botón de Buscar */
+.btn-buscar {
+    border-color: #20c997; /* Color del borde */
+    color: #20c997; /* Color del texto */
+}
+
+.btn-buscar:hover {
+    background-color: #20c997; /* Fondo al pasar el mouse */
+    color: white; /* Color del texto al pasar el mouse */
+}
+
