@@ -17,7 +17,6 @@ import model.Usuario;
 import org.primefaces.model.file.UploadedFile;
 import servicio.ServicioSubasta;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
