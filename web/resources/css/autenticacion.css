@@ -56,6 +56,12 @@ body{
     margin: 15px 0 10px;
 }
 
+.container button:disabled {
+    background-color: #bbb; /* Color gris para indicar que está deshabilitado */
+    cursor: default; /* Cambio del cursor para indicar que no se puede hacer clic */
+    opacity: 0.7;
+}
+
 .container button{
     background-color: #512da8;
     color: #fff;
@@ -209,13 +215,13 @@ form h1 {
 }
 
 #menaje-error-registro, #error-message {
-    color: red; 
+    color: red;
     display: none;
     text-align: center;
 }
 
 #registro-exitoso {
-    color: green; 
+    color: green;
     display: none;
     text-align: center;
 }

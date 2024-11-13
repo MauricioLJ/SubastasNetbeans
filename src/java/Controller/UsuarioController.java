@@ -5,6 +5,7 @@
 package Controller;
 
 import java.io.IOException;
+import java.sql.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +22,7 @@ import servicio.ServicioUsuario;
 public class UsuarioController extends HttpServlet {
 
     private ServicioUsuario servicioUsuario = new ServicioUsuario();
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -56,6 +57,16 @@ public class UsuarioController extends HttpServlet {
         String apellidos = request.getParameter("apellidos");
         String correo = request.getParameter("email");
         String contrasena = request.getParameter("pass");
+
+        // Validación de campos en el backend
+        if (nombre == null || nombre.trim().isEmpty()
+                || apellidos == null || apellidos.trim().isEmpty()
+                || correo == null || correo.trim().isEmpty()
+                || contrasena == null || contrasena.trim().isEmpty()) {
+
+            response.sendRedirect("autenticacion.html?registroError=true");
+            return;
+        }
 
         if (servicioUsuario.existeCorreo(correo)) {
             response.sendRedirect("autenticacion.html?registroError=true");

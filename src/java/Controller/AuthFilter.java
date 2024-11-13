@@ -31,6 +31,8 @@ public class AuthFilter implements Filter{
             // Si el usuario está autenticado, permite que la solicitud continúe
             chain.doFilter(request, response);
         }
+        
+        
     }
 
     

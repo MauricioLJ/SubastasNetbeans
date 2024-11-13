@@ -9,39 +9,41 @@
     </head>
     <body>
         <div id="particles-js"></div>
+
         <div class="container" id="container">
             <div class="form-container sign-up">
-                <form action="register" method="post">
+                <form action="register" method="post" class="register">
                     <h1>Crear Cuenta</h1>
-
                     <!-- Mensaje de error para el registro -->
                     <div id="menaje-error-registro">
                         Error al registrar usuario, email ya registrado.
                     </div>
 
-                    <input type="text" placeholder="Nombre" name="nombre" autocomplete="off" required>
-                    <input type="text" placeholder="Apellidos" name="apellidos" autocomplete="off" required>
-                    <input type="email" placeholder="Email" name="email" autocomplete="off" required>
-                    <input type="password" placeholder="Contraseña" name="pass" autocomplete="off" required>
-                    <button>Sing Up</button>
+                    <input type="text" id="nombre" placeholder="Nombre" name="nombre" autocomplete="off">
+                    <input type="text" id="apellidos" placeholder="Apellidos" name="apellidos" autocomplete="off">
+                    <input type="email" id="email" placeholder="Email" name="email" autocomplete="off">
+                    <input type="password" id="pass" placeholder="Contraseña" name="pass" autocomplete="off">
+                    <button type="submit" id="signupBtn" disabled>Sing Up</button>
+
                 </form>
             </div>
+
             <div class="form-container sign-in">
-                <form action="login" method="post">
+                <form action="login" method="post" class="login">
                     <h1>Iniciar Sesión</h1>
                     <!-- Aquí muestra el mensaje de error si existe -->
                     <div id="error-message">
                         Credenciales incorrectas, intente de nuevo.
                     </div>
 
-                    <div id="registro-exitoso">
+                    <div id="registro-exitoso" style="display: none;">
                         ¡Registro exitoso! Ahora puedes iniciar sesión.
                     </div>
 
-                    <input type="email" placeholder="Email" name="correo" autocomplete="off" required>
-                    <input type="password" placeholder="Contraseña" name="clave" autocomplete="off" required>
+                    <input type="email" id="correo" placeholder="Email" name="correo" autocomplete="off" required="">
+                    <input type="password" id="clave" placeholder="Contraseña" name="clave" autocomplete="off" required minlength="8">
                     <a href="#">¡Olvidé mi contraseña!</a>
-                    <button type="submit">Log in</button>
+                    <button type="submit" id="loginBtn" disabled>Log in</button>
                 </form>
             </div>
             <div class="toggle-container">

@@ -109,7 +109,7 @@
                         <!-- Botón para subir la imagen -->
                         <div class="field">
                             <h:outputLabel for="files" value="Imagen" />
-                            <p:fileUpload id="files" required="true" requiredMessage="Por favor, seleccione una imagen." 
+                            <p:fileUpload id="files" requiredMessage="Por favor, seleccione una imagen." 
                                           value="#{usuarioBean.files}" mode="simple" skinSimple="true" 
                                           allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
                             <p:commandButton value="Submit" actionListener="#{usuarioBean.handleFileUpload}" styleClass="mt-3 ui-button-outlined block" process="@form"/>
