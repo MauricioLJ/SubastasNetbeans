@@ -17,6 +17,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import model.Usuario;
+import org.primefaces.event.RateEvent;
 import org.primefaces.model.file.UploadedFile;
 import servicio.ServicioUsuario;
 
@@ -32,6 +33,8 @@ public class UsuarioBean implements Serializable {
     private Usuario selectUsuario = new Usuario();
     private UploadedFile files;
     private String uploadedFilePath;
+    private Integer rating;
+    private Integer calificacion;
 
     public UsuarioBean() {
         HttpSession session = SessionUtils.getSession();
@@ -76,7 +79,7 @@ public class UsuarioBean implements Serializable {
             System.out.println("===>>> " + this.files.getFileName() + " size: " + this.files.getSize());
             String rutaImagen = this.copyFile(this.files.getFileName(), this.files.getInputStream(), false);
 
-            selectUsuario.setFotoPerfil(rutaImagen);
+            usuario.setFotoPerfil(rutaImagen);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "Se subió éxitosamente la imagen"));
 
         } catch (Exception e) {
@@ -118,6 +121,35 @@ public class UsuarioBean implements Serializable {
         }
         return null;
     }
+    
+
+    
+public void calificarUsuario() {
+    if (rating == null) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Calificación no válida"));
+        return;
+    }
+
+    try {
+        Usuario usuarioACalificar = servicioUsuario.leerUsuario(usuario.getIdUsuario());
+        if (usuarioACalificar == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario no encontrado"));
+            return;
+        }
+
+      
+        servicioUsuario.actualizarCalificacion(usuarioACalificar, rating);
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Calificación registrada con éxito"));
+    } catch (Exception e) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo registrar la calificación"));
+        e.printStackTrace();
+    }
+}
+
+
+
+
 
     public ServicioUsuario getServicioUsuario() {
         return servicioUsuario;
@@ -151,4 +183,21 @@ public class UsuarioBean implements Serializable {
         this.uploadedFilePath = uploadedFilePath;
     }
 
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    public Integer getCalificacion() {
+        return calificacion;
+    }
+
+    public void setCalificacion(Integer calificacion) {
+        this.calificacion = calificacion;
+    }
+
+    
 }
