@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
@@ -15,9 +16,9 @@
             <header class="bg-teal-600 text-white p-4">
                 <div class="container d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
-                        <button class="btn btn-light btn-inicio">Inicio</button>
-                        <h1 class="ms-3 h4">Subasta App</h1>
-                    </div>
+                        <a href="pagprin.xhtml" class="text-white me-3">Inicio</a>
+                      <h1 class="ms-3 h4 title-gradient">Subasta App</h1>
+                    </div>
                     <div class="d-flex align-items-center">
                         <input type="search" class="form-control w-50 bg-teal-700 text-white border-0 me-2" placeholder="Busca por categoría, nombre del producto..." />
                         <button class="btn btn-outline-light btn-buscar">Buscar</button>
@@ -72,10 +73,21 @@
                                 <div>
                                     <p class="text-muted mb-0">Mi calificación</p>
                                     <div class="d-flex align-items-center">
-                                        <span class="text-warning me-1">&#9733;</span>
-                                        <span>1.0</span>
+                                        <h:form id="formCalificar">
+                                            
+                                            <h:inputHidden id="idUsuarioACalificar" value="#{usuarioBean.usuario.idUsuario}" />
+                                            <p:rating value="#{usuarioBean.rating}" cancel="true">
+                                                <p:ajax event="rate" listener="#{usuarioBean.calificarUsuario()}" update="@form" />
+                                            </p:rating>
+                                            <p>  #{usuarioBean.usuario.calificacionPromedio}  
+                                                <span style="color: gold;">★</span>
+                                            </p>
+
+                                        </h:form>
+
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -109,7 +121,7 @@
                         <!-- Botón para subir la imagen -->
                         <div class="field">
                             <h:outputLabel for="files" value="Imagen" />
-                            <p:fileUpload id="files" required="true" requiredMessage="Por favor, seleccione una imagen." 
+                            <p:fileUpload id="files"  requiredMessage="Por favor, seleccione una imagen." 
                                           value="#{usuarioBean.files}" mode="simple" skinSimple="true" 
                                           allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
                             <p:commandButton value="Submit" actionListener="#{usuarioBean.handleFileUpload}" styleClass="mt-3 ui-button-outlined block" process="@form"/>
