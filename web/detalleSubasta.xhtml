@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Detalle de Subasta</title>
+    </h:head>
+    <h:body>
+        <f:metadata>
+            <f:viewAction action="#{subastaController.cargarSubasta}" />
+        </f:metadata>
+
+        <h:form>
+            <header class="bg-teal-600 text-white p-4">
+                <div class="container d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <a href="pagprin.xhtml" class="text-white me-3">Inicio</a>
+                      <h1 class="ms-3 h4 title-gradient">Subasta App</h1>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <input type="search" class="form-control w-50 bg-teal-700 text-white border-0 me-2" placeholder="Busca por categoría, nombre del producto..." />
+                        <button class="btn btn-outline-light btn-buscar">Buscar</button>
+                    </div>
+
+                    <nav>
+                        <ul class="list-unstyled d-flex mb-0">
+                            <li><a href="#" class="text-white me-3">Ayuda</a></li>
+                            <li><a href="#" class="text-white me-3">Vender</a></li>
+                            <li><a href="autenticacion.html" class="text-white me-3">Login</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+            <h1>Detalles de la Subasta</h1>
+            <h:panelGrid columns="2">
+                <h:outputText value="Nombre: #{subastaController.selectedSubasta.nombre}" />
+
+                <h:outputLabel value="Descripción:" />
+                <h:outputText value="#{subastaController.selectedSubasta.descripcion}" />
+
+                <h:outputLabel value="Categorías:" />
+                <h:outputText value="#{subastaController.selectedSubasta.categorias}" />
+
+                <h:outputLabel value="Precio:" />
+                <h:outputText value="#{subastaController.selectedSubasta.precioInicial}" />
+
+                <div class="file-container">
+                    <h:panelGroup rendered="#{not empty subas.imagen}">
+                        <h:graphicImage value="#{subas.imagen}" width="290" height="150" style="max-width: 100%;"/>
+                    </h:panelGroup>
+                </div>
+
+            </h:panelGrid>
+
+        </h:form>
+    </h:body>
+</html>
