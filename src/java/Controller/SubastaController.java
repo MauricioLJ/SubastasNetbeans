@@ -10,13 +10,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import model.Subasta;
 import model.Usuario;
 import org.primefaces.model.file.UploadedFile;
 import servicio.ServicioSubasta;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -24,6 +28,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import model.Categoria;
+import org.primefaces.event.SelectEvent;
 import servicio.ServicioCategoria;
 
 /**
@@ -44,8 +49,11 @@ public class SubastaController implements Serializable {
     private List<Subasta> listaSubasta;
     private List<Categoria> categoriasLista;
     private UploadedFile files;
+    private List<Subasta> listaSubastaFilter;
     private String query;
+    List<String> categorias = new ArrayList<>();
     private String uploadedFilePath;
+    private Subasta selectedSubasta;
 
     public SubastaController() {
 
@@ -53,9 +61,11 @@ public class SubastaController implements Serializable {
 
     @PostConstruct
     public void init() {
+
         try {
             listarSubastas();
             categoriasLista = servicioCategoria.listarCategorias();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -166,6 +176,45 @@ public class SubastaController implements Serializable {
         return null;
     }
 
+    public List<Subasta> complete(String query) {
+        String querryLowerCase = query.toLowerCase();
+        List<Subasta> subasta = servicioSubasta.listarSubastas();
+        return subasta.stream().filter(u -> u.getNombre().toLowerCase().contains(querryLowerCase)).collect(Collectors.toList());
+    }
+    
+    public void onSubastaSelect(SelectEvent<Subasta> event) throws ClassNotFoundException {
+        Subasta selected = event.getObject();
+        if (selected != null) {
+            System.out.println("Subasta seleccionada: " + selected.getNombre());
+            cargarSubasta();
+
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("detalleSubasta.xhtml?id=" + selected.getIdSubasta());
+            } catch (IOException e) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Hubo un error al redirigir."));
+                e.printStackTrace();
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Error", "No se seleccionó ninguna subasta."));
+        }
+    }
+
+    public void cargarSubasta() {
+    FacesContext context = FacesContext.getCurrentInstance();
+    Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+    String idParam = params.get("id");
+    if (idParam != null && !idParam.isEmpty()) {
+        try {
+            int id = Integer.parseInt(idParam);
+            this.selectedSubasta = servicioSubasta.leerSubasta(id);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
     public void listarSubastas() {
         try {
             this.listaSubasta = servicioSubasta.listarSubastas();
@@ -244,6 +293,14 @@ public class SubastaController implements Serializable {
 
     public void setSubasta(Subasta subasta) {
         this.subasta = subasta;
+    }
+
+    public Subasta getSelectedSubasta() {
+        return selectedSubasta;
+    }
+
+    public void setSelectedSubasta(Subasta selectedSubasta) {
+        this.selectedSubasta = selectedSubasta;
     }
 
 }
