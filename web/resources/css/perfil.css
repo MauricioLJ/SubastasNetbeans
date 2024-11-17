@@ -6,8 +6,10 @@ body, .min-vh-100 {
 
 /* Encabezado */
 header.bg-teal-600 {
-    background-color: #20c997; /* Color teal personalizado */
+    background: linear-gradient(45deg, #62a07b, #4f8b89, #536c8d, #5c4f79, #613860);
+    color: #ffffff; /* Color de texto para asegurar contraste */
 }
+
 
 
 
