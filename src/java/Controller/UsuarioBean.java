@@ -10,14 +10,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import model.Subasta;
 import model.Usuario;
 import org.primefaces.event.RateEvent;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.file.UploadedFile;
 import servicio.ServicioUsuario;
 
@@ -35,6 +40,7 @@ public class UsuarioBean implements Serializable {
     private String uploadedFilePath;
     private Integer rating;
     private Integer calificacion;
+    private Usuario selectedUsuario;
 
     public UsuarioBean() {
         HttpSession session = SessionUtils.getSession();
@@ -121,35 +127,53 @@ public class UsuarioBean implements Serializable {
         }
         return null;
     }
-    
 
-    
-public void calificarUsuario() {
-    if (rating == null) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Calificación no válida"));
-        return;
-    }
-
-    try {
-        Usuario usuarioACalificar = servicioUsuario.leerUsuario(usuario.getIdUsuario());
-        if (usuarioACalificar == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario no encontrado"));
+    public void calificarUsuario() {
+        if (rating == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Calificación no válida"));
             return;
         }
 
-      
-        servicioUsuario.actualizarCalificacion(usuarioACalificar, rating);
+        try {
+            Usuario usuarioACalificar = servicioUsuario.leerUsuario(usuario.getIdUsuario());
+            if (usuarioACalificar == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario no encontrado"));
+                return;
+            }
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Calificación registrada con éxito"));
-    } catch (Exception e) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo registrar la calificación"));
-        e.printStackTrace();
+            servicioUsuario.actualizarCalificacion(usuarioACalificar, rating);
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Calificación registrada con éxito"));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo registrar la calificación"));
+            e.printStackTrace();
+        }
     }
-}
 
+    public void llevarPefiles(int idUsuario) {
+        try {
+            FacesContext.getCurrentInstance()
+                    .getExternalContext()
+                    .redirect("perfiles.xhtml?id=" + idUsuario);
+        } catch (IOException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Hubo un error al redirigir al perfil."));
+            e.printStackTrace();
+        }
+    }
 
-
-
+    public void cargarPerfiles() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String idParam = params.get("id");
+        if (idParam != null && !idParam.isEmpty()) {
+            try {
+                int id = Integer.parseInt(idParam);
+                this.selectedUsuario = servicioUsuario.leerUsuario(id);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public ServicioUsuario getServicioUsuario() {
         return servicioUsuario;
@@ -199,5 +223,12 @@ public void calificarUsuario() {
         this.calificacion = calificacion;
     }
 
-    
+    public Usuario getSelectedUsuario() {
+        return selectedUsuario;
+    }
+
+    public void setSelectedUsuario(Usuario selectedUsuario) {
+        this.selectedUsuario = selectedUsuario;
+    }
+
 }
