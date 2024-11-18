@@ -57,7 +57,7 @@
                 <h:form id="form" enctype="multipart/form-data">
                     <p:growl id="growl" showDetail="true"/>
 
-                    
+
 
                     <p:commandButton value="Vender" actionListener="#{subastaController.openNew}"
                                      update="form:manage-subas-content" oncomplete="PF('manageSubastaDialog').show()"
@@ -88,6 +88,16 @@
                                     <span class="subasta-date" style="font-size: 12px; color: #777; display: block; margin-top: 8px;">
                                         Fecha: #{subas.fechaInicio}
                                     </span>
+                                    
+                                    <span class="user-details">
+                                        <p:commandLink value="#{subas.propietario.nombre}" 
+                                                       action="#{usuarioBean.llevarPefiles(subas.propietario.idUsuario)}"
+                                                       ajax="false" 
+                                                       process="@this" 
+                                                       update="@none"
+                                                       immediate="true" 
+                                                       style="color:#333" />
+                                    </span>
 
                                     <h3 style="font-size: 16px; font-weight: bold; color: #333; text-align: center; margin: 10px 0;">
                                         #{subas.nombre}
@@ -105,7 +115,7 @@
 
                                 </div>
                                 <div class="subasta-grid-item-bottom">
-                                    
+
                                     <p:commandButton type="button" value="Pujar" icon="pi pi-shopping-cart"/>
                                     <p:menuButton icon="pi pi-ellipsis-v" styleClass="custom-menu-button"
                                                   rendered="#{subas.propietario.idUsuario eq usuarioBean.usuario.idUsuario}">>
@@ -117,7 +127,7 @@
                             </div>
                         </p:dataViewGridItem>
                     </p:dataView>
-                    
+
                     <div class="card-subas">
                         <div class="search-subas">
                             <p:autoComplete 
