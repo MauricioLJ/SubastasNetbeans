@@ -181,7 +181,7 @@ public class SubastaController implements Serializable {
         List<Subasta> subasta = servicioSubasta.listarSubastas();
         return subasta.stream().filter(u -> u.getNombre().toLowerCase().contains(querryLowerCase)).collect(Collectors.toList());
     }
-    
+
     public void onSubastaSelect(SelectEvent<Subasta> event) throws ClassNotFoundException {
         Subasta selected = event.getObject();
         if (selected != null) {
@@ -201,19 +201,18 @@ public class SubastaController implements Serializable {
     }
 
     public void cargarSubasta() {
-    FacesContext context = FacesContext.getCurrentInstance();
-    Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-    String idParam = params.get("id");
-    if (idParam != null && !idParam.isEmpty()) {
-        try {
-            int id = Integer.parseInt(idParam);
-            this.selectedSubasta = servicioSubasta.leerSubasta(id);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String idParam = params.get("id");
+        if (idParam != null && !idParam.isEmpty()) {
+            try {
+                int id = Integer.parseInt(idParam);
+                this.selectedSubasta = servicioSubasta.leerSubasta(id);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
         }
     }
-}
-
 
     public void listarSubastas() {
         try {
