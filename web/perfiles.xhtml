@@ -1,0 +1,112 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Perfiles</title>
+        <link rel="stylesheet" href="resources/css/perfil.css" />
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"/>
+    </h:head>
+    <h:body>
+
+        <f:metadata>
+            <f:viewAction action="#{usuarioBean.cargarPerfiles}" />
+        </f:metadata>
+
+        <div class="min-vh-100 bg-light">
+            <header class="bg-teal-600 text-white p-4">
+                <div class="container d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <a href="pagprin.xhtml" class="text-white me-3">Inicio</a>
+                        <h1 class="ms-3 h4 title-gradient">Subasta App</h1>
+                                  </div>
+                    <div class="d-flex align-items-center">
+                        <input type="search" class="form-control w-50 bg-teal-700 text-white border-0 me-2" placeholder="Busca por categoría, nombre del producto..." />
+                        <button class="btn btn-outline-light btn-buscar">Buscar</button>
+                    </div>
+
+                    <nav>
+                        <ul class="list-unstyled d-flex mb-0">
+                            <li><a href="#" class="text-white me-3">Ayuda</a></li>
+                            <li><a href="#" class="text-white me-3">Vender</a></li>
+                            <li><a href="autenticacion.html" class="text-white me-3">Login</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+
+            <main class="container mt-4">
+                <div class="row g-4">
+                    <!-- perfil -->
+                    <div class="col-md-3">
+                        <div class="card text-center">
+
+                            <h:graphicImage value="#{usuarioBean.selectedUsuario.fotoPerfil != null ? usuarioBean.selectedUsuario.fotoPerfil : 'https://cdn-icons-png.flaticon.com/512/1144/1144760.png'}"
+                                            alt="Avatar" class="card-img-top rounded-circle w-50 mx-auto mt-3"/>
+
+                            <div class="card-body">
+                                <h5> #{usuarioBean.selectedUsuario.nombre}</h5>
+                                <p>#{usuarioBean.selectedUsuario.apellidos} </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información de usuario -->
+                    <div class="col-md-9">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="card-title">Información de Usuario</h5>
+                                    
+                                </div>
+                                <div class="mb-3">
+                                    <p class="text-muted mb-0">Correo electrónico</p>
+                                    <p>#{usuarioBean.selectedUsuario.correo}</p>
+                                </div>
+                                <div class="mb-3">
+                                    <p class="text-muted mb-0">Pais</p>
+                                    <p>#{usuarioBean.selectedUsuario.pais}</p>
+                                </div>
+                                <div>
+                                    <p class="text-muted mb-0">Mi calificación</p>
+                                    <div class="d-flex align-items-center">
+                                        <h:form id="formCalificar">
+
+                                            <h:inputHidden id="idUsuarioACalificar" value="#{usuarioBean.selectedUsuario.idUsuario}" />
+                                            <p:rating value="#{usuarioBean.rating}" cancel="true">
+                                                <p:ajax event="rate" listener="#{usuarioBean.calificarUsuario()}" update="@form" />
+                                            </p:rating>
+                                            <p>  #{usuarioBean.selectedUsuario.calificacionPromedio}  
+                                                <span style="color: gold;">★</span>
+                                            </p>
+
+                                        </h:form>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Historial de transacciones -->
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title mb-3">Historial de transacciones</h5>
+                                <button class="btn btn-outline-primary w-100">Ver historial de transacciones</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybBogGzOg6f8/4cPz4B3tX1p2OmZdE0NXmkOGDX7i2KekFrGb" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-cu5tdc1cnH4pIaU6y7zyT2E/1LFHi3r+icGkBvnfPBZ/nfWWi6YJgtX0KCC5Sl1p" crossorigin="anonymous"></script>
+
+    </h:body>
+</html>
