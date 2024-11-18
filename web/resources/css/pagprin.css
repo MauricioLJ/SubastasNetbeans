@@ -1,0 +1,77 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 18 nov 2024, 3:56:42 p.m.
+    Author     : Kirsten
+*/
+
+/* Estilos generales */
+body, .min-vh-100 {
+    background-color: #f8f9fa; /* Fondo claro */
+    color: #333; /* Texto oscuro */
+}
+
+/* Encabezado */
+header.bg-teal-600 {
+    background: linear-gradient(45deg, #62a07b, #4f8b89, #536c8d, #5c4f79, #613860);
+    color: #ffffff; /* Color de texto para asegurar contraste */
+}
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Estilo para la tarjeta contenedora */
+.subasta-card {
+    max-width: 1250px;
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+/* Estilo para las tarjetas individuales en el DataView */
+.subasta-grid-item {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1 0 24%; /* Se ajusta a 4 columnas */
+    margin: 10px;
+    max-width: 100%;
+}
+
+/* Estilo para hacer el diálogo más pequeño */
+.custom-dialog {
+    width: 600px !important;
+    height: auto !important;
+}
+
+.custom-dialog .ui-dialog-content {
+    padding: 10px;
+}
+
+.categoria-list ul {
+    list-style-type: none;
+    padding-left: 0;  /* Elimina la indentación de la lista */
+}
+.category-container {
+    display: flex;              /* Usa Flexbox para alinear los elementos en línea */
+    align-items: center;        /* Centra los íconos y las categorías verticalmente */
+    gap: 10px;                  /* Espacio entre el ícono y las categorías */
+}
+
+.ui-pill {
+    display: inline-block;      /* Asegúrate de que las categorías no se rompan a la siguiente línea */
+}
+body .ui-datalist .ui-datalist-content {
+    color: #4f8b89;
+    padding: 1rem;
+}
