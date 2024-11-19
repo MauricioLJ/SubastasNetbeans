@@ -57,8 +57,8 @@ body{
 }
 
 .container button:disabled {
-    background-color: #bbb; /* Color gris para indicar que está deshabilitado */
-    cursor: default; /* Cambio del cursor para indicar que no se puede hacer clic */
+    background-color: #bbb; 
+    cursor: default; 
     opacity: 0.7;
 }
 
@@ -166,9 +166,9 @@ form h1 {
 }
 
 .toggle{
-    background-color: #512da8;
+    background-color: #62a07b;
     height: 100%;
-    background: linear-gradient(to right, #5c6bc0, #512da8);
+    background: linear-gradient(to right, #4f8b89, #62a07b);
     color: #fff;
     position: relative;
     left: -100%;
