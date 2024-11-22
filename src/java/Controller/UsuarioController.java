@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.Usuario;
 import servicio.ServicioUsuario;
 
@@ -22,7 +23,7 @@ import servicio.ServicioUsuario;
 public class UsuarioController extends HttpServlet {
 
     private ServicioUsuario servicioUsuario = new ServicioUsuario();
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -45,7 +46,7 @@ public class UsuarioController extends HttpServlet {
         if (usuario != null) {
             // Guarda el usuario en la sesión
             request.getSession().setAttribute("usuario", usuario);
-            response.sendRedirect("perfil.xhtml");
+            response.sendRedirect("pagprin.xhtml");
         } else {
             response.sendRedirect("autenticacion.html?error=true");
         }
@@ -57,29 +58,22 @@ public class UsuarioController extends HttpServlet {
         String apellidos = request.getParameter("apellidos");
         String correo = request.getParameter("email");
         String contrasena = request.getParameter("pass");
-
-        // Validación de campos en el backend
-        if (nombre == null || nombre.trim().isEmpty()
-                || apellidos == null || apellidos.trim().isEmpty()
-                || correo == null || correo.trim().isEmpty()
-                || contrasena == null || contrasena.trim().isEmpty()) {
-
-            response.sendRedirect("autenticacion.html?registroError=true");
-            return;
-        }
-
-        if (servicioUsuario.existeCorreo(correo)) {
-            response.sendRedirect("autenticacion.html?registroError=true");
-            return;
-        }
-
+        
         Usuario nuevoUsuario = new Usuario();
         nuevoUsuario.setNombre(nombre);
         nuevoUsuario.setApellidos(apellidos);
         nuevoUsuario.setCorreo(correo);
         nuevoUsuario.setContrasena(contrasena);
-
+        
         servicioUsuario.crearUsuario(nuevoUsuario);
-        response.sendRedirect("autenticacion.html?registroExitoso=true");
+        Usuario usuario = servicioUsuario.obtenerUsuarioPorCorreo(correo);
+        
+        if (usuario != null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("usuario", usuario);
+            response.sendRedirect("autenticacion.html?registro=true");
+        } else {
+            response.sendRedirect("error.html");
+        }
     }
 }

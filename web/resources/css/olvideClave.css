@@ -14,12 +14,12 @@ body{
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    position: relative;
 }
 
 #particles-js {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -27,16 +27,20 @@ body{
     z-index: 0;
 }
 
-.container{
+.container {
     background-color: #fff;
     border-radius: 30px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     position: relative;
-    overflow: hidden;
     width: 500px;
-    max-width: 100%;
+    max-width: 90%;
     min-height: 350px;
-    text-align: center
+    text-align: center;
+    z-index: 1;
+    margin: 2rem auto;
+    display: flex;  
+    align-items: center;  
+    justify-content: center; 
 }
 
 .container form{
@@ -47,6 +51,7 @@ body{
     flex-direction: column;
     padding: 0 40px;
     height: 100%;
+    width: 100%;
 }
 
 .container input{
@@ -59,11 +64,10 @@ body{
     width: 250px;
     max-width: 100%;
     outline: none;
-    
 }
 
 form h1 {
-    margin: 20px 0;
+    margin: 20px;
 }
 
 .container p{
@@ -74,13 +78,13 @@ form h1 {
 }
 
 .container button:disabled {
-    background-color: #bbb; 
-    cursor: default; 
+    background-color: #bbb;
+    cursor: default;
     opacity: 0.7;
 }
 
 .container button{
-    background-color: #512da8;
+    background-color: #613860;
     color: #fff;
     font-size: 12px;
     padding: 10px 45px;
@@ -91,4 +95,79 @@ form h1 {
     text-transform: uppercase;
     margin-top: 10px;
     cursor: pointer;
+}
+
+.container button:hover:not(:disabled) {
+    background-color: #4f2c4e;
+}
+
+/* SweetAlert2 customizations */
+.swal2-popup {
+    font-family: 'Montserrat', sans-serif !important;
+    border-radius: 30px !important;
+    padding: 2rem !important;
+    background: linear-gradient(to right bottom, #ffffff, #f8f8f8) !important;
+    box-shadow: 0 8px 32px rgba(97, 56, 96, 0.2) !important;
+}
+
+.swal2-container {
+    padding: 0 !important;
+}
+
+/* Ensure the body doesn't shift when modal opens */
+body.swal2-shown {
+    padding-right: 0 !important;
+}
+
+/* Title styling */
+.swal2-title {
+    color: #613860 !important;
+    font-size: 24px !important;
+    font-weight: 600 !important;
+    margin-bottom: 15px !important;
+}
+
+/* Content text styling */
+.swal2-html-container {
+    color: #666 !important;
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+}
+
+/* Success icon styling */
+.swal2-success-ring {
+    border-color: #613860 !important;
+}
+
+.swal2-success-line-tip,
+.swal2-success-line-long {
+    background-color: #613860 !important;
+}
+
+.swal2-success-circular-line-right,
+.swal2-success-circular-line-left,
+.swal2-success-fix {
+    background-color: transparent !important;
+}
+
+/* Animation for the popup */
+.swal2-show {
+    animation: custom-animation 0.3s !important;
+}
+
+@keyframes custom-animation {
+    0% {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Backdrop styling */
+.swal2-backdrop-show {
+    background: rgba(97, 56, 96, 0.3) !important;
+    backdrop-filter: blur(4px) !important;
 }

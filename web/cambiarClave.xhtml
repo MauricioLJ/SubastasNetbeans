@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
         <link rel="stylesheet" href="resources/css/olvideClave.css?v=1.0"/>
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <title>Subastas</title>
     </head>
     <body>
@@ -17,11 +17,79 @@
                 <input type="hidden" name="token" value="${token}" />
                 <input type="hidden" name="email" value="${email}"/>
                 <input type="email" value="${email}" disabled="true"/>
-                <input type="password" id="nuevaClave" name="nuevaClave" placeholder="Nueva Contraseña"/>
-                <button type="submit">Cambiar Contraseña</button>
+                <input id="nuevaClave" type="password" name="nuevaClave" placeholder="Nueva Contraseña"/>
+                <button id="nuevaClaveBtn" type="submit" disabled="true">Cambiar Contraseña</button>
             </form>
         </div>
 
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Get the passwordChanged parameter from URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const passwordChanged = urlParams.get('passwordChanged') === 'true';
+
+                // Check if there's a success message in session storage
+                const showSuccess = sessionStorage.getItem('showSuccessAlert');
+
+                if (passwordChanged || showSuccess) {
+                    // Clear the session storage
+                    sessionStorage.removeItem('showSuccessAlert');
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Contraseña actualizada',
+                        text: 'Iniciando sesión...',
+                        timer: 5000,
+                        showConfirmButton: false,
+                        // Additional customization options
+                        customClass: {
+                            popup: 'custom-popup-class',
+                            title: 'custom-title-class',
+                            icon: 'custom-icon-class'
+                        },
+                        // Custom position
+                        position: 'center',
+                        // Enable backdrop animation
+                        showClass: {
+                            popup: 'swal2-show',
+                            backdrop: 'swal2-backdrop-show'
+                        },
+                        // Disable clicking outside to close
+                        allowOutsideClick: false,
+                        // Add a subtle bounce animation
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                        },
+                        didOpen: (popup) => {
+                            // Optional: Add a subtle entrance animation to the success icon
+                            popup.querySelector('.swal2-success-ring').style.animation = 'custom-ring-animation 0.3s ease-out';
+                        }
+                    }).then(() => {
+                        window.location.href = 'pagprin.xhtml';
+                    });
+                }
+
+                // Password validation and button enable/disable logic
+                const passwordInput = document.getElementById('nuevaClave');
+                const submitButton = document.getElementById('nuevaClaveBtn');
+
+                passwordInput.addEventListener('input', function () {
+                    // Enable button only if password is not empty
+                    submitButton.disabled = !this.value.trim();
+                });
+
+                // Handle form submission
+                document.querySelector('form').addEventListener('submit', function (e) {
+                    // Store a flag in session storage before submitting
+                    sessionStorage.setItem('showSuccessAlert', 'true');
+                });
+            });
+        </script>
+
+        <script src="resources/js/olvideClave.js"></script>
         <script src="resources/js/particles.js"></script>
         <script src="resources/js/app.js"></script>
     </body>

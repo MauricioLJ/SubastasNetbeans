@@ -4,6 +4,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
+import model.Usuario;
 import servicio.ServicioToken;
 import servicio.ServicioUsuario;
 
@@ -30,16 +31,16 @@ public class CambiarClaveController extends HttpServlet {
         request.setAttribute("email", email);  // Asegúrate de que el correo se ha establecido
 
         request.setAttribute("token", token);
-        request.getRequestDispatcher("cambiarClave.xhtml").forward(request, response);  // Hacia la página HTML
+        request.getRequestDispatcher("cambiarClave.xhtml").forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String token = request.getParameter("token");
         String nuevaClave = request.getParameter("nuevaClave");
-        String email = request.getParameter("email");  // Obtener el correo desde la solicitud
+        String email = request.getParameter("email");
 
-        // Verificar si se obtuvo el correo
-        System.out.println("Correo recibido: " + email);  // Log para verificar
+        System.out.println("Correo recibido: " + email);
 
         if (nuevaClave == null || nuevaClave.isEmpty()) {
             request.setAttribute("error", "La contraseña no puede estar vacía");
@@ -53,8 +54,15 @@ public class CambiarClaveController extends HttpServlet {
         // Eliminar el token una vez que se ha usado
         servicioToken.eliminarToken(token);
 
-        // Redirigir a la página de éxito
-        response.sendRedirect("claveCambiada.html");
+        Usuario usuario = servicioUsuario.obtenerUsuarioPorCorreo(email);
+        if (usuario != null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("usuario", usuario);
+            // Redirect with a success parameter
+            response.sendRedirect("cambiarClave.xhtml?passwordChanged=true");
+        } else {
+            response.sendRedirect("error.html");
+        }
     }
 
 }
