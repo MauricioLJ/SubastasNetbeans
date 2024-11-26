@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +27,9 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import model.Categoria;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.TabChangeEvent;
+import org.primefaces.model.menu.DefaultMenuModel;
+import org.primefaces.model.menu.MenuModel;
 import servicio.ServicioCategoria;
 
 /**
@@ -47,11 +48,10 @@ public class SubastaController implements Serializable {
     private Subasta selectSubasta = new Subasta();
     private Subasta subasta = new Subasta();
     private List<Subasta> listaSubasta;
-    private List<Categoria> categoriasLista;
     private UploadedFile files;
-    private List<Subasta> listaSubastaFilter;
-    private String query;
-    List<String> categorias = new ArrayList<>();
+    private String query; 
+    private List<Categoria> listaCategorias;
+    private String selectCategoria;
     private String uploadedFilePath;
     private Subasta selectedSubasta;
 
@@ -61,11 +61,9 @@ public class SubastaController implements Serializable {
 
     @PostConstruct
     public void init() {
-
         try {
             listarSubastas();
-            categoriasLista = servicioCategoria.listarCategorias();
-
+            listaCategorias = servicioCategoria.listarCategorias();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,6 +75,21 @@ public class SubastaController implements Serializable {
 
     public void setUsuarioBean(UsuarioBean usuarioBean) {
         this.usuarioBean = usuarioBean;
+    }
+
+     public void cargarCategorias(String categoria) {
+        if ("Todo".equals(categoria)) {
+            listaSubasta = servicioSubasta.listarSubastas();
+        } else {
+            listaSubasta = servicioSubasta.listarSubasPorCategoria(categoria);
+        }
+    }
+
+    public void onTabChange(TabChangeEvent event) {
+        String categoria = event.getTab().getTitle();
+        FacesMessage msg = new FacesMessage("Categoría seleccionada", categoria);
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        cargarCategorias(categoria);
     }
 
     public void guardarSuba() {
@@ -278,14 +291,6 @@ public class SubastaController implements Serializable {
         this.servicioCategoria = servicioCategoria;
     }
 
-    public List<Categoria> getCategoriasLista() {
-        return categoriasLista;
-    }
-
-    public void setCategoriasLista(List<Categoria> categoriasLista) {
-        this.categoriasLista = categoriasLista;
-    }
-
     public Subasta getSubasta() {
         return subasta;
     }
@@ -300,6 +305,22 @@ public class SubastaController implements Serializable {
 
     public void setSelectedSubasta(Subasta selectedSubasta) {
         this.selectedSubasta = selectedSubasta;
+    }
+
+    public List<Categoria> getListaCategorias() {
+        return listaCategorias;
+    }
+
+    public void setListaCategorias(List<Categoria> listaCategorias) {
+        this.listaCategorias = listaCategorias;
+    }
+
+    public String getSelectCategoria() {
+        return selectCategoria;
+    }
+
+    public void setSelectCategoria(String selectCategoria) {
+        this.selectCategoria = selectCategoria;
     }
 
 }
