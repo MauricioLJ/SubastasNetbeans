@@ -22,7 +22,7 @@
                                              style="margin-right: .5rem; color: #fff;" />
 
                             <h1 class="ms-3 h4 title-gradient">Subasta App</h1>
-                                      </div>
+                             </div>
                         <div class="d-flex align-items-center">
                             <div class="search-subas">
                                 <p:autoComplete 
@@ -39,7 +39,6 @@
                             </div>
 
                         </div>
-
                         <nav>
                             <ul class="list-unstyled d-flex mb-0">
                                 <li><a href="#" class="text-white me-3">Ayuda</a></li>
@@ -48,8 +47,11 @@
                                                  styleClass="ui-button-secondary ui-button-flat" style="margin-right: .5rem; color: #fff">
                                     <p:resetInput target="form:manage-subas-content" />
                                 </p:commandButton>
+                                <p:commandButton value="Perfil" action="perfil" ajax="false"
+                                                 styleClass="ui-button-secondary ui-button-flat"
+                                                 style="margin-right: .5rem; color: #fff;" />
+
                                 <li><a href="autenticacion.html" class="text-white me-3">Login</a></li>
-                                <li><a href="perfil.xhtml" class="text-white me-3">Perfil</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -61,6 +63,36 @@
                     <h:form id="form" enctype="multipart/form-data">
                         <p:growl id="growl" showDetail="true"/>
 
+                        <p:tabView id="tabView" dynamic="true" cache="false">
+                            <p:ajax event="tabChange" listener="#{subastaController.onTabChange}" update=":form:dv-subastas"/>
+                            <p:tab title="Todo" id="todoTab">
+                            </p:tab>
+                            <p:tab title="Arte" id="arteTab">
+                            </p:tab>
+                            <p:tab title="Electrónica" id="electronicaTab">
+                            </p:tab>
+                            <p:tab title="Muebles" id="mueblesTab">
+                            </p:tab>
+                            <p:tab title="Ropa" id="ropaTab">
+                            </p:tab>
+                            <p:tab title="Juguetes" id="juguetesTab">
+                            </p:tab>
+                            <p:tab title="Hogar" id="hogarTab">
+                            </p:tab>
+                            <p:tab title="Cómics" id="comicsTab">
+                            </p:tab>
+                            <p:tab title="Joyas" id="joyasTab">
+                            </p:tab>
+                            <p:tab title="Arqueología" id="arqueologiaTab">
+                            </p:tab>
+                            <p:tab title="Libros e Historia" id="librosTab">
+                            </p:tab>
+                            <p:tab title="Cartas y cromos" id="cartasTab">
+                            </p:tab>
+                            <p:tab title="Deportes" id="deportesTab">
+                            </p:tab>
+                        </p:tabView>
+                        
                         <p:dataView id="dv-subastas" var="subas" value="#{subastaController.listaSubasta}" rows="12" gridIcon="pi pi-th-large"                                    
                                     layout="grid">
                             <p:dataViewGridItem>
@@ -75,8 +107,6 @@
                                                 </p:dataList>
                                             </div>
                                         </div>
-
-
 
                                     </div>
                                     <div class="subasta-grid-item-content">
@@ -117,9 +147,9 @@
                                     </div>
                                     <div class="subasta-grid-item-bottom">
 
-                                        <p:commandButton type="button" value="Pujar" icon="pi pi-shopping-cart"/>
+                                        <p:commandButton type="button" value="Pujar" styleClass="ui-button-raised"  style="background: #4f8b89"  icon="pi pi-shopping-cart"/>
                                         <p:menuButton icon="pi pi-ellipsis-v" styleClass="custom-menu-button"
-                                                      rendered="#{subas.propietario.idUsuario eq usuarioBean.usuario.idUsuario}">>
+                                                      rendered="#{subas.propietario.idUsuario eq usuarioBean.usuario.idUsuario}">
                                             <p:menuitem value="Eliminar" styleClass="delete-button rounded-button ui-button-warning" process="@this" oncomplete="PF('deleteSubasDialog').show()">
                                                 <f:setPropertyActionListener value="#{subas}" target="#{subastaController.selectSubasta}" />
                                             </p:menuitem>
@@ -129,7 +159,6 @@
                             </p:dataViewGridItem>
                         </p:dataView>
 
-                        <!-- Diálogo para gestionar la subasta -->
                         <p:dialog header="Subastar" widgetVar="manageSubastaDialog" responsive="true" modal="true" 
                                   dynamic="true" styleClass="custom-dialog">
                             <p:outputPanel id="manage-subas-content" class="ui-fluid">
@@ -164,7 +193,7 @@
                                 <div class="field">
                                     <p:outputLabel for="categorias" value="Categorias" />
                                     <p:selectManyCheckbox id="categorias" value="#{subastaController.selectSubasta.categorias}" layout="responsive" columns="3" required="true" requiredMessage="Añada la categoría de su producto.">
-                                        <f:selectItems value="#{subastaController.categoriasLista}" var="cat" itemLabel="#{cat.nombre}" itemValue="#{cat}" />
+                                        <f:selectItems value="#{subastaController.listaCategorias}" var="cat" itemLabel="#{cat.nombre}" itemValue="#{cat}" />
                                     </p:selectManyCheckbox>
                                 </div>
 
