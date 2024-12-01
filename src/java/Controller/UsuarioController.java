@@ -40,12 +40,11 @@ public class UsuarioController extends HttpServlet {
             throws ServletException, IOException {
         String correo = request.getParameter("correo");
         String contrasena = request.getParameter("clave");
-
         Usuario usuario = servicioUsuario.loginUsuario(correo, contrasena);
-
         if (usuario != null) {
             // Guarda el usuario en la sesión
-            request.getSession().setAttribute("usuario", usuario);
+            HttpSession httpSession = request.getSession();
+            httpSession.setAttribute("usuario", usuario);
             response.sendRedirect("pagprin.xhtml");
         } else {
             response.sendRedirect("autenticacion.html?error=true");
@@ -58,16 +57,16 @@ public class UsuarioController extends HttpServlet {
         String apellidos = request.getParameter("apellidos");
         String correo = request.getParameter("email");
         String contrasena = request.getParameter("pass");
-        
+
         Usuario nuevoUsuario = new Usuario();
         nuevoUsuario.setNombre(nombre);
         nuevoUsuario.setApellidos(apellidos);
         nuevoUsuario.setCorreo(correo);
         nuevoUsuario.setContrasena(contrasena);
-        
+
         servicioUsuario.crearUsuario(nuevoUsuario);
         Usuario usuario = servicioUsuario.obtenerUsuarioPorCorreo(correo);
-        
+
         if (usuario != null) {
             HttpSession session = request.getSession();
             session.setAttribute("usuario", usuario);

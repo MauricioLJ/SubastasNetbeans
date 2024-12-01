@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta charset="UTF-8" />
+        <title>Detalles de Subasta</title>
+        <link rel="stylesheet" href="resources/css/verSubasta.css" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    </h:head>
+    <h:body>
+        <f:metadata>
+            <f:viewParam name="id" />
+            <f:event type="preRenderView" listener="#{subastaController.cargarSubasta()}" />
+        </f:metadata>
+
+        <div class="container py-5">
+            <h:inputHidden id="currentUserId" value="#{usuarioBean.usuario.idUsuario}" />
+            <h:inputHidden id="currentAuctionId" value="#{subastaController.selectedSubasta.idSubasta}" />
+            <div class="auction-details" id="auction-details">
+                <div class="row g-4">
+                    <div class="col-12 col-md-6">
+                        <div class="auction-image-container">
+                            <img id="auction-image" src="#{subastaController.selectedSubasta.imagen}" alt="Auction Item" class="img-fluid rounded shadow-lg"/>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="auction-info">
+                            <div class="col-12 mb-4">
+                                <h1 id="auction-name" class="display-4 fw-bold text-center">#{subastaController.selectedSubasta.nombre}</h1>
+                            </div>
+                            <div class="description-section mb-4">
+                                <h3 class="mb-3">Descripción</h3>
+                                <p id="auction-description" class="lead text-muted">#{subastaController.selectedSubasta.descripcion}</p>
+                            </div>
+
+                            <div class="details-section mb-4">
+                                <h3 class="mb-3">Detalles de la subasta</h3>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold">Precio Inicial</span>
+                                        <span id="initial-price" class="text-muted">$ #{subastaController.selectedSubasta.precioInicial}</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold">Fecha de Inicio</span>
+                                        <span id="start-date" class="text-muted">#{subastaController.selectedSubasta.fechaInicio}</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold">Fecha final</span>
+                                        <span id="end-date" class="text-muted">#{subastaController.selectedSubasta.fechaFin}</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold">Estado</span>
+                                        <span id="auction-status" class="badge rounded-pill">#{subastaController.selectedSubasta.estadoSubasta}</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="bid-section mb-4">
+                                <h3 class="mb-3">Current Highest Bid</h3>
+                                <div class="current-bid-display">
+                                    <span id="current-bid" class="display-6">$ #{subastaController.getCurrentHighestBid()}</span>
+                                </div>
+
+                                <!-- Enhanced Bid Input -->
+                                <div class="input-group mt-3">
+                                    <input type="number" 
+                                           id="bid-amount" 
+                                           class="form-control" 
+                                           placeholder="Enter your bid amount" 
+                                           step="0.01" 
+                                           min="#{subastaController.getCurrentHighestBid()}"/>
+                                    <button id="place-bid-btn" class="btn btn-primary">PLACE BID</button>
+                                </div>
+                                <small id="bid-hint" class="text-muted">
+                                    Minimum bid: $ #{subastaController.getCurrentHighestBid()}
+                                </small>
+                            </div>
+
+                            <div class="categories-section">
+                                <h3 class="mb-3">Categorías</h3>
+                                <div id="categories-container" class="d-flex flex-wrap gap-2">
+                                    <ul>
+                                        <h:dataTable value="#{subastaController.selectedSubasta.categorias}" var="categoria">
+                                            <h:column>
+                                                <li>#{categoria.nombre}</li>
+                                            </h:column>
+                                        </h:dataTable>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="col-12">
+                        <div class="bids-list-section">
+                            <h3 class="mb-3">Bid History</h3>
+                            <div id="bids-list" class="list-group">
+                                <!-- Dynamically populated bid history -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="resources/js/websocket-connection.js"></script>
+        <script src="resources/js/auction-bid-websocket.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </h:body>
+</html>

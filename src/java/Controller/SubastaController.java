@@ -25,12 +25,15 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.websocket.server.ServerEndpoint;
 import model.Categoria;
+import model.Puja;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.MenuModel;
 import servicio.ServicioCategoria;
+import servicio.ServicioPuja;
 
 /**
  *
@@ -49,7 +52,7 @@ public class SubastaController implements Serializable {
     private Subasta subasta = new Subasta();
     private List<Subasta> listaSubasta;
     private UploadedFile files;
-    private String query; 
+    private String query;
     private List<Categoria> listaCategorias;
     private String selectCategoria;
     private String uploadedFilePath;
@@ -62,6 +65,7 @@ public class SubastaController implements Serializable {
     @PostConstruct
     public void init() {
         try {
+            cargarSubasta();
             listarSubastas();
             listaCategorias = servicioCategoria.listarCategorias();
         } catch (Exception e) {
@@ -77,7 +81,7 @@ public class SubastaController implements Serializable {
         this.usuarioBean = usuarioBean;
     }
 
-     public void cargarCategorias(String categoria) {
+    public void cargarCategorias(String categoria) {
         if ("Todo".equals(categoria)) {
             listaSubasta = servicioSubasta.listarSubastas();
         } else {
@@ -158,7 +162,7 @@ public class SubastaController implements Serializable {
     protected String copyFile(String fileName, InputStream in, boolean esTemporal) {
         try {
             if (fileName != null) {
-                String destinationFile = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/imagenes/");
+                String destinationFile = FacesContext.getCurrentInstance().getExternalContext().getRealPath("resources/imagenes/");
 
                 String[] partesArchivo = fileName.split(Pattern.quote("."));
                 String nombreArchivo = partesArchivo[0];
@@ -181,7 +185,7 @@ public class SubastaController implements Serializable {
                 in.close();
                 out.flush();
                 out.close();
-                return "/resources/imagenes/" + nombreArchivo + "." + extensionArchivo;
+                return "resources/imagenes/" + nombreArchivo + "." + extensionArchivo;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -217,10 +221,13 @@ public class SubastaController implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String idParam = params.get("id");
+
         if (idParam != null && !idParam.isEmpty()) {
             try {
                 int id = Integer.parseInt(idParam);
                 this.selectedSubasta = servicioSubasta.leerSubasta(id);
+                this.subasta = this.selectedSubasta;
+                System.out.println("Subasta cargada: " + (subasta != null ? subasta.getNombre() : "No auction found"));
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
@@ -233,6 +240,23 @@ public class SubastaController implements Serializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public double getCurrentHighestBid() {
+        ServicioPuja servicioPuja = new ServicioPuja();
+        List<Puja> pujas = servicioPuja.listaPujasPorSubasta(this.selectedSubasta.getIdSubasta());
+
+        return pujas.isEmpty()
+                ? this.selectedSubasta.getPrecioInicial()
+                : pujas.stream()
+                        .mapToDouble(Puja::getMonto)
+                        .max()
+                        .orElse(this.selectedSubasta.getPrecioInicial());
+    }
+
+    public String viewAuction(Subasta subasta) {
+        this.selectedSubasta = subasta;
+        return "verSubasta?id=" + subasta.getIdSubasta() + "&faces-redirect=true";
     }
 
     public ServicioSubasta getServicioSubasta() {

@@ -266,7 +266,6 @@ form h1 {
 }
 
 
-/* SweetAlert2 customizations */
 .swal2-popup {
     font-family: 'Montserrat', sans-serif !important;
     border-radius: 30px !important;
@@ -279,12 +278,10 @@ form h1 {
     padding: 0 !important;
 }
 
-/* Ensure the body doesn't shift when modal opens */
 body.swal2-shown {
     padding-right: 0 !important;
 }
 
-/* Title styling */
 .swal2-title {
     color: #613860 !important;
     font-size: 24px !important;
@@ -292,14 +289,12 @@ body.swal2-shown {
     margin-bottom: 15px !important;
 }
 
-/* Content text styling */
 .swal2-html-container {
     color: #666 !important;
     font-size: 16px !important;
     line-height: 1.5 !important;
 }
 
-/* Success icon styling */
 .swal2-success-ring {
     border-color: #613860 !important;
 }
@@ -315,7 +310,6 @@ body.swal2-shown {
     background-color: transparent !important;
 }
 
-/* Animation for the popup */
 .swal2-show {
     animation: custom-animation 0.3s !important;
 }
@@ -331,7 +325,6 @@ body.swal2-shown {
     }
 }
 
-/* Backdrop styling */
 .swal2-backdrop-show {
     background: rgba(97, 56, 96, 0.3) !important;
     backdrop-filter: blur(4px) !important;
