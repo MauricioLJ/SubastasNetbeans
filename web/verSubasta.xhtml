@@ -10,9 +10,10 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
     </h:head>
     <h:body>
+
         <f:metadata>
             <f:viewParam name="id" />
-            <f:event type="preRenderView" listener="#{subastaController.cargarSubasta()}" />
+            <f:event type="preRenderView" listener="#{subastaController.cargarSubasta}" />
         </f:metadata>
 
         <div class="container py-5">
@@ -22,6 +23,9 @@
                 <div class="row g-4">
                     <div class="col-12 col-md-6">
                         <div class="auction-image-container">
+                            <h:panelGroup rendered="#{not empty subastaController.selectedSubasta.imagen}">
+                                <h:graphicImage value="#{subastaController.selectedSubasta.imagen}" class="img-fluid rounded shadow-lg"/>
+                            </h:panelGroup>
                             <img id="auction-image" src="#{subastaController.selectedSubasta.imagen}" alt="Auction Item" class="img-fluid rounded shadow-lg"/>
                         </div>
                     </div>
