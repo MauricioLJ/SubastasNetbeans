@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -25,14 +26,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.websocket.server.ServerEndpoint;
 import model.Categoria;
+import model.Interacciones;
+import model.Interacciones.TipoInteraccion;
 import model.Puja;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TabChangeEvent;
-import org.primefaces.model.menu.DefaultMenuModel;
-import org.primefaces.model.menu.MenuModel;
 import servicio.ServicioCategoria;
+import servicio.ServicioInteracciones;
 import servicio.ServicioPuja;
 
 /**
@@ -89,43 +90,61 @@ public class SubastaController implements Serializable {
         }
     }
 
+    public void registrarInteraccion(Subasta subasta, String tipoInteraccion) {
+        try {
+            Interacciones interaccion = new Interacciones();
+            interaccion.setSubasta(subasta);
+            interaccion.setUsuario(usuarioBean.getUsuario());
+            interaccion.setTipoInteraccion(TipoInteraccion.valueOf(tipoInteraccion));
+            interaccion.setFechaInteraccion(new Date());
+
+            ServicioInteracciones servicioInteracciones = new ServicioInteracciones();
+            servicioInteracciones.registrarInteraccion(interaccion);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void onTabChange(TabChangeEvent event) {
         String categoria = event.getTab().getTitle();
-        FacesMessage msg = new FacesMessage("Categoría seleccionada", categoria);
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        cargarCategorias(categoria);
+        if ("Para ti".equals(categoria)) {
+            cargarRecomendaciones();
+        } else {
+            cargarCategorias(categoria);
+        }
     }
 
     public void guardarSuba() {
         System.out.println(this.selectSubasta);
         if (this.selectSubasta.getIdSubasta() == null) {
+            if (this.selectSubasta.getIdSubasta() == null) {
+                if (files != null) {
+                    handleFileUpload();
+                }
 
-            selectSubasta.setFechaInicio(new Date());
-            selectSubasta.setEstadoSubasta("Activo");
+                selectSubasta.setFechaInicio(new Date());
+                selectSubasta.setEstadoSubasta("Activo");
 
-            if (files != null) {
-                handleFileUpload();
+                Usuario usuarioLogueado = usuarioBean.getUsuario();
+
+                if (usuarioLogueado != null) {
+                    selectSubasta.setPropietario(usuarioLogueado);
+                }
+
+                try {
+                    servicioSubasta.crearSubasta(selectSubasta);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                            "Subasta guardada", "La subasta ha sido guardada correctamente."));
+                    listarSubastas();
+                    this.selectSubasta = new Subasta();
+                } catch (Exception e) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "Error al guardar la subasta", "Hubo un problema al guardar la subasta: " + e.getMessage()));
+                    e.printStackTrace();
+                }
             }
 
-            Usuario usuarioLogueado = usuarioBean.getUsuario();
-
-            if (usuarioLogueado != null) {
-                selectSubasta.setPropietario(usuarioLogueado);
-            }
-
-            try {
-                servicioSubasta.crearSubasta(selectSubasta);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                        "Subasta guardada", "La subasta ha sido guardada correctamente."));
-                listarSubastas();
-                this.selectSubasta = new Subasta();
-            } catch (Exception e) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                        "Error al guardar la subasta", "Hubo un problema al guardar la subasta: " + e.getMessage()));
-                e.printStackTrace();
-            }
         }
-
     }
 
     public void eliminarSubasta() {
@@ -146,15 +165,14 @@ public class SubastaController implements Serializable {
 
     public void handleFileUpload() {
         try {
-            System.out.println("===>>> " + this.files);
-            System.out.println("===>>> " + this.files.getFileName() + " size: " + this.files.getSize());
-            String rutaImagen = this.copyFile(this.files.getFileName(), this.files.getInputStream(), false);
-
-            selectSubasta.setImagen(rutaImagen);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "Se subió éxitosamente la imagen"));
-
+            if (files != null) {
+                String rutaImagen = copyFile(files.getFileName(), files.getInputStream(), false);
+                selectSubasta.setImagen(rutaImagen);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "Imagen subida correctamente."));
+                files = null;
+            }
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Hubo un problema al subir la imagen."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo cargar la imagen."));
             e.printStackTrace();
         }
     }
@@ -162,7 +180,9 @@ public class SubastaController implements Serializable {
     protected String copyFile(String fileName, InputStream in, boolean esTemporal) {
         try {
             if (fileName != null) {
-                String destinationFile = FacesContext.getCurrentInstance().getExternalContext().getRealPath("resources/imagenes/");
+                String destinationFile = FacesContext.getCurrentInstance()
+                        .getExternalContext()
+                        .getRealPath("/resources/imagenes/");
 
                 String[] partesArchivo = fileName.split(Pattern.quote("."));
                 String nombreArchivo = partesArchivo[0];
@@ -185,7 +205,7 @@ public class SubastaController implements Serializable {
                 in.close();
                 out.flush();
                 out.close();
-                return "resources/imagenes/" + nombreArchivo + "." + extensionArchivo;
+                return "/resources/imagenes/" + nombreArchivo + "." + extensionArchivo;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -206,7 +226,7 @@ public class SubastaController implements Serializable {
             cargarSubasta();
 
             try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect("detalleSubasta.xhtml?id=" + selected.getIdSubasta());
+                FacesContext.getCurrentInstance().getExternalContext().redirect("verSubasta.xhtml?id=" + selected.getIdSubasta());
             } catch (IOException e) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Hubo un error al redirigir."));
                 e.printStackTrace();
@@ -227,10 +247,30 @@ public class SubastaController implements Serializable {
                 int id = Integer.parseInt(idParam);
                 this.selectedSubasta = servicioSubasta.leerSubasta(id);
                 this.subasta = this.selectedSubasta;
+
+                registrarInteraccion(selectedSubasta, "VER");
                 System.out.println("Subasta cargada: " + (subasta != null ? subasta.getNombre() : "No auction found"));
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void cargarRecomendaciones() {
+        Usuario usuarioLogueado = usuarioBean.getUsuario();
+        if (usuarioLogueado != null) {
+            try {
+
+                ServicioInteracciones servicioInteracciones = new ServicioInteracciones();
+                List<String> categoriasFrecuentes = servicioInteracciones.obtenerCategoriasFrecuentesPorUsuario(usuarioLogueado.getIdUsuario());
+
+                listaSubasta = servicioSubasta.recomendarSubastas(categoriasFrecuentes, usuarioLogueado.getIdUsuario());
+            } catch (Exception e) {
+                e.printStackTrace();
+                listaSubasta = Collections.emptyList();
+            }
+        } else {
+            listaSubasta = servicioSubasta.listarSubastas();
         }
     }
 
