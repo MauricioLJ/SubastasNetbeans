@@ -64,6 +64,8 @@
                             <p:ajax event="tabChange" listener="#{subastaController.onTabChange}" update=":form:dv-subastas"/>
                             <p:tab title="Todo" id="todoTab">
                             </p:tab>
+                            <p:tab title="Para ti" id="recomenTab">
+                            </p:tab>
                             <p:tab title="Arte" id="arteTab">
                             </p:tab>
                             <p:tab title="Electrónica" id="electronicaTab">
@@ -90,7 +92,7 @@
                             </p:tab>
                         </p:tabView>
 
-                        <p:dataView id="dv-subastas" var="subas" value="#{subastaController.listaSubasta}" rows="12" gridIcon="pi pi-th-large"                                    
+                        <p:dataView id="dv-subastas" var="subas" value="#{subastaController.listaSubasta}" gridIcon="pi pi-th-large"                                    
                                     layout="grid">
                             <p:dataViewGridItem>
                                 <div class="subasta-grid-item">
@@ -110,6 +112,7 @@
                                         <div class="file-container">
                                             <h:panelGroup rendered="#{not empty subas.imagen}">
                                                 <h:graphicImage value="#{subas.imagen}" width="290" height="150" style="max-width: 100%;"/>
+
                                             </h:panelGroup>
                                         </div>
 
@@ -144,7 +147,7 @@
                                     </div>
                                     <div class="subasta-grid-item-bottom">
                                         
-                                        <h:link outcome="verSubasta" value="View Auction">
+                                        <h:link outcome="verSubasta" value="Ver subasta">
                                             <f:param name="id" value="#{subas.idSubasta}" />
                                         </h:link>
                                         
@@ -196,13 +199,12 @@
                                         <f:selectItems value="#{subastaController.listaCategorias}" var="cat" itemLabel="#{cat.nombre}" itemValue="#{cat}" />
                                     </p:selectManyCheckbox>
                                 </div>
-
+                                
                                 <div class="field">
                                     <h:outputLabel for="files" value="Imagen" />
                                     <p:fileUpload id="files" required="true" requiredMessage="Por favor, seleccione una imagen para la subasta." value="#{subastaController.files}" mode="simple" skinSimple="true" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|docx?)$/" />
-                                    <p:commandButton value="Submit" actionListener="#{subastaController.handleFileUpload}" styleClass="mt-3 ui-button-outlined block" process="@form"/>
+                                    <p:commandButton value="Submit" actionListener="#{subastaController.handleFileUpload}" styleClass="mt-3 ui-button-outlined block" process="@form" update="form:growl"/>
                                 </div>
-
 
                             </p:outputPanel>
 
