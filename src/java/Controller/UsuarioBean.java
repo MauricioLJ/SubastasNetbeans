@@ -19,11 +19,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import model.Puja;
 import model.Subasta;
 import model.Usuario;
 import org.primefaces.event.RateEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.file.UploadedFile;
+import servicio.ServicioPuja;
 import servicio.ServicioUsuario;
 
 /**
@@ -34,6 +36,7 @@ import servicio.ServicioUsuario;
 public class UsuarioBean implements Serializable {
 
     private ServicioUsuario servicioUsuario = new ServicioUsuario();
+    private ServicioPuja servicioPuja = new ServicioPuja();
     private Usuario usuario;
     private Usuario selectUsuario = new Usuario();
     private UploadedFile files;
@@ -41,6 +44,8 @@ public class UsuarioBean implements Serializable {
     private Integer rating;
     private Integer calificacion;
     private Usuario selectedUsuario;
+
+    private List<Puja> historialPujas;
 
     public UsuarioBean() {
         HttpSession session = SessionUtils.getSession();
@@ -179,6 +184,14 @@ public class UsuarioBean implements Serializable {
         return servicioUsuario;
     }
 
+    public void cargarHistorial() {
+        if (usuario != null && usuario.getIdUsuario() != null) {
+            this.historialPujas = servicioPuja.obtenerHistorialPorUsuario(usuario.getIdUsuario());
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario no autenticado o ID no válido."));
+        }
+    }
+
     public void setServicioUsuario(ServicioUsuario servicioUsuario) {
         this.servicioUsuario = servicioUsuario;
     }
@@ -229,6 +242,14 @@ public class UsuarioBean implements Serializable {
 
     public void setSelectedUsuario(Usuario selectedUsuario) {
         this.selectedUsuario = selectedUsuario;
+    }
+
+    public List<Puja> getHistorialPujas() {
+        return historialPujas;
+    }
+
+    public void setHistorialPujas(List<Puja> historialPujas) {
+        this.historialPujas = historialPujas;
     }
 
 }
