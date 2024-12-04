@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -18,8 +17,8 @@
                 <div class="container d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
                         <a href="pagprin.xhtml" class="text-white me-3">Inicio</a>
-                      <h1 class="ms-3 h4 title-gradient">Subasta App</h1>
-                    </div>
+                        <h1 class="ms-3 h4 title-gradient">Subasta App</h1>
+                    </div>
                     <div class="d-flex align-items-center">
                         <input type="search" class="form-control w-50 bg-teal-700 text-white border-0 me-2" placeholder="Busca por categoría, nombre del producto..." />
                         <button class="btn btn-outline-light btn-buscar">Buscar</button>
@@ -40,17 +39,14 @@
                     <!-- perfil -->
                     <div class="col-md-3">
                         <div class="card text-center">
-
                             <h:graphicImage value="#{usuarioBean.usuario.fotoPerfil != null ? usuarioBean.usuario.fotoPerfil : 'https://cdn-icons-png.flaticon.com/512/1144/1144760.png'}"
                                             alt="Avatar" class="card-img-top rounded-circle w-50 mx-auto mt-3"/>
-
                             <div class="card-body">
-                                <h5> #{usuarioBean.usuario.nombre}</h5>
-                                <p>#{usuarioBean.usuario.apellidos} </p>
+                                <h5>#{usuarioBean.usuario.nombre}</h5>
+                                <p>#{usuarioBean.usuario.apellidos}</p>
                             </div>
                         </div>
                     </div>
-
                     <!-- Información de usuario -->
                     <div class="col-md-9">
                         <div class="card">
@@ -68,42 +64,53 @@
                                     <p>#{usuarioBean.usuario.correo}</p>
                                 </div>
                                 <div class="mb-3">
-                                    <p class="text-muted mb-0">Pais</p>
+                                    <p class="text-muted mb-0">País</p>
                                     <p>#{usuarioBean.usuario.pais}</p>
                                 </div>
                                 <div>
                                     <p class="text-muted mb-0">Mi calificación</p>
                                     <div class="d-flex align-items-center">
                                         <h:form id="formCalificar">
-                                            
                                             <h:inputHidden id="idUsuarioACalificar" value="#{usuarioBean.usuario.idUsuario}" />
                                             <p:rating value="#{usuarioBean.rating}" cancel="true">
                                                 <p:ajax event="rate" listener="#{usuarioBean.calificarUsuario()}" update="@form" />
                                             </p:rating>
-                                            <p>  #{usuarioBean.usuario.calificacionPromedio}  
+                                            <p>#{usuarioBean.usuario.calificacionPromedio}  
                                                 <span style="color: gold;">★</span>
                                             </p>
-
                                         </h:form>
-
                                     </div>
                                 </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Historial de transacciones -->
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <h5 class="card-title mb-3">Historial de transacciones</h5>
-                                <button class="btn btn-outline-primary w-100">Ver historial de transacciones</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </main>
+
+            <!-- Historial de transacciones -->
+            <div class="grid">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h5 class="card-title">Historial de pago</h5>
+                            <span class="badge">12 Transacciones</span>
+                        </div>
+                        <div class="transaction-list">
+                            <div class="transaction-item">
+                                <div class="transaction-info">
+                                    <p class="transaction-title">Compra: Laptop Gaming</p>
+                                    <p class="transaction-date">23 Nov 2023</p>
+                                </div>
+                                <span class="transaction-amount">$999.99</span>
+                            </div>
+                            <!-- Más items de transacción aquí -->
+                        </div>
+                    
+                        <h:button value="Ver historial completo" styleClass="button" outcome="historialTrans.xhtml" />
+
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- editar perfil -->
@@ -111,39 +118,32 @@
                   dynamic="true" styleClass="custom-dialog">
             <h:form id="formEditarPerfil" enctype="multipart/form-data">
                 <p:outputPanel id="formEditarPerfilContent" class="ui-fluid">
-
                     <div class="col-md-3">
                         <h:graphicImage value="#{usuarioBean.usuario.fotoPerfil != null ? usuarioBean.usuario.fotoPerfil : 'https://cdn-icons-png.flaticon.com/512/1144/1144760.png'}"
                                         alt="Avatar" class="card-img-top rounded-circle w-50 mx-auto mt-3"/>
                     </div>
-
                     <div class="form-group">
-
                         <!-- Botón para subir la imagen -->
                         <div class="field">
                             <h:outputLabel for="files" value="Imagen" />
-                            <p:fileUpload id="files"  requiredMessage="Por favor, seleccione una imagen." 
+                            <p:fileUpload id="files" requiredMessage="Por favor, seleccione una imagen." 
                                           value="#{usuarioBean.files}" mode="simple" skinSimple="true" 
                                           allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
                             <p:commandButton value="Submit" actionListener="#{usuarioBean.handleFileUpload}" styleClass="mt-3 ui-button-outlined block" process="@form"/>
                         </div>
-
                     </div>
                     <div class="form-group">
                         <h:outputLabel for="nombre" value="Nombre" />
                         <p:inputText id="nombre" value="#{usuarioBean.usuario.nombre}" styleClass="form-control" />
                     </div>
-
                     <div class="form-group">
                         <h:outputLabel for="apellidos" value="Apellidos" />
                         <p:inputText id="apellidos" value="#{usuarioBean.usuario.apellidos}" styleClass="form-control" />
                     </div>
-
                     <div class="form-group">
                         <h:outputLabel for="correo" value="Correo electrónico" />
                         <p:inputText id="correo" value="#{usuarioBean.usuario.correo}" styleClass="form-control" />
                     </div>
-
                     <div class="form-group">
                         <h:outputLabel for="pais" value="País" />
                         <p:selectOneMenu id="pais" value="#{usuarioBean.usuario.pais}" styleClass="form-control">
@@ -155,20 +155,17 @@
                             <f:selectItem itemLabel="Perú" itemValue="Perú" />
                         </p:selectOneMenu>
                     </div>
-
                     <!-- Botón Actualizar perfil que muestra el cuadro de confirmación -->
                     <p:commandButton value="Actualizar perfil" 
                                      oncomplete="PF('confirmUpdateDialog').show()"
                                      styleClass="btn btn-primary mt-3" />
                 </p:outputPanel>
-
-
             </h:form>
         </p:dialog>
 
         <!-- Diálogo de confirmación -->
         <p:confirmDialog header="Confirmación" message="¿Está seguro de que desea actualizar sus datos?" 
-                         widgetVar="confirmUpdateDialog" >
+                         widgetVar="confirmUpdateDialog">
             <h:form>
                 <!-- Botón Sí -->
                 <p:commandButton value="Sí" icon="pi pi-check" 
@@ -176,18 +173,13 @@
                                  update=":formEditarPerfil:formEditarPerfilContent"
                                  oncomplete="PF('confirmUpdateDialog').hide(); PF('editarPerfilDialog').hide(); window.location.reload();"
                                  styleClass="ui-button-success" />
-
                 <!-- Botón No -->
                 <p:commandButton value="No" icon="pi pi-times" 
                                  onclick="PF('confirmUpdateDialog').hide()" 
                                  styleClass="ui-button-secondary" type="button" />
             </h:form>
         </p:confirmDialog>
-
-
-
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybBogGzOg6f8/4cPz4B3tX1p2OmZdE0NXmkOGDX7i2KekFrGb" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-cu5tdc1cnH4pIaU6y7zyT2E/1LFHi3r+icGkBvnfPBZ/nfWWi6YJgtX0KCC5Sl1p" crossorigin="anonymous"></script>
-
     </h:body>
 </html>
