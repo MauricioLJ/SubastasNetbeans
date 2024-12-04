@@ -85,3 +85,235 @@ header.bg-teal-600 {
     color: white; /* Color del texto al pasar el mouse */
 }
 
+.custom-dialog {
+    background: linear-gradient(135deg, #536c8d, #5c4f79) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+}
+
+.custom-dialog .ui-dialog-titlebar {
+    background: transparent !important;
+    color: white !important;
+    border: none !important;
+    padding: 1.5rem !important;
+    font-size: 1.5rem !important;
+}
+
+.custom-dialog .ui-dialog-content {
+    background: white !important;
+    border-radius: 0 0 16px 16px !important;
+    padding: 2rem !important;
+     max-height: 70vh !important; 
+    overflow-y: auto !important;
+}
+
+/* Profile Image Container */
+.custom-dialog .col-md-3 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.custom-dialog .card-img-top {
+    border: 4px solid #4f8b89 !important;
+    padding: 4px;
+    transition: transform 0.3s ease;
+}
+
+.custom-dialog .card-img-top:hover {
+    transform: scale(1.05);
+}
+
+/* Form Controls */
+.custom-dialog .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.custom-dialog .form-control,
+.custom-dialog .ui-inputtext,
+.custom-dialog .ui-selectonemenu {
+    border: 2px solid #536c8d !important;
+    border-radius: 8px !important;
+    padding: 0.75rem !important;
+    transition: all 0.3s ease !important;
+}
+
+.custom-dialog .form-control:focus,
+.custom-dialog .ui-inputtext:focus,
+.custom-dialog .ui-selectonemenu:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
+}
+
+/* Labels */
+.custom-dialog label {
+    color: #536c8d !important;
+    font-weight: 600 !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* File Upload */
+.custom-dialog .ui-fileupload-simple {
+    width: 100% !important;
+}
+
+.custom-dialog .ui-fileupload-simple input[type="file"] {
+    padding: 0.5rem !important;
+    border: 2px dashed #62a07b !important;
+    border-radius: 8px !important;
+    background: rgba(98, 160, 123, 0.1) !important;
+}
+
+/* Buttons */
+.custom-dialog .ui-button,
+.custom-dialog .ui-commandbutton {
+    background: #3b82f6 !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 0.75rem 1.5rem !important;
+    color: white !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.custom-dialog .ui-button:hover,
+.custom-dialog .ui-commandbutton:hover {
+    background: #2563eb !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2) !important;
+}
+
+.custom-dialog .ui-button-outlined {
+    background: transparent !important;
+    border: 2px solid #4f8b89 !important;
+    color: #4f8b89 !important;
+}
+
+.custom-dialog .ui-button-outlined:hover {
+    background: #4f8b89 !important;
+    color: white !important;
+}
+
+/* Dropdown */
+.custom-dialog .ui-selectonemenu-panel .ui-selectonemenu-list {
+    padding: 0.5rem !important;
+}
+
+.custom-dialog .ui-selectonemenu-panel .ui-selectonemenu-item {
+    padding: 0.75rem 1rem !important;
+    border-radius: 6px !important;
+    margin: 0.25rem 0 !important;
+}
+
+.custom-dialog .ui-selectonemenu-panel .ui-selectonemenu-item.ui-state-highlight {
+    background: rgba(79, 139, 137, 0.1) !important;
+    color: #4f8b89 !important;
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.card {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.card-content {
+  padding: 1.5rem;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.badge {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.transaction-list {
+  margin-bottom: 1rem;
+}
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background-color: rgba(243, 244, 246, 0.4);
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.transaction-info p {
+  margin: 0;
+}
+
+.transaction-title {
+  font-weight: 500;
+}
+
+.transaction-date {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.transaction-amount {
+  font-weight: 600;
+  color: #059669;
+}
+
+.button {
+  width: 100%;
+  background-color: #4f8b89; /* Color inicial */
+  color: white;
+  padding: 0.625rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out; /* Para una transición suave al pasar el mouse */
+  animation: backgroundTransition 5s infinite alternate; /* Animación de fondo */
+}
+
+
+@keyframes backgroundTransition {
+  0% {
+    background-color: #4f8b89; /* Color inicial */
+  }
+  50% {
+    background-color: #536c8d; /* Primer color de transición */
+  }
+  100% {
+    background-color: #5c4f79; /* Segundo color de transición */
+  }
+}
