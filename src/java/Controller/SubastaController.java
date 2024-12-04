@@ -184,7 +184,7 @@ public class SubastaController implements Serializable {
                         .getExternalContext()
                         .getRealPath("/resources/imagenes/");
 
-                destinationFile = "C:\\Proyectos\\SubastasFront\\web\\resources\\imagenes\\";
+                destinationFile = "C:\\Users\\Admin\\Documents\\NetBeansProjects\\SubastasNetbeans\\web\\resources\\imagenes\\";
                 String[] partesArchivo = fileName.split(Pattern.quote("."));
                 String nombreArchivo = partesArchivo[0];
                 String extensionArchivo = partesArchivo[1];

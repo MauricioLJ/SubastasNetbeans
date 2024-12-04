@@ -104,6 +104,8 @@ public class UsuarioBean implements Serializable {
             if (fileName != null) {
                 String destinationFile = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/fotosPer/");
                 
+                destinationFile = "C:\\Users\\Admin\\Documents\\NetBeansProjects\\SubastasNetbeans\\web\\resources\\fotosPer\\";
+                
                 //Hacer lo mismo copiar directirio exacto
 
                 String[] partesArchivo = fileName.split(Pattern.quote("."));
