@@ -103,6 +103,8 @@ public class UsuarioBean implements Serializable {
         try {
             if (fileName != null) {
                 String destinationFile = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/fotosPer/");
+                
+                //Hacer lo mismo copiar directirio exacto
 
                 String[] partesArchivo = fileName.split(Pattern.quote("."));
                 String nombreArchivo = partesArchivo[0];
