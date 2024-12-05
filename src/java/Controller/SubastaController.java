@@ -4,6 +4,7 @@
  */
 package Controller;
 
+import WebSocket.SubastaWebSocket;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -29,11 +30,13 @@ import javax.faces.context.FacesContext;
 import model.Categoria;
 import model.Interacciones;
 import model.Interacciones.TipoInteraccion;
+import model.Notificacion;
 import model.Puja;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TabChangeEvent;
 import servicio.ServicioCategoria;
 import servicio.ServicioInteracciones;
+import servicio.ServicioNotificacion;
 import servicio.ServicioPuja;
 
 /**
@@ -49,6 +52,8 @@ public class SubastaController implements Serializable {
 
     private ServicioSubasta servicioSubasta = new ServicioSubasta();
     private ServicioCategoria servicioCategoria = new ServicioCategoria();
+    private ServicioNotificacion servicioNotificacion = new ServicioNotificacion();
+    private ServicioPuja servicioPuja = new ServicioPuja();
     private Subasta selectSubasta = new Subasta();
     private Subasta subasta = new Subasta();
     private List<Subasta> listaSubasta;
@@ -160,6 +165,105 @@ public class SubastaController implements Serializable {
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo eliminar la subasta"));
             e.printStackTrace();
+        }
+    }
+
+    public void finalizarSubasta() {
+        try {
+            if (selectSubasta != null) {
+
+                List<Puja> pujas = servicioPuja.listaPujasPorSubasta(selectSubasta.getIdSubasta());
+
+                Puja pujaGanadora = pujas.stream()
+                        .max((p1, p2) -> Double.compare(p1.getMonto(), p2.getMonto()))
+                        .orElse(null);
+
+                if (pujaGanadora != null) {
+                    selectSubasta.setPujaGanadora(pujaGanadora);
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_WARN, "Sin Ganador", "La subasta no tiene pujas."));
+                }
+
+                selectSubasta.setEstadoSubasta("Finalizado");
+                selectSubasta.setFechaFin(new Date());
+
+                servicioSubasta.actualizarSubasta(selectSubasta);
+
+                enviarNotificacionGanador(selectSubasta);
+                enviarNotificacionVendedor(selectSubasta);
+
+                listarSubastas();
+
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Subasta finalizada", "La subasta ha finalizado con éxito."));
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado ninguna subasta."));
+            }
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo finalizar la subasta."));
+            e.printStackTrace();
+        }
+    }
+
+    public void enviarNotificacionGanador(Subasta subasta) {
+        if (subasta != null && subasta.getPujaGanadora() != null) {
+            Usuario ganador = subasta.getPujaGanadora().getUsuario();
+            if (ganador != null) {
+                Notificacion notificacion = new Notificacion();
+                notificacion.setUsuario(ganador);
+                notificacion.setMensaje("¡Felicidades! Has ganado la subasta de " + subasta.getNombre());
+                notificacion.setFechaCreacion(new Date());
+
+                servicioNotificacion.crearNotificacion(notificacion);
+
+                // Enviar notificación en tiempo real
+                SubastaWebSocket.sendNotification(
+                        ganador.getIdUsuario(),
+                        "¡Felicidades! Has ganado la subasta de " + subasta.getNombre());
+
+                EmailNotificacion.enviarNotificacion(
+                        ganador.getCorreo(),
+                        "¡Felicidades! Has ganado la subasta",
+                        "Hola " + ganador.getNombre() + ",\n\n"
+                        + "Has ganado la subasta '" + subasta.getNombre() + "' con tu oferta de "
+                        + subasta.getPujaGanadora().getMonto() + ". ¡Felicidades!\n\n"
+                        + "Gracias por participar en nuestra plataforma."
+                );
+            }
+        }
+    }
+
+    public void enviarNotificacionVendedor(Subasta subasta) {
+        if (subasta != null && subasta.getPropietario() != null) {
+            Usuario vendedor = subasta.getPropietario();
+            String mensaje = "La subasta de " + subasta.getNombre()
+                    + " ha finalizado. "
+                    + (subasta.getPujaGanadora() != null
+                    ? "El ganador es " + subasta.getPujaGanadora().getUsuario().getNombre() + " con una oferta de "
+                    + subasta.getPujaGanadora().getMonto() + "."
+                    : "No hubo ganador.");
+
+            Notificacion notificacion = new Notificacion();
+            notificacion.setUsuario(vendedor);
+            notificacion.setMensaje(mensaje);
+            notificacion.setFechaCreacion(new Date());
+
+            servicioNotificacion.crearNotificacion(notificacion);
+
+            // Enviar notificación en tiempo real
+            SubastaWebSocket.sendNotification(
+                    vendedor.getIdUsuario(),
+                    mensaje);
+
+            EmailNotificacion.enviarNotificacion(
+                    vendedor.getCorreo(),
+                    "Resultado de la subasta: " + subasta.getNombre(),
+                    "Hola " + vendedor.getNombre() + ",\n\n"
+                    + mensaje + "\n\nGracias por utilizar nuestra plataforma."
+            );
         }
     }
 
@@ -386,6 +490,22 @@ public class SubastaController implements Serializable {
 
     public void setSelectCategoria(String selectCategoria) {
         this.selectCategoria = selectCategoria;
+    }
+
+    public ServicioNotificacion getServicioNotificacion() {
+        return servicioNotificacion;
+    }
+
+    public void setServicioNotificacion(ServicioNotificacion servicioNotificacion) {
+        this.servicioNotificacion = servicioNotificacion;
+    }
+
+    public ServicioPuja getServicioPuja() {
+        return servicioPuja;
+    }
+
+    public void setServicioPuja(ServicioPuja servicioPuja) {
+        this.servicioPuja = servicioPuja;
     }
 
 }

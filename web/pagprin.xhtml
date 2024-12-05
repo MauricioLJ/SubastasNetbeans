@@ -146,14 +146,17 @@
 
                                     </div>
                                     <div class="subasta-grid-item-bottom">
-                                        
+
                                         <h:link outcome="verSubasta" value="Ver subasta">
                                             <f:param name="id" value="#{subas.idSubasta}" />
                                         </h:link>
-                                        
+
                                         <p:menuButton icon="pi pi-ellipsis-v" styleClass="custom-menu-button"
                                                       rendered="#{subas.propietario.idUsuario eq usuarioBean.usuario.idUsuario}">
                                             <p:menuitem value="Eliminar" styleClass="delete-button rounded-button ui-button-warning" process="@this" oncomplete="PF('deleteSubasDialog').show()">
+                                                <f:setPropertyActionListener value="#{subas}" target="#{subastaController.selectSubasta}" />
+                                            </p:menuitem>
+                                            <p:menuitem value="Finalizar subasta" styleClass="delete-button rounded-button ui-button-warning" process="@this" oncomplete="PF('finishSubasDialog').show()">
                                                 <f:setPropertyActionListener value="#{subas}" target="#{subastaController.selectSubasta}" />
                                             </p:menuitem>
                                         </p:menuButton>
@@ -199,7 +202,7 @@
                                         <f:selectItems value="#{subastaController.listaCategorias}" var="cat" itemLabel="#{cat.nombre}" itemValue="#{cat}" />
                                     </p:selectManyCheckbox>
                                 </div>
-                                
+
                                 <div class="field">
                                     <h:outputLabel for="files" value="Imagen" />
                                     <p:fileUpload id="files" required="true" requiredMessage="Por favor, seleccione una imagen para la subasta." value="#{subastaController.files}" mode="simple" skinSimple="true" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|docx?)$/" />
@@ -225,6 +228,17 @@
                             <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
                                              onclick="PF('deleteSubasDialog').hide()" />
                         </p:confirmDialog>
+
+                        <p:confirmDialog widgetVar="finishSubasDialog" showEffect="fade" width="300"
+                                         message="¿Está seguro de que  quiere finalizar esta subasta?" header="Confirmar" severity="warn">
+                            <p:commandButton value="Sí" icon="pi pi-check" 
+                                             actionListener="#{subastaController.finalizarSubasta}"
+                                             process="@this" update=":form:growl :form:dv-subastas"
+                                             oncomplete="PF('finishSubasDialog').hide()" />
+                            <p:commandButton value="No" type="button" styleClass="ui-button-secondary" 
+                                             icon="pi pi-times" onclick="PF('finishSubasDialog').hide()" />
+                        </p:confirmDialog>
+
                     </h:form>
                 </div>
             </div>
@@ -247,6 +261,22 @@
                 socket.onclose = function (event) {
                     console.log('WebSocket connection closed');
                 };
+
+                // Eventos para el WebSocket de notificaciones
+                const subastaSocket = new WebSocket('ws://localhost:8080/SubastasFront/subastaSocket');
+
+                subastaSocket.onopen = function () {
+                    console.log('AuctionWebSocket connection established');
+                };
+
+                subastaSocket.onmessage = function (event) {
+                    console.log('Received message: ' + event.data);
+                };
+
+                subastaSocket.onclose = function () {
+                    console.log('AuctionWebSocket connection closed');
+                };
+
             });
         </script>
 
