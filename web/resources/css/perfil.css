@@ -1,17 +1,6 @@
-/* Estilos generales */
-body, .min-vh-100 {
-    background-color: #f8f9fa; /* Fondo claro */
-    color: #333; /* Texto oscuro */
+.min-vh-100 {
+    backdrop-filter: blur(3px);
 }
-
-/* Encabezado */
-header.bg-teal-600 {
-    background: linear-gradient(45deg, #62a07b, #4f8b89, #536c8d, #5c4f79, #613860);
-    color: #ffffff; /* Color de texto para asegurar contraste */
-}
-
-
-
 
 /* Tarjeta de perfil */
 .card {
@@ -34,6 +23,7 @@ header.bg-teal-600 {
     color: #6c757d;
     margin-bottom: 0.25rem;
 }
+
 
 /* Botón "Editar mi perfil" */
 .btn-outline-primary {
@@ -103,7 +93,7 @@ header.bg-teal-600 {
     background: white !important;
     border-radius: 0 0 16px 16px !important;
     padding: 2rem !important;
-     max-height: 70vh !important; 
+    max-height: 70vh !important;
     overflow-y: auto !important;
 }
 
@@ -212,108 +202,109 @@ header.bg-teal-600 {
 }
 
 .grid {
-  display: grid;
-  gap: 1.5rem;
-  margin-top: 2rem;
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 2rem;
 }
 
 @media (min-width: 768px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .card {
-  background-color: white;
-  border-radius: 0.75rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  transition: box-shadow 0.3s ease-in-out;
+    background-color: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease-in-out;
 }
 
 .card:hover {
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .card-content {
-  padding: 1.5rem;
+    padding: 1.5rem;
 }
 
 .card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
 }
 
 .card-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1f2937;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
 }
 
 .badge {
-  background-color: rgba(59, 130, 246, 0.1);
-  color: #3b82f6;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.875rem;
-  font-weight: 500;
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
 }
 
 .transaction-list {
-  margin-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
 .transaction-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem;
-  background-color: rgba(243, 244, 246, 0.4);
-  border-radius: 0.5rem;
-  margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    background-color: rgba(243, 244, 246, 0.4);
+    border-radius: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 .transaction-info p {
-  margin: 0;
+    margin: 0;
 }
 
 .transaction-title {
-  font-weight: 500;
+    font-weight: 500;
 }
 
 .transaction-date {
-  font-size: 0.875rem;
-  color: #6b7280;
+    font-size: 0.875rem;
+    color: #6b7280;
 }
 
 .transaction-amount {
-  font-weight: 600;
-  color: #059669;
+    font-weight: 600;
+    color: #059669;
 }
 
 .button {
-  width: 100%;
-  background-color: #4f8b89; /* Color inicial */
-  color: white;
-  padding: 0.625rem 1rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out; /* Para una transición suave al pasar el mouse */
-  animation: backgroundTransition 5s infinite alternate; /* Animación de fondo */
+    width: 100%;
+    background-color: #4f8b89; /* Color inicial */
+    color: white;
+    padding: 0.625rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out; /* Para una transición suave al pasar el mouse */
+    animation: backgroundTransition 5s infinite alternate; /* Animación de fondo */
 }
 
 
 @keyframes backgroundTransition {
-  0% {
-    background-color: #4f8b89; /* Color inicial */
-  }
-  50% {
-    background-color: #536c8d; /* Primer color de transición */
-  }
-  100% {
-    background-color: #5c4f79; /* Segundo color de transición */
-  }
+    0% {
+        background-color: #4f8b89; /* Color inicial */
+    }
+    50% {
+        background-color: #536c8d; /* Primer color de transición */
+    }
+    100% {
+        background-color: #5c4f79; /* Segundo color de transición */
+          
+    }
 }

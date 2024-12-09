@@ -310,7 +310,7 @@ public class SubastaController implements Serializable {
                 in.close();
                 out.flush();
                 out.close();
-                return "/resources/imagenes/" + nombreArchivo + "." + extensionArchivo;
+                return "resources/imagenes/" + nombreArchivo + "." + extensionArchivo;
             }
         } catch (IOException e) {
             e.printStackTrace();

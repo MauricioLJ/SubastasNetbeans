@@ -1,77 +1,128 @@
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
-*/
-/* 
-    Created on : 18 nov 2024, 3:56:42 p.m.
-    Author     : Kirsten
-*/
-
-/* Estilos generales */
-body, .min-vh-100 {
-    background-color: #f8f9fa; /* Fondo claro */
-    color: #333; /* Texto oscuro */
+/* Updated styles to remove white background completely */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    overflow-x: hidden;
 }
 
-/* Encabezado */
-header.bg-teal-600 {
-    background: linear-gradient(45deg, #62a07b, #4f8b89, #536c8d, #5c4f79, #613860);
-    color: #ffffff; /* Color de texto para asegurar contraste */
-}
-
-.main-container {
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-}
-
-/* Estilo para la tarjeta contenedora */
-.subasta-card {
-    max-width: 1250px;
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    border: 1px solid #ccc;
+    height: 100%;
+    z-index: -2;
+}
+
+.background-blur {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(3px);
+    background-color: rgba(0, 0, 0, 0.1); /* Slight transparent overlay */
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Auction card styling to blend with background */
+.ui-dataview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
     padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
+    background: transparent;
 }
 
-/* Estilo para las tarjetas individuales en el DataView */
-.subasta-grid-item {
-    border: 1px solid #ccc;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    flex: 1 0 24%; /* Se ajusta a 4 columnas */
-    margin: 10px;
-    max-width: 100%;
+.card {
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: white;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
-/* Estilo para hacer el diálogo más pequeño */
-.custom-dialog {
-    width: 600px !important;
-    height: auto !important;
+.card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
-.custom-dialog .ui-dialog-content {
-    padding: 10px;
+.card-body {
+    color: #ffffff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0);
 }
 
-.categoria-list ul {
-    list-style-type: none;
-    padding-left: 0;  /* Elimina la indentación de la lista */
-}
-.category-container {
-    display: flex;              /* Usa Flexbox para alinear los elementos en línea */
-    align-items: center;        /* Centra los íconos y las categorías verticalmente */
-    gap: 10px;                  /* Espacio entre el ícono y las categorías */
+.card-title {
+    color: #ffffff;
 }
 
-.ui-pill {
-    display: inline-block;      /* Asegúrate de que las categorías no se rompan a la siguiente línea */
+.text-muted {
+    color: rgba(255, 255, 255, 0) !important;
 }
+
+.btn-primary {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+
+
+body .ui-dataview .ui-dataview-content {
+    border: 0 none;
+    background: none !important;
+    color: #495057;
+    padding: 0;
+}
+
+body .ui-tabs .ui-tabs-nav {
+    background: none !important;
+}
+
+body .ui-tabs.ui-tabs-top > .ui-tabs-nav li.ui-tabs-header {
+    border-bottom: none !important;
+}
+body .ui-tabs .ui-tabs-nav li.ui-tabs-header.ui-state-active {
+    background: none !important;
+}
+body .ui-tabs .ui-tabs-nav li.ui-tabs-header {
+    background: none !important;
+}
+
+body .ui-tabs.ui-tabs-top > .ui-tabs-nav:before {
+    border-bottom: none !important;
+}
+
+#form\:tabView\:todoTab {
+    background-color: transparent !important;
+}
+
+body .ui-tabs .ui-tabs-panels {
+    background: none !important;
+}
+
+body .ui-dataview .ui-dataview-header {
+    display: none !important;
+}
+
 body .ui-datalist .ui-datalist-content {
-    color: #4f8b89;
-    padding: 1rem;
+    border: none !important;
+}
+
+li {
+    list-style: none;
+}
+
+ol, ul {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    padding-left: 0 !important;
 }

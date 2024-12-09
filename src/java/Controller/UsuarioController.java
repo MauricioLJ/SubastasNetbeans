@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controller;
 
 import java.io.IOException;
@@ -19,7 +15,7 @@ import servicio.ServicioUsuario;
  *
  * @author Mauricio
  */
-@WebServlet({"/login", "/register"})
+@WebServlet({"/login", "/register", "/logout"})
 public class UsuarioController extends HttpServlet {
 
     private ServicioUsuario servicioUsuario = new ServicioUsuario();
@@ -74,5 +70,23 @@ public class UsuarioController extends HttpServlet {
         } else {
             response.sendRedirect("error.html");
         }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getServletPath();
+        if ("/logout".equals(action)) {
+            logout(request, response);
+        }
+    }
+
+    private void logout(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate(); // Invalidate the session
+        }
+        response.sendRedirect("autenticacion.html"); // Redirect to login page
     }
 }

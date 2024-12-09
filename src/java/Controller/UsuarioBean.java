@@ -129,7 +129,7 @@ public class UsuarioBean implements Serializable {
                 in.close();
                 out.flush();
                 out.close();
-                return "/resources/fotosPer/" + nombreArchivo + "." + extensionArchivo;
+                return "resources/fotosPer/" + nombreArchivo + "." + extensionArchivo;
             }
         } catch (IOException e) {
             e.printStackTrace();

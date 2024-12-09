@@ -10,144 +10,89 @@
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"/>
     </h:head>
-    <h:body style="background-color: #613860;">
+    <h:body>
+        <div id="particles-js"></div>
+        <div id="header-container"></div>
+        <div class="background-blur"></div>
 
-        <div class="min-vh-100 bg-light">
-            <header class="bg-teal-600 text-white p-4">
-                <h:form id="forrm" enctype="multipart/form-data">
-                    <div class="container d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center">
-                            <p:commandButton value="Inicio" action="pagprin" ajax="false"
-                                             styleClass="ui-button-secondary ui-button-flat"
-                                             style="margin-right: .5rem; color: #fff;" />
+        <div class="container my-5">
+            <h:form id="form" enctype="multipart/form-data">
+                <p:growl id="growl" showDetail="true"/>
 
-                            <h1 class="ms-3 h4 title-gradient">Subasta App</h1>
-                             </div>
-                        <div class="d-flex align-items-center">
-                            <div class="search-subas">
-                                <p:autoComplete 
-                                    id="autoCompleteSubasta" 
-                                    value="#{subastaController.selectedSubasta}" 
-                                    completeMethod="#{subastaController.complete}" 
-                                    var="subasta" 
-                                    itemLabel="#{subasta.nombre}" 
-                                    itemValue="#{subasta}" 
-                                    forceSelection="true" converter="subastaConverter"
-                                    placeholder="Buscar subasta...">
-                                    <p:ajax event="itemSelect" listener="#{subastaController.onSubastaSelect}" update="@none" process="@this"/>
-                                </p:autoComplete>
-                            </div>
+                <p:tabView id="tabView" dynamic="true" cache="false">
+                    <p:ajax event="tabChange" listener="#{subastaController.onTabChange}" update=":form:dv-subastas"/>
+                    <p:tab title="Todo" id="todoTab">
+                    </p:tab>
+                    <p:tab title="Para ti" id="recomenTab">
+                    </p:tab>
+                    <p:tab title="Arte" id="arteTab">
+                    </p:tab>
+                    <p:tab title="Electrónica" id="electronicaTab">
+                    </p:tab>
+                    <p:tab title="Muebles" id="mueblesTab">
+                    </p:tab>
+                    <p:tab title="Ropa" id="ropaTab">
+                    </p:tab>
+                    <p:tab title="Juguetes" id="juguetesTab">
+                    </p:tab>
+                    <p:tab title="Hogar" id="hogarTab">
+                    </p:tab>
+                    <p:tab title="Cómics" id="comicsTab">
+                    </p:tab>
+                    <p:tab title="Joyas" id="joyasTab">
+                    </p:tab>
+                    <p:tab title="Arqueología" id="arqueologiaTab">
+                    </p:tab>
+                    <p:tab title="Libros e Historia" id="librosTab">
+                    </p:tab>
+                    <p:tab title="Cartas y cromos" id="cartasTab">
+                    </p:tab>
+                    <p:tab title="Deportes" id="deportesTab">
+                    </p:tab>
+                </p:tabView>
 
-                        </div>
-                        <nav>
-                            <ul class="list-unstyled d-flex mb-0">
-                                <li><a href="#" class="text-white me-3">Ayuda</a></li>
-                                <p:commandButton value="Vender" actionListener="#{subastaController.openNew}"
-                                                 update="form:manage-subas-content" oncomplete="PF('manageSubastaDialog').show()"
-                                                 styleClass="ui-button-secondary ui-button-flat" style="margin-right: .5rem; color: #fff">
-                                    <p:resetInput target="form:manage-subas-content" />
-                                </p:commandButton>
-                                <li><a href="perfil.xhtml" class="text-white me-3">Perfil</a></li>
-                                <li><a href="autenticacion.html" class="text-white me-3">Login</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </h:form>
-            </header>
+                <p:commandButton value="Vender" actionListener="#{subastaController.openNew}"
+                                 update="form:manage-subas-content" oncomplete="PF('manageSubastaDialog').show()"
+                                 styleClass="ui-button-secondary ui-button-flat" style="margin-right: .5rem; color: #fff">
+                    <p:resetInput target="form:manage-subas-content" />
+                </p:commandButton>
 
-            <div class="main-container">
-                <div class="subasta-card">
-                    <h:form id="form" enctype="multipart/form-data">
-                        <p:growl id="growl" showDetail="true"/>
-
-                        <p:tabView id="tabView" dynamic="true" cache="false">
-                            <p:ajax event="tabChange" listener="#{subastaController.onTabChange}" update=":form:dv-subastas"/>
-                            <p:tab title="Todo" id="todoTab">
-                            </p:tab>
-                            <p:tab title="Para ti" id="recomenTab">
-                            </p:tab>
-                            <p:tab title="Arte" id="arteTab">
-                            </p:tab>
-                            <p:tab title="Electrónica" id="electronicaTab">
-                            </p:tab>
-                            <p:tab title="Muebles" id="mueblesTab">
-                            </p:tab>
-                            <p:tab title="Ropa" id="ropaTab">
-                            </p:tab>
-                            <p:tab title="Juguetes" id="juguetesTab">
-                            </p:tab>
-                            <p:tab title="Hogar" id="hogarTab">
-                            </p:tab>
-                            <p:tab title="Cómics" id="comicsTab">
-                            </p:tab>
-                            <p:tab title="Joyas" id="joyasTab">
-                            </p:tab>
-                            <p:tab title="Arqueología" id="arqueologiaTab">
-                            </p:tab>
-                            <p:tab title="Libros e Historia" id="librosTab">
-                            </p:tab>
-                            <p:tab title="Cartas y cromos" id="cartasTab">
-                            </p:tab>
-                            <p:tab title="Deportes" id="deportesTab">
-                            </p:tab>
-                        </p:tabView>
-
-                        <p:dataView id="dv-subastas" var="subas" value="#{subastaController.listaSubasta}" gridIcon="pi pi-th-large"                                    
-                                    layout="grid">
-                            <p:dataViewGridItem>
-                                <div class="subasta-grid-item">
-                                    <div class="subasta-grid-item-top">
-                                        <div class="detail-subasta">
-                                            <span class="label">Categorías:</span>
-                                            <div class="category-container">
-                                                <i class="pi pi-tag subasta-category-icon" style="margin-right: 5px;"></i> 
-                                                <p:dataList value="#{subas.categorias}" var="categoria" styleClass="categoria-list">
-                                                    <p:badge value="#{categoria.nombre}" styleClass="ui-pill ui-pill-info" />
-                                                </p:dataList>
-                                            </div>
-                                        </div>
-
+                <div class="row w-100">
+                    <p:dataView id="dv-subastas" var="subas" value="#{subastaController.listaSubasta}" layout="grid">
+                        <p:dataViewGridItem>
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <i class="pi pi-tag text-primary me-2"></i>
+                                        <p:dataList value="#{subas.categorias}" var="categoria" styleClass="m-0" >
+                                            <span class="badge bg-primary me-2">#{categoria.nombre}</span>
+                                        </p:dataList>
                                     </div>
-                                    <div class="subasta-grid-item-content">
-                                        <div class="file-container">
-                                            <h:panelGroup rendered="#{not empty subas.imagen}">
-                                                <h:graphicImage value="#{subas.imagen}" width="290" height="150" style="max-width: 100%;"/>
 
-                                            </h:panelGroup>
-                                        </div>
-
-                                        <span class="subasta-date" style="font-size: 12px; color: #777; display: block; margin-top: 8px;">
-                                            Fecha: #{subas.fechaInicio}
-                                        </span>
-
-                                        <span class="subasta-user">
-                                            <p:commandLink value="#{subas.propietario.nombre}" 
-                                                           action="#{usuarioBean.llevarPefiles(subas.propietario.idUsuario)}"
-                                                           ajax="false" 
-                                                           process="@this" 
-                                                           update="@none"
-                                                           immediate="true" 
-                                                           style="color:#333" />
-                                        </span>
-
-                                        <h3 style="font-size: 16px; font-weight: bold; color: #333; text-align: center; margin: 10px 0;">
-                                            #{subas.nombre}
-                                        </h3>
-
-                                        <span class="subasta-description" style="font-size: 14px; color: #555; display: block; margin-bottom: 8px;">
-                                            Descripción: #{subas.descripcion}
-                                        </span>
-
+                                    <div class="text-center">
+                                        <h:panelGroup rendered="#{not empty subas.imagen}">
+                                            <h:graphicImage value="#{subas.imagen}" width="290" height="150" styleClass="img-fluid" />
+                                        </h:panelGroup>
                                     </div>
-                                    <div class="subasta-grid-item-bottom">
-                                        <h:outputText value="#{subas.precioInicial}" styleClass="subasta-price">
+
+                                    <p class="text-muted mb-2">
+                                        <small>Fecha: #{subas.fechaInicio}</small>
+                                    </p>
+
+                                    <p class="text-muted mb-2">
+                                        <h:link outcome="verSubasta" value="#{subas.propietario.nombre}" styleClass="text-decoration-none">
+                                            <f:param name="id" value="#{subas.idSubasta}" />
+                                        </h:link>
+                                    </p>
+
+                                    <h5 class="card-title mb-2">#{subas.nombre}</h5>
+                                    <p class="card-text text-muted">#{subas.descripcion}</p>
+
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h:outputText value="#{subas.precioInicial}" styleClass="text-primary fw-bold">
                                             <f:convertNumber currencySymbol="$" type="currency"/>
                                         </h:outputText>
-
-                                    </div>
-                                    <div class="subasta-grid-item-bottom">
-
-                                        <h:link outcome="verSubasta" value="Ver subasta">
+                                        <h:link outcome="verSubasta" value="Ver subasta" styleClass="btn btn-primary btn-sm">
                                             <f:param name="id" value="#{subas.idSubasta}" />
                                         </h:link>
 
@@ -156,92 +101,89 @@
                                             <p:menuitem value="Eliminar" styleClass="delete-button rounded-button ui-button-warning" process="@this" oncomplete="PF('deleteSubasDialog').show()">
                                                 <f:setPropertyActionListener value="#{subas}" target="#{subastaController.selectSubasta}" />
                                             </p:menuitem>
-                                            <p:menuitem value="Finalizar subasta" styleClass="delete-button rounded-button ui-button-warning" process="@this" oncomplete="PF('finishSubasDialog').show()">
-                                                <f:setPropertyActionListener value="#{subas}" target="#{subastaController.selectSubasta}" />
-                                            </p:menuitem>
                                         </p:menuButton>
                                     </div>
                                 </div>
-                            </p:dataViewGridItem>
-                        </p:dataView>
-
-                        <p:dialog header="Subastar" widgetVar="manageSubastaDialog" responsive="true" modal="true" 
-                                  dynamic="true" styleClass="custom-dialog">
-                            <p:outputPanel id="manage-subas-content" class="ui-fluid">
-
-                                <div class="field">
-                                    <p:outputLabel for="nombre" value="Nombre"/>
-                                    <p:inputText id="nombre" value="#{subastaController.selectSubasta.nombre}" required="true" requiredMessage="Ingrese el nombre de su producto." />
-                                </div>
-
-                                <div class="field">
-                                    <p:outputLabel for="descripcion" value="Descripción" />
-                                    <p:inputTextarea id="descripcion" value="#{subastaController.selectSubasta.descripcion}"
-                                                     rows="3" cols="33" autoResize="true" required="true" placeholder="Agrege la descripción del producto"
-                                                     requiredMessage="Una descripción es obligatoria." />
-                                </div>
-
-                                <div class="field">
-                                    <div class="ui-g">
-
-                                        <div class="ui-g-6">
-                                            <p:outputLabel for="precioInicial" value="Precio" />
-                                            <p:inputNumber id="precioInicial" value="#{subastaController.selectSubasta.precioInicial}"
-                                                           required="true" requiredMessage="Digite el precio del producto." />
-                                        </div>
-                                        <div class="ui-g-6">
-                                            <p:outputLabel for="fechaFin" value="Fecha para finlizar la subasta" />
-                                            <p:datePicker id="fechaFin" value="#{subastaController.selectSubasta.fechaFin}" 
-                                                          required="true" requiredMessage="Seleccione la fecha en la que se va a finalizar su subasta." showTime="false"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <p:outputLabel for="categorias" value="Categorias" />
-                                    <p:selectManyCheckbox id="categorias" value="#{subastaController.selectSubasta.categorias}" layout="responsive" columns="3" required="true" requiredMessage="Añada la categoría de su producto.">
-                                        <f:selectItems value="#{subastaController.listaCategorias}" var="cat" itemLabel="#{cat.nombre}" itemValue="#{cat}" />
-                                    </p:selectManyCheckbox>
-                                </div>
-
-                                <div class="field">
-                                    <h:outputLabel for="files" value="Imagen" />
-                                    <p:fileUpload id="files" required="true" requiredMessage="Por favor, seleccione una imagen para la subasta." value="#{subastaController.files}" mode="simple" skinSimple="true" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|docx?)$/" />
-                                    <p:commandButton value="Submit" actionListener="#{subastaController.handleFileUpload}" styleClass="mt-3 ui-button-outlined block" process="@form" update="form:growl"/>
-                                </div>
-
-                            </p:outputPanel>
-
-                            <f:facet name="footer">
-                                <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{subastaController.guardarSuba}"
-                                                 update="form:growl :form:manage-subas-content :form:dv-subastas" process="@form"
-                                                 oncomplete="PF('manageSubastaDialog').hide()" 
-                                                 styleClass="ui-button-success" />
-                                <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageSubastaDialog').hide()"
-                                                 class="ui-button-secondary" type="button" />
-                            </f:facet>
-                        </p:dialog>
-                        <p:confirmDialog widgetVar="deleteSubasDialog" showEffect="fade" width="300"
-                                         message="¿Está seguro de que  quiere borrar esta subasta?" header="Confirmar" severity="warn">
-                            <p:commandButton value="Sí" icon="pi pi-check" actionListener="#{subastaController.eliminarSubasta}"
-                                             process="@this" update=":form:growl :form:dv-subastas"
-                                             oncomplete="PF('deleteSubasDialog').hide()" />
-                            <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
-                                             onclick="PF('deleteSubasDialog').hide()" />
-                        </p:confirmDialog>
-
-                        <p:confirmDialog widgetVar="finishSubasDialog" showEffect="fade" width="300"
-                                         message="¿Está seguro de que  quiere finalizar esta subasta?" header="Confirmar" severity="warn">
-                            <p:commandButton value="Sí" icon="pi pi-check" 
-                                             actionListener="#{subastaController.finalizarSubasta}"
-                                             process="@this" update=":form:growl :form:dv-subastas"
-                                             oncomplete="PF('finishSubasDialog').hide()" />
-                            <p:commandButton value="No" type="button" styleClass="ui-button-secondary" 
-                                             icon="pi pi-times" onclick="PF('finishSubasDialog').hide()" />
-                        </p:confirmDialog>
-
-                    </h:form>
+                            </div>
+                        </p:dataViewGridItem>
+                    </p:dataView>
                 </div>
-            </div>
+
+                <p:dialog header="Subastar" widgetVar="manageSubastaDialog" responsive="true" modal="true" 
+                          dynamic="true" styleClass="custom-dialog">
+                    <p:outputPanel id="manage-subas-content" class="ui-fluid">
+
+                        <div class="field">
+                            <p:outputLabel for="nombre" value="Nombre"/>
+                            <p:inputText id="nombre" value="#{subastaController.selectSubasta.nombre}" required="true" requiredMessage="Ingrese el nombre de su producto." />
+                        </div>
+
+                        <div class="field">
+                            <p:outputLabel for="descripcion" value="Descripción" />
+                            <p:inputTextarea id="descripcion" value="#{subastaController.selectSubasta.descripcion}"
+                                             rows="3" cols="33" autoResize="true" required="true" placeholder="Agrege la descripción del producto"
+                                             requiredMessage="Una descripción es obligatoria." />
+                        </div>
+
+                        <div class="field">
+                            <div class="ui-g">
+
+                                <div class="ui-g-6">
+                                    <p:outputLabel for="precioInicial" value="Precio" />
+                                    <p:inputNumber id="precioInicial" value="#{subastaController.selectSubasta.precioInicial}"
+                                                   required="true" requiredMessage="Digite el precio del producto." />
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:outputLabel for="fechaFin" value="Fecha para finlizar la subasta" />
+                                    <p:datePicker id="fechaFin" value="#{subastaController.selectSubasta.fechaFin}" 
+                                                  required="true" requiredMessage="Seleccione la fecha en la que se va a finalizar su subasta." showTime="false"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="categorias" value="Categorias" />
+                            <p:selectManyCheckbox id="categorias" value="#{subastaController.selectSubasta.categorias}" layout="responsive" columns="3" required="true" requiredMessage="Añada la categoría de su producto.">
+                                <f:selectItems value="#{subastaController.listaCategorias}" var="cat" itemLabel="#{cat.nombre}" itemValue="#{cat}" />
+                            </p:selectManyCheckbox>
+                        </div>
+
+                        <div class="field">
+                            <h:outputLabel for="files" value="Imagen" />
+                            <p:fileUpload id="files" required="true" requiredMessage="Por favor, seleccione una imagen para la subasta." value="#{subastaController.files}" mode="simple" skinSimple="true" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|docx?)$/" />
+                            <p:commandButton value="Submit" actionListener="#{subastaController.handleFileUpload}" styleClass="mt-3 ui-button-outlined block" process="@form" update="form:growl"/>
+                        </div>
+
+                    </p:outputPanel>
+
+                    <f:facet name="footer">
+                        <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{subastaController.guardarSuba}"
+                                         update="form:growl :form:manage-subas-content :form:dv-subastas" process="@form"
+                                         oncomplete="PF('manageSubastaDialog').hide()" 
+                                         styleClass="ui-button-success" />
+                        <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageSubastaDialog').hide()"
+                                         class="ui-button-secondary" type="button" />
+                    </f:facet>
+                </p:dialog>
+                <p:confirmDialog widgetVar="deleteSubasDialog" showEffect="fade" width="300"
+                                 message="¿Está seguro de que  quiere borrar esta subasta?" header="Confirmar" severity="warn">
+                    <p:commandButton value="Sí" icon="pi pi-check" actionListener="#{subastaController.eliminarSubasta}"
+                                     process="@this" update=":form:growl :form:dv-subastas"
+                                     oncomplete="PF('deleteSubasDialog').hide()" />
+                    <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                     onclick="PF('deleteSubasDialog').hide()" />
+                </p:confirmDialog>
+
+                <p:confirmDialog widgetVar="finishSubasDialog" showEffect="fade" width="300"
+                                 message="¿Está seguro de que  quiere finalizar esta subasta?" header="Confirmar" severity="warn">
+                    <p:commandButton value="Sí" icon="pi pi-check" 
+                                     actionListener="#{subastaController.finalizarSubasta}"
+                                     process="@this" update=":form:growl :form:dv-subastas"
+                                     oncomplete="PF('finishSubasDialog').hide()" />
+                    <p:commandButton value="No" type="button" styleClass="ui-button-secondary" 
+                                     icon="pi pi-times" onclick="PF('finishSubasDialog').hide()" />
+                </p:confirmDialog>
+
+            </h:form>
         </div>
 
         <script>
@@ -280,8 +222,19 @@
             });
         </script>
 
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybBogGzOg6f8/4cPz4B3tX1p2OmZdE0NXmkOGDX7i2KekFrGb" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-cu5tdc1cnH4pIaU6y7zyT2E/1LFHi3r+icGkBvnfPBZ/nfWWi6YJgtX0KCC5Sl1p" crossorigin="anonymous"></script>
-
+        <script>
+            // Cargar el header desde un archivo externo
+            fetch('header.xhtml')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('header-container').innerHTML = data;
+                    })
+                    .catch(error => console.error('Error al cargar el header:', error));
+        </script>
+        <script src="resources/js/particles.js"></script>
+        <script src="resources/js/app.js"></script>
+        <!-- Add these scripts in the <h:head> section -->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     </h:body>
 </html>

@@ -1,101 +1,105 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Subastas</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-        <link rel="stylesheet" href="resources/css/autenticacion.css?v=1.0">
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    </head>
-    <body>
-        <div id="particles-js"></div>
 
-        <div class="container" id="container">
-            <div class="form-container sign-up">
-                <form action="register" method="post" class="register">
-                    <h1>Crear Cuenta</h1>
-                    <div class="input-wrapper">
-                        <input type="email" id="email" placeholder="Email" name="email" autocomplete="off">
-                        <div id="email-status" class="email-status"></div>
-                    </div>
-                    <input type="text" id="nombre" placeholder="Nombre" name="nombre" autocomplete="off">
-                    <input type="text" id="apellidos" placeholder="Apellidos" name="apellidos" autocomplete="off">
-                    <input type="password" id="pass" placeholder="Contraseña" name="pass" autocomplete="off">
-                    <button type="submit" id="signupBtn" disabled>Sign Up</button>
-                </form>
-            </div>
+<head>
+    <title>Subastas</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="resources/css/autenticacion.css?v=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
 
-            <div class="form-container sign-in">
-                <form action="login" method="post" class="login">
-                    <h1>Iniciar Sesión</h1>
+<body>
+    <div id="particles-js"></div>
 
-                    <div id="error-message">
-                        Credenciales incorrectas, intente de nuevo.
-                    </div>
+    <div class="container" id="container">
+        <div class="form-container sign-up">
+            <form action="register" method="post" class="register">
+                <h1>Crear Cuenta</h1>
+                <div class="input-wrapper">
+                    <input type="email" id="email" placeholder="Email" name="email" autocomplete="off">
+                    <div id="email-status" class="email-status"></div>
+                </div>
+                <input type="text" id="nombre" placeholder="Nombre" name="nombre" autocomplete="off">
+                <input type="text" id="apellidos" placeholder="Apellidos" name="apellidos" autocomplete="off">
+                <input type="password" id="pass" placeholder="Contraseña" name="pass" autocomplete="off">
+                <button type="submit" id="signupBtn" disabled>Sign Up</button>
+            </form>
+        </div>
 
-                    <div id="registro-exitoso">
-                        ¡Registro exitoso! Ahora puedes iniciar sesión.
-                    </div>
+        <div class="form-container sign-in">
+            <form action="login" method="post" class="login">
+                <h1>Iniciar Sesión</h1>
 
-                    <input type="email" id="correo" placeholder="Email" name="correo" autocomplete="off" required="">
-                    <input type="password" id="clave" placeholder="Contraseña" name="clave" autocomplete="off" required minlength="8">
-                    <a href="olvideContraseña.html">¡Olvidé mi contraseña!</a>
-                    <button type="submit" id="loginBtn" disabled>Log in</button>
-                </form>
-            </div>
-            <div class="toggle-container">
-                <div class="toggle">
-                    <div class="toggle-panel toggle-left">
-                        <h1>Bienvenido!</h1>
-                        <p>Ingresa tus datos para hacer uso de todas nuestras funciones</p>
-                        <button class="hidden" id="login">Log in</button>
-                    </div>
-                    <div class="toggle-panel toggle-right">
-                        <h1>¿No tienes cuenta?</h1>
-                        <p>Registrate con tus datos para usar todas nuestras funciones</p>
-                        <button class="hidden" id="register">Sing up</button>
-                    </div>
+                <div id="error-message">
+                    Credenciales incorrectas, intente de nuevo.
+                </div>
+
+                <div id="registro-exitoso">
+                    ¡Registro exitoso! Ahora puedes iniciar sesión.
+                </div>
+
+                <input type="email" id="correo" placeholder="Email" name="correo" autocomplete="off" required="">
+                <input type="password" id="clave" placeholder="Contraseña" name="clave" autocomplete="off" required
+                    minlength="8">
+                <a href="olvideContraseña.html">¡Olvidé mi contraseña!</a>
+                <button type="submit" id="loginBtn" disabled>Log in</button>
+            </form>
+        </div>
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Bienvenido!</h1>
+                    <p>Ingresa tus datos para hacer uso de todas nuestras funciones</p>
+                    <button class="hidden" id="login">Log in</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>¿No tienes cuenta?</h1>
+                    <p>Registrate con tus datos para usar todas nuestras funciones</p>
+                    <button class="hidden" id="register">Sing up</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                // Get the registro parameter from URL
-                const urlParams = new URLSearchParams(window.location.search);
-                const registroExitoso = urlParams.get('registro') === 'true';
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get the registro parameter from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const registroExitoso = urlParams.get('registro') === 'true';
 
-                if (registroExitoso) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Registro Exitoso',
-                        text: 'Iniciando sesión...',
-                        timer: 4000,
-                        showConfirmButton: false,
-                        customClass: {
-                            popup: 'custom-popup-class',
-                            title: 'custom-title-class',
-                            icon: 'custom-icon-class'
-                        },
-                        position: 'center',
-                        showClass: {
-                            popup: 'swal2-show',
-                            backdrop: 'swal2-backdrop-show'
-                        },
-                        allowOutsideClick: false,
-                        didOpen: (popup) => {
-                            popup.querySelector('.swal2-success-ring').style.animation = 'custom-ring-animation 0.3s ease-out';
-                        }
-                    }).then(() => {
-                        window.location.href = 'pagprin.xhtml';
-                    });
-                }
-            });
-        </script>
-        <script src="resources/js/autenticacion.js"></script>
-        <script src="resources/js/particles.js"></script>
-        <script src="resources/js/app.js"></script>
+            if (registroExitoso) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Registro Exitoso',
+                    text: 'Iniciando sesión...',
+                    timer: 4000,
+                    showConfirmButton: false,
+                    customClass: {
+                        popup: 'custom-popup-class',
+                        title: 'custom-title-class',
+                        icon: 'custom-icon-class'
+                    },
+                    position: 'center',
+                    showClass: {
+                        popup: 'swal2-show',
+                        backdrop: 'swal2-backdrop-show'
+                    },
+                    allowOutsideClick: false,
+                    didOpen: (popup) => {
+                        popup.querySelector('.swal2-success-ring').style.animation = 'custom-ring-animation 0.3s ease-out';
+                    }
+                }).then(() => {
+                    window.location.href = 'pagprin.xhtml';
+                });
+            }
+        });
+    </script>
+    <script src="resources/js/autenticacion.js"></script>
+    <script src="resources/js/particles.js"></script>
+    <script src="resources/js/app.js"></script>
 
-    </body>
+</body>
+
 </html>
