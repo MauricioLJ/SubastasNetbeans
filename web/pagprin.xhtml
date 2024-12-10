@@ -11,15 +11,16 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"/>
     </h:head>
     <h:body>
+        
         <div id="particles-js"></div>
         <div id="header-container"></div>
         <div class="background-blur"></div>
 
-        <div class="container my-5">
+        <div class="min-vh-100 bg-light">
             <h:form id="form" enctype="multipart/form-data">
                 <p:growl id="growl" showDetail="true"/>
 
-                <p:tabView id="tabView" dynamic="true" cache="false">
+                <p:tabView id="tabView" dynamic="true" cache="false" style="width: 100%; background-color: transparent;">
                     <p:ajax event="tabChange" listener="#{subastaController.onTabChange}" update=":form:dv-subastas"/>
                     <p:tab title="Todo" id="todoTab">
                     </p:tab>
@@ -80,8 +81,8 @@
                                     </p>
 
                                     <p class="text-muted mb-2">
-                                        <h:link outcome="verSubasta" value="#{subas.propietario.nombre}" styleClass="text-decoration-none">
-                                            <f:param name="id" value="#{subas.idSubasta}" />
+                                        <h:link outcome="perfiles" value="#{subas.propietario.nombre}" styleClass="text-decoration-none">
+                                            <f:param name="id" value="#{subas.propietario.idUsuario}" />
                                         </h:link>
                                     </p>
 
@@ -92,6 +93,7 @@
                                         <h:outputText value="#{subas.precioInicial}" styleClass="text-primary fw-bold">
                                             <f:convertNumber currencySymbol="$" type="currency"/>
                                         </h:outputText>
+                                        
                                         <h:link outcome="verSubasta" value="Ver subasta" styleClass="btn btn-primary btn-sm">
                                             <f:param name="id" value="#{subas.idSubasta}" />
                                         </h:link>
