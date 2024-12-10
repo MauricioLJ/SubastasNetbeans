@@ -26,6 +26,7 @@ import org.primefaces.event.RateEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.file.UploadedFile;
 import servicio.ServicioPuja;
+import servicio.ServicioSubasta;
 import servicio.ServicioUsuario;
 
 /**
@@ -36,6 +37,7 @@ import servicio.ServicioUsuario;
 public class UsuarioBean implements Serializable {
 
     private ServicioUsuario servicioUsuario = new ServicioUsuario();
+    private ServicioSubasta servicioSubasta = new ServicioSubasta();
     private ServicioPuja servicioPuja = new ServicioPuja();
     private Usuario usuario;
     private Usuario selectUsuario = new Usuario();
@@ -137,27 +139,32 @@ public class UsuarioBean implements Serializable {
         return null;
     }
 
-    public void calificarUsuario() {
-        if (rating == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Calificación no válida"));
+   public void calificarUsuario() {
+    if (rating == null) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Calificación no válida"));
+        return;
+    }
+
+    try {
+        // Verificar si el usuario ha ganado una subasta del usuario que intenta calificar
+        List<Subasta> subastasGanadas = servicioSubasta.listarSubastasGanadasPorUsuario(usuario.getIdUsuario());
+        boolean haGanadoSubasta = subastasGanadas.stream()
+                .anyMatch(subasta -> subasta.getPropietario().getIdUsuario().equals(selectUsuario.getIdUsuario()));
+
+        if (!haGanadoSubasta) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Solo puedes calificar a usuarios con los que hayas ganado una subasta"));
             return;
         }
 
-        try {
-            Usuario usuarioACalificar = servicioUsuario.leerUsuario(usuario.getIdUsuario());
-            if (usuarioACalificar == null) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario no encontrado"));
-                return;
-            }
+        // Si la validación pasa, registrar la calificación
+        servicioUsuario.actualizarCalificacion(selectUsuario, rating);
 
-            servicioUsuario.actualizarCalificacion(usuarioACalificar, rating);
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Calificación registrada con éxito"));
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo registrar la calificación"));
-            e.printStackTrace();
-        }
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Calificación registrada con éxito"));
+    } catch (Exception e) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo registrar la calificación"));
+        e.printStackTrace();
     }
+}
 
     public void llevarPefiles(int idUsuario) {
         try {
