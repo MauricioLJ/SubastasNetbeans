@@ -13,8 +13,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     z-index: -1;
-    position: relative;
-    padding-top: 80px; /* Match this to the height of your header */
+    padding-top: 90px; /* Increased to accommodate floating header */
 
 }
 
@@ -29,23 +28,26 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
 }
 
 .header {
-    position: fixed; /* Change this from relative to fixed */
-    top: 0; /* Ensures it stays at the top of the page */
-    left: 0; /* Ensures it spans full width */
-    width: 100%;
-    background: rgba(92, 79, 121, 0.5);
-    padding: 0 4%;
+    position: fixed;
+    top: 20px; /* Adds space from the top */
+    left: 0;
+    right: 0;
+    z-index: 1000;
     display: flex;
-    align-items: center;
-    z-index: 1000; /* High z-index to ensure it stays on top */
-    backdrop-filter: blur(3px);
+    justify-content: center;
+    width: 100%;
+    padding: 0 4%;
 }
 
 .navbar {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    width: calc(100% - 40px); /* Reduced width to create floating effect */
+    max-width: 1650px; /* Optional: limits maximum width */
+    background: rgba(92, 79, 121, 0.7);
+    border-radius: 50px; /* Highly rounded corners */
+    padding: 10px 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(9px);
+    transition: all 0.3s ease;
 }
 
 #particles-js {
@@ -60,9 +62,13 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
 .navbar-brand {
     color: #fff;
     font-weight: 600;
+    display: flex;
+    align-items: center;
 }
 .navbar-nav {
     margin-left: auto;
+    display: flex;
+    align-items: center;
 }
 nav ul {
     list-style: none;
@@ -103,11 +109,11 @@ nav ul li a {
 
 /* Dropdown Styling */
 .dropdown-menu {
-    background-color: rgba(92, 79, 121, 0.8);
+    background: rgba(92, 79, 121, 0.9);
     border: none;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(15px);
     color: #fff;
     margin-top: 10px;
     padding: 0.5rem 0;
@@ -129,7 +135,6 @@ nav ul li a {
     color: rgba(255, 255, 255, 0.9);
     transition: all 0.3s ease;
     padding: 0.5rem 1.5rem;
-    width: 100%;
 }
 
 .dropdown-item:hover {
@@ -156,6 +161,14 @@ nav ul li a {
 
 .nav-link.dropdown-toggle[aria-expanded="true"]::after {
     transform: rotate(180deg);
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .navbar {
+        width: calc(100% - 20px);
+        margin: 0 10px;
+    }
 }
 
 .custom-dialog {
