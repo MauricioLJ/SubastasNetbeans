@@ -75,6 +75,11 @@
     color: white; /* Color del texto al pasar el mouse */
 }
 
+.ui-dialog {
+    max-width: 800px !important;
+    width: 90%;
+}
+
 .custom-dialog {
     background: linear-gradient(135deg, #536c8d, #5c4f79) !important;
     border-radius: 16px !important;
@@ -307,4 +312,12 @@
         background-color: #5c4f79; /* Segundo color de transición */
           
     }
+}
+
+.ui-dialog {
+    z-index: 9999 !important;
+}
+
+body .ui-selectonemenu-panel {
+    z-index: 10000 !important;
 }

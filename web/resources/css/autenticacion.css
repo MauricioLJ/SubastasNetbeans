@@ -174,9 +174,9 @@ form h1 {
 }
 
 .toggle{
-    background-color: #62a07b;
+    background-color: #613860;
     height: 100%;
-    background: linear-gradient(to right, #4f8b89, #62a07b);
+    background: linear-gradient(to right, #5c4f79, #613860);
     color: #fff;
     position: relative;
     left: -100%;

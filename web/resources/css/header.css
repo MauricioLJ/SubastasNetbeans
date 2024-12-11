@@ -33,7 +33,6 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
     top: 0; /* Ensures it stays at the top of the page */
     left: 0; /* Ensures it spans full width */
     width: 100%;
-    height: 90px;
     background: rgba(92, 79, 121, 0.5);
     padding: 0 4%;
     display: flex;
@@ -100,21 +99,7 @@ nav ul li a {
     box-shadow: 0 4px 17px rgba(0, 0, 0, 0.15);
 }
 
-.search-form {
-    margin-right: 20px;
-}
-.search-form input {
-    flex-grow: 1;
-    padding: 8px;
-    width: 250px;
-    border: none;
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
-}
-.search-form input::placeholder {
-    color: rgba(255, 255, 255, 0.7);
-}
+
 
 /* Dropdown Styling */
 .dropdown-menu {
@@ -175,4 +160,8 @@ nav ul li a {
 
 .custom-dialog {
     z-index: 1050 !important; /* Asegura que el diálogo esté al frente */
+}
+
+body .ui-autocomplete-panel .ui-autocomplete-items {
+    z-index: 10000 !important;
 }

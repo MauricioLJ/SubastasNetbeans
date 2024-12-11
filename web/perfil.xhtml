@@ -88,7 +88,7 @@
 
         <!-- editar perfil -->
         <p:dialog header="Editar Perfil" widgetVar="editarPerfilDialog" modal="true" responsive="true"
-                  dynamic="true" styleClass="custom-dialog">
+                  dynamic="true" styleClass="custom-dialog" resizable="false">
             <h:form id="formEditarPerfil" enctype="multipart/form-data">
                 <p:outputPanel id="formEditarPerfilContent" class="ui-fluid">
                     <div class="col-md-3">
@@ -119,13 +119,15 @@
                     </div>
                     <div class="form-group">
                         <h:outputLabel for="pais" value="País" />
-                        <p:selectOneMenu id="pais" value="#{usuarioBean.usuario.pais}" styleClass="form-control">
+                        <p:selectOneMenu id="pais" 
+                                         value="#{usuarioBean.usuario.pais}" 
+                                         styleClass="form-control" 
+                                         style="z-index: 10000;">
                             <f:selectItem itemLabel="Seleccione un país" itemValue="" />
-                            <f:selectItem itemLabel="México" itemValue="México" />
-                            <f:selectItem itemLabel="Colombia" itemValue="Colombia" />
-                            <f:selectItem itemLabel="Argentina" itemValue="Argentina" />
-                            <f:selectItem itemLabel="Chile" itemValue="Chile" />
-                            <f:selectItem itemLabel="Perú" itemValue="Perú" />
+                            <f:selectItems value="#{paisesBean.listaPaises}" 
+                                           var="pais" 
+                                           itemLabel="#{pais}" 
+                                           itemValue="#{pais}" />
                         </p:selectOneMenu>
                     </div>
                     <!-- Botón Actualizar perfil que muestra el cuadro de confirmación -->

@@ -1,9 +1,30 @@
 /* Updated styles to remove white background completely */
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --text-color: #333;
+    --background-color: #f4f6f7;
+    --border-radius: 8px;
+    --transition-speed: 0.3s;
+}
+
 body {
     margin: 0;
     padding: 0;
     background-color: transparent;
     overflow-x: hidden;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    color: white !important;
+    padding: 12px 15px !important;
+    font-size: 16px !important;
+    border-radius: 10px !important;
+    transition: all 0.3s ease !important;
+    outline: none !important;
+    max-width: 1500px !important;
 }
 
 #particles-js {
@@ -46,7 +67,7 @@ body {
 }
 
 .card:hover {
-    transform: scale(1.03);
+    transform: scale(1.01);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
@@ -125,4 +146,291 @@ ol, ul {
     align-content: center;
     align-items: center;
     padding-left: 0 !important;
+}
+
+body .ui-tabs.ui-tabs-top > .ui-tabs-nav {
+    justify-content: center !important;
+}
+
+/* Modern Autocomplete Styles */
+.search-subas {
+    width: 100%;
+}
+
+.search-subas .ui-autocomplete {
+    width: 100% !important;
+}
+
+.search-subas .ui-inputfield {
+    width: 100% !important;
+    background-color: rgba(83, 108, 141, 0.3) !important;
+    border: 1px solid rgba(83, 108, 141, 0.5) !important;
+    color: white !important;
+    padding: 12px 15px !important;
+    font-size: 16px !important;
+    border-radius: 10px !important;
+    transition: all 0.3s ease !important;
+    backdrop-filter: blur(5px) !important;
+    outline: none !important;
+}
+
+.search-subas .ui-inputfield:focus {
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1) !important;
+}
+
+.search-subas .ui-autocomplete-panel {
+    background-color: rgba(0, 0, 0, 0.7) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 10px !important;
+    color: white !important;
+}
+
+.search-subas .ui-autocomplete-panel .ui-autocomplete-list .ui-autocomplete-list-item {
+    background-color: transparent !important;
+    color: white !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    transition: background-color 0.3s ease !important;
+}
+
+.search-subas .ui-autocomplete-panel .ui-autocomplete-list .ui-autocomplete-list-item:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.search-subas .ui-autocomplete-panel .ui-autocomplete-list .ui-autocomplete-list-item.ui-state-highlight {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+}
+
+.search-subas .ui-inputfield::placeholder {
+    color: rgba(255, 255, 255, 1) !important;
+}
+
+.sell-button {
+    position: relative;
+    padding: 10px 20px !important;
+    border: none !important;
+    border-radius: 10px !important;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+    box-shadow: 
+        0 4px 6px rgba(0, 0, 0, 0.1),
+        0 1px 3px rgba(0, 0, 0, 0.08) !important;
+    transition: 
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        background 0.3s ease !important;
+    outline: none !important;
+    overflow: hidden !important;
+    display: felx;
+}
+
+.sell-button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 
+        0 6px 8px rgba(0, 0, 0, 0.15),
+        0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.2) 100%) !important;
+}
+
+.sell-button:active {
+    transform: translateY(1px) !important;
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.1),
+        0 1px 2px rgba(0, 0, 0, 0.08) !important;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+}
+
+.sell-button::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+        circle at center, 
+        rgba(255, 255, 255, 0.1) 0%, 
+        transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease !important;
+    pointer-events: none !important;
+}
+
+.sell-button:hover::before {
+    opacity: 1 !important;
+}
+
+/* Responsive sizing */
+@media (max-width: 768px) {
+    .sell-button {
+        padding: 8px 16px !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+.sell-button-container {
+    display: flex;
+    justify-content: center;
+}
+
+/*--------------------------------------------*/
+
+/* Dialog Styling */
+.custom-dialog.ui-dialog {
+    max-width: 800px !important;
+    width: 90%!important;
+    height: 90%;
+    border: none !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+    overflow: hidden !important;
+}
+
+.custom-dialog .ui-dialog-titlebar {
+    border: none !important;
+    padding: 1rem 1.5rem !important;
+    font-weight: 600 !important;
+    color: var(--text-color)!important;
+}
+
+.custom-dialog .ui-dialog-content {
+    padding: 1.5rem !important;
+    background-color: white !important;
+}
+
+/* Form Controls */
+.form-control {
+    border: 2px solid transparent !important;
+    background-color: var(--background-color) !important;
+    border-radius: var(--border-radius) !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.95rem !important;
+    transition: all var(--transition-speed) ease!important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color) !important;
+    background-color: white !important;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1) !important;
+}
+
+.form-label {
+    font-weight: 500 !important;
+    margin-bottom: 0.5rem !important;
+    color: #6c757d !important;
+}
+
+/* Button Styles */
+.btn-primary, .btn-secondary {
+    border-radius: var(--border-radius) !important;
+    padding: 0.75rem 1.5rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all var(--transition-speed) ease !important;
+    border: none !important;
+    outline: none !important;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white !important;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
+}
+
+.btn-secondary {
+    background-color: var(--background-color) !important;
+    color: var(--text-color) !important;
+}
+
+.btn-secondary:hover {
+    background-color: #e9ecef !important;
+    transform: translateY(-2px) !important;
+}
+
+/* File Upload */
+.ui-fileupload {
+    width: 100% !important;
+}
+
+.ui-fileupload-choose {
+    background-color: var(--background-color)!important;
+    color: var(--text-color)!important;
+    border-radius: var(--border-radius) !important;
+    padding: 0.75rem 1rem !important;
+    transition: all var(--transition-speed) ease !important;
+}
+
+.ui-fileupload-choose:hover {
+    background-color: #e9ecef !important;
+}
+
+/* Confirm Dialog */
+.custom-confirm-dialog.ui-dialog {
+    max-width: 400px !important;
+    width: 95% !important;
+    text-align: center !important;
+}
+
+.custom-confirm-dialog .ui-dialog-content {
+    display: flex !important;
+    flex-direction: column !important; 
+    align-items: center !important;
+    padding: 2rem !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+    .custom-dialog .ui-dialog-content,
+    .custom-confirm-dialog .ui-dialog-content {
+        padding: 1rem !important;
+    }
+
+    .form-control, .btn-primary, .btn-secondary {
+        padding: 0.5rem 0.75rem !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+/* Accessibility and Focus States */
+*:focus {
+    outline: 2px solid var(--primary-color) !important;
+    outline-offset: 2px !important;
+}
+
+/* Subtle Animations */
+.ui-dialog {
+    animation: slideIn 0.4s ease !important;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0 !important;
+        transform: translateY(-20px) !important;
+    }
+    to {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+}
+
+.ui-datepicker {
+    z-index: 99999 !important;
+}
+
+.ui-dialog {
+    z-index: 9999 !important;
 }
