@@ -16,7 +16,7 @@
         <div id="header-container"></div>
         <div class="background-blur"></div>
 
-        <div class="min-vh-100 bg-light">
+        <div class="container my-5">
             <h:form id="form" enctype="multipart/form-data">
                 <p:growl id="growl" showDetail="true"/>
 
@@ -103,7 +103,11 @@
                                             <p:menuitem value="Eliminar" styleClass="delete-button rounded-button ui-button-warning" process="@this" oncomplete="PF('deleteSubasDialog').show()">
                                                 <f:setPropertyActionListener value="#{subas}" target="#{subastaController.selectSubasta}" />
                                             </p:menuitem>
+                                            <p:menuitem value="Finalizar subasta" styleClass="delete-button rounded-button ui-button-warning" process="@this" oncomplete="PF('finishSubasDialog').show()">
+                                                <f:setPropertyActionListener value="#{subas}" target="#{subastaController.selectSubasta}" />
+                                            </p:menuitem>
                                         </p:menuButton>
+                                        
                                     </div>
                                 </div>
                             </div>
