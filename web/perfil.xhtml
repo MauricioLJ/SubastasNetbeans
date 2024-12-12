@@ -52,15 +52,16 @@
                                 <div>
                                     <p class="text-muted mb-0">Mi calificación</p>
                                     <div class="d-flex align-items-center">
+                                        
+                                        
                                         <h:form id="formCalificar">
                                             <h:inputHidden id="idUsuarioACalificar" value="#{usuarioBean.usuario.idUsuario}" />
-                                            <p:rating value="#{usuarioBean.rating}" cancel="true">
-                                                <p:ajax event="rate" listener="#{usuarioBean.calificarUsuario()}" update="@form" />
-                                            </p:rating>
+                                            
                                             <p>#{usuarioBean.usuario.calificacionPromedio}  
                                                 <span style="color: gold;">★</span>
                                             </p>
                                         </h:form>
+                                        
                                     </div>
                                 </div>
                             </div>
