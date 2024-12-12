@@ -105,11 +105,10 @@ public class UsuarioBean implements Serializable {
         try {
             if (fileName != null) {
                 String destinationFile = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/fotosPer/");
-                
-                destinationFile = "C:\\Users\\Admin\\Documents\\NetBeansProjects\\SubastasNetbeans\\web\\resources\\fotosPer\\";
-                
-                //Hacer lo mismo copiar directirio exacto
 
+                destinationFile = "C:\\Users\\Admin\\Documents\\NetBeansProjects\\SubastasNetbeans\\web\\resources\\fotosPer\\";
+
+                //Hacer lo mismo copiar directirio exacto
                 String[] partesArchivo = fileName.split(Pattern.quote("."));
                 String nombreArchivo = partesArchivo[0];
                 String extensionArchivo = partesArchivo[1];
@@ -139,32 +138,52 @@ public class UsuarioBean implements Serializable {
         return null;
     }
 
-   public void calificarUsuario() {
-    if (rating == null) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Calificación no válida"));
-        return;
-    }
-
-    try {
-        // Verificar si el usuario ha ganado una subasta del usuario que intenta calificar
-        List<Subasta> subastasGanadas = servicioSubasta.listarSubastasGanadasPorUsuario(usuario.getIdUsuario());
-        boolean haGanadoSubasta = subastasGanadas.stream()
-                .anyMatch(subasta -> subasta.getPropietario().getIdUsuario().equals(selectUsuario.getIdUsuario()));
-
-        if (!haGanadoSubasta) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Solo puedes calificar a usuarios con los que hayas ganado una subasta"));
+    public void calificarUsuario() {
+        if (rating == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Calificación no válida"));
             return;
         }
 
-        // Si la validación pasa, registrar la calificación
-        servicioUsuario.actualizarCalificacion(selectUsuario, rating);
+        try {
+            // Verificar si el usuario ha ganado una subasta del usuario que intenta calificar
+            List<Subasta> subastasGanadas = servicioSubasta.listarSubastasGanadasPorUsuario(usuario.getIdUsuario());
+            boolean haGanadoSubasta = subastasGanadas.stream()
+                    .anyMatch(subasta -> subasta.getPropietario().getIdUsuario().equals(selectUsuario.getIdUsuario()));
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Calificación registrada con éxito"));
-    } catch (Exception e) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo registrar la calificación"));
-        e.printStackTrace();
+            if (!haGanadoSubasta) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Solo puedes calificar a usuarios con los que hayas ganado una subasta"));
+                return;
+            }
+
+            // Si la validación pasa, registrar la calificación
+            servicioUsuario.actualizarCalificacion(selectUsuario, rating);
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Calificación registrada con éxito"));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo registrar la calificación"));
+            e.printStackTrace();
+        }
+
+        try {
+            // Verificar si el usuario ha ganado una subasta del usuario que intenta calificar
+            List<Subasta> subastasGanadas = servicioSubasta.listarSubastasGanadasPorUsuario(usuario.getIdUsuario());
+            boolean haGanadoSubasta = subastasGanadas.stream()
+                    .anyMatch(subasta -> subasta.getPropietario().getIdUsuario().equals(selectUsuario.getIdUsuario()));
+
+            if (!haGanadoSubasta) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Solo puedes calificar a usuarios con los que hayas ganado una subasta"));
+                return;
+            }
+
+            // Si la validación pasa, registrar la calificación
+            servicioUsuario.actualizarCalificacion(selectUsuario, rating);
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Calificación registrada con éxito"));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo registrar la calificación"));
+            e.printStackTrace();
+        }
     }
-}
 
     public void llevarPefiles(int idUsuario) {
         try {
