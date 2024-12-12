@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -46,12 +47,14 @@ public class UsuarioBean implements Serializable {
     private Integer rating;
     private Integer calificacion;
     private Usuario selectedUsuario;
-
+    private Double calificacionPromedio = 0.0;
+    private boolean puedeCalificar;
     private List<Puja> historialPujas;
 
     public UsuarioBean() {
         HttpSession session = SessionUtils.getSession();
         this.usuario = (Usuario) session.getAttribute("usuario");
+        this.historialPujas = new ArrayList<>();
     }
 
     public Usuario getUsuario() {
@@ -138,52 +141,47 @@ public class UsuarioBean implements Serializable {
         return null;
     }
 
-    public void calificarUsuario() {
-        if (rating == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Calificación no válida"));
+  public void calificarUsuario() {
+    if (rating == null) {
+        FacesContext.getCurrentInstance().addMessage(null, 
+            new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Calificación no válida."));
+        return;
+    }
+
+    try {
+        // Verificar si el perfil visitado está cargado correctamente
+        if (selectedUsuario == null || selectedUsuario.getIdUsuario() == null) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario del perfil no encontrado."));
             return;
         }
 
-        try {
-            // Verificar si el usuario ha ganado una subasta del usuario que intenta calificar
-            List<Subasta> subastasGanadas = servicioSubasta.listarSubastasGanadasPorUsuario(usuario.getIdUsuario());
-            boolean haGanadoSubasta = subastasGanadas.stream()
-                    .anyMatch(subasta -> subasta.getPropietario().getIdUsuario().equals(selectUsuario.getIdUsuario()));
-
-            if (!haGanadoSubasta) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Solo puedes calificar a usuarios con los que hayas ganado una subasta"));
-                return;
-            }
-
-            // Si la validación pasa, registrar la calificación
-            servicioUsuario.actualizarCalificacion(selectUsuario, rating);
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Calificación registrada con éxito"));
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo registrar la calificación"));
-            e.printStackTrace();
+        // Leer el usuario del perfil visitado desde el servicio (opcional, si necesitas datos actualizados)
+        Usuario usuarioACalificar = servicioUsuario.leerUsuario(selectedUsuario.getIdUsuario());
+        if (usuarioACalificar == null) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario del perfil no encontrado en la base de datos."));
+            return;
         }
 
-        try {
-            // Verificar si el usuario ha ganado una subasta del usuario que intenta calificar
-            List<Subasta> subastasGanadas = servicioSubasta.listarSubastasGanadasPorUsuario(usuario.getIdUsuario());
-            boolean haGanadoSubasta = subastasGanadas.stream()
-                    .anyMatch(subasta -> subasta.getPropietario().getIdUsuario().equals(selectUsuario.getIdUsuario()));
+        // Actualizar la calificación
+        servicioUsuario.actualizarCalificacion(usuarioACalificar, rating);
 
-            if (!haGanadoSubasta) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Solo puedes calificar a usuarios con los que hayas ganado una subasta"));
-                return;
-            }
-
-            // Si la validación pasa, registrar la calificación
-            servicioUsuario.actualizarCalificacion(selectUsuario, rating);
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Calificación registrada con éxito"));
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo registrar la calificación"));
-            e.printStackTrace();
-        }
+        FacesContext.getCurrentInstance().addMessage(null, 
+            new FacesMessage("Calificación registrada con éxito."));
+    } catch (Exception e) {
+        FacesContext.getCurrentInstance().addMessage(null, 
+            new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo registrar la calificación."));
+        e.printStackTrace();
     }
+}
+
+    
+    
+
+    public boolean isPuedeCalificar() {
+    return puedeCalificar;
+}
 
     public void llevarPefiles(int idUsuario) {
         try {
@@ -196,20 +194,24 @@ public class UsuarioBean implements Serializable {
         }
     }
 
-    public void cargarPerfiles() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String idParam = params.get("id");
-        if (idParam != null && !idParam.isEmpty()) {
-            try {
-                int id = Integer.parseInt(idParam);
-                this.selectedUsuario = servicioUsuario.leerUsuario(id);
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-            }
-        }
+  public void cargarPerfiles() {
+    FacesContext context = FacesContext.getCurrentInstance();
+    Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+    String idParam = params.get("id");
+
+    if (idParam != null) {
+        int idUsuario = Integer.parseInt(idParam);
+        selectedUsuario = servicioUsuario.leerUsuario(idUsuario);
     }
 
+    historialPujas = servicioPuja.obtenerHistorialPorUsuario(usuario.getIdUsuario());
+
+    puedeCalificar = historialPujas.stream()
+            .anyMatch(puja -> puja.getSubasta().getPropietario().getIdUsuario().equals(selectedUsuario.getIdUsuario()) &&
+                              "Finalizado".equals(puja.getSubasta().getEstadoSubasta()));
+}
+  
+  
     public ServicioUsuario getServicioUsuario() {
         return servicioUsuario;
     }
@@ -280,6 +282,30 @@ public class UsuarioBean implements Serializable {
 
     public void setHistorialPujas(List<Puja> historialPujas) {
         this.historialPujas = historialPujas;
+    }
+
+    public ServicioSubasta getServicioSubasta() {
+        return servicioSubasta;
+    }
+
+    public void setServicioSubasta(ServicioSubasta servicioSubasta) {
+        this.servicioSubasta = servicioSubasta;
+    }
+
+    public ServicioPuja getServicioPuja() {
+        return servicioPuja;
+    }
+
+    public void setServicioPuja(ServicioPuja servicioPuja) {
+        this.servicioPuja = servicioPuja;
+    }
+
+    public Double getCalificacionPromedio() {
+        return calificacionPromedio;
+    }
+
+    public void setCalificacionPromedio(Double calificacionPromedio) {
+        this.calificacionPromedio = calificacionPromedio;
     }
 
 }
