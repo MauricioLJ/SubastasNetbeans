@@ -149,14 +149,14 @@ public class UsuarioBean implements Serializable {
     }
 
     try {
-        // Verificar si el perfil visitado está cargado correctamente
+       
         if (selectedUsuario == null || selectedUsuario.getIdUsuario() == null) {
             FacesContext.getCurrentInstance().addMessage(null, 
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario del perfil no encontrado."));
             return;
         }
 
-        // Leer el usuario del perfil visitado desde el servicio (opcional, si necesitas datos actualizados)
+   
         Usuario usuarioACalificar = servicioUsuario.leerUsuario(selectedUsuario.getIdUsuario());
         if (usuarioACalificar == null) {
             FacesContext.getCurrentInstance().addMessage(null, 
@@ -164,7 +164,7 @@ public class UsuarioBean implements Serializable {
             return;
         }
 
-        // Actualizar la calificación
+    
         servicioUsuario.actualizarCalificacion(usuarioACalificar, rating);
 
         FacesContext.getCurrentInstance().addMessage(null, 
