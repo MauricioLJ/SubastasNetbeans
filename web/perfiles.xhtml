@@ -53,20 +53,32 @@
                                     <p>#{usuarioBean.selectedUsuario.pais}</p>
                                 </div>
                                 <div>
-                                    <p class="text-muted mb-0">Mi calificación</p>
+                                    <p class="text-muted mb-0">Calificación actual</p>
                                     <div class="d-flex align-items-center">
-                                        <h:form id="formCalificar">
+                                        
 
-                                            <h:inputHidden id="idUsuarioACalificar" value="#{usuarioBean.selectedUsuario.idUsuario}" />
-                                            <p:rating value="#{usuarioBean.rating}" cancel="true">
-                                                <p:ajax event="rate" listener="#{usuarioBean.calificarUsuario()}" update="@form" />
-                                            </p:rating>
-                                            <p>  #{usuarioBean.selectedUsuario.calificacionPromedio}  
+                                            <h:form id="formCalificar">
+                                                <h:inputHidden id="idUsuarioACalificar" value="#{usuarioBean.selectedUsuario.idUsuario}" />
+
+                                                <!-- Sistema de calificación visible solo si puedeCalificar es true -->
+                                                <p:rating value="#{usuarioBean.rating}" cancel="true" 
+                                                          rendered="#{usuarioBean.puedeCalificar}">
+                                                    <p:ajax event="rate" listener="#{usuarioBean.calificarUsuario}" update="@form" />
+                                                </p:rating>
+                                                
+                                                <p>#{usuarioBean.selectedUsuario.calificacionPromedio}  
                                                 <span style="color: gold;">★</span>
                                             </p>
 
-                                        </h:form>
+                                                <!-- Mensaje alternativo si no puede calificar -->
+                                                <h:outputText value="No puedes calificar a este usuario." 
+                                                              rendered="#{!usuarioBean.puedeCalificar}" style="color: gray;" />
+                                            </h:form>
 
+                     
+
+                                           
+                                    
                                     </div>
                                 </div>
 
@@ -74,15 +86,7 @@
                         </div>
                     </div>
 
-                    <!-- Historial de transacciones -->
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <h5 class="card-title mb-3">Historial de transacciones</h5>
-                                <button class="btn btn-outline-primary w-100">Ver historial de transacciones</button>
-                            </div>
-                        </div>
-                    </div>
+                   
                 </div>
             </main>
         </div>
