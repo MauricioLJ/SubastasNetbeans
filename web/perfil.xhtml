@@ -70,21 +70,41 @@
                 </div>
             </main>
 
-            <!-- Historial de transacciones -->
-            <div class="grid">
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-header">
-                            <h5 class="card-title">Historial de Ofertas</h5>
-                            <span class="badge"></span>
-                        </div>
-
-
-                        <h:button value="Ver historial completo" styleClass="button" outcome="historialTrans.xhtml" />
-
-                    </div>
-                </div>
+          <!-- Historial de transacciones -->
+          
+           <f:metadata>
+            <f:event type="preRenderView" listener="#{usuarioBean.cargarHistorial}" />
+        </f:metadata>
+          
+<div class="grid centered-content">
+    <div class="offer-history-card">
+        <div class="card-content">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title">Historial de Ofertas</h5>
             </div>
+            <p:dataView id="dv-historial" var="puja" value="#{usuarioBean.historialPujas}" layout="grid" rows="1">
+                <p:dataViewGridItem>
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <p class="transaction-title">
+                                <strong>#{puja.subasta.nombre}</strong>
+                            </p>
+                            <p class="transaction-date">Fecha: #{puja.fechaPuja}</p>
+                        </div>
+                        <div class="transaction-amount">
+                            $#{puja.monto}
+                        </div>
+                    </div>
+                </p:dataViewGridItem>
+            </p:dataView>
+            <h:button value="Ver historial completo" styleClass="button" outcome="historialTrans.xhtml" />
+        </div>
+    </div>
+</div>
+
+
+
+            
         </div>
 
         <!-- editar perfil -->
