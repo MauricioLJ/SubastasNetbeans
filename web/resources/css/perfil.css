@@ -321,3 +321,100 @@
 body .ui-selectonemenu-panel {
     z-index: 10000 !important;
 }
+
+/* Contenedor de la tarjeta */
+.offer-history-card {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    background-color: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.offer-history-card:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Encabezado de la tarjeta */
+.offer-history-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.offer-history-card .card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.offer-history-card .badge {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* Registro de transacción */
+.offer-history-card .transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: rgba(243, 244, 246, 0.5);
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.offer-history-card .transaction-title {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #1f2937;
+}
+
+.offer-history-card .transaction-date {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.offer-history-card .transaction-amount {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #059669;
+}
+
+.unexpected-box {
+    display: none; /* Oculta el elemento */
+}
+
+/* Si es un margen o padding no deseado */
+.offer-history-card {
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+}
+
+
+/* Botón */
+.button.w-100 {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(90deg, #4f8b89, #536c8d);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.button.w-100:hover {
+    background: linear-gradient(90deg, #536c8d, #5c4f79);
+}
