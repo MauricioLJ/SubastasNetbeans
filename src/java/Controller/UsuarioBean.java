@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -50,13 +51,28 @@ public class UsuarioBean implements Serializable {
     private Double calificacionPromedio = 0.0;
     private boolean puedeCalificar;
     private List<Puja> historialPujas;
+    private List<Subasta> todasLasSubastas;
+    
+    
+   public UsuarioBean() {
+    HttpSession session = SessionUtils.getSession();
+    this.usuario = (Usuario) session.getAttribute("usuario");
+    this.historialPujas = new ArrayList<>();
+    this.todasLasSubastas = new ArrayList<>();
+    
+  if (this.usuario != null) {
+    this.selectUsuario = this.usuario; 
+    this.selectedUsuario = this.usuario; 
+    cargarSubastasPorUsuario();
+} else {
+    this.selectUsuario = new Usuario();
+}
 
-    public UsuarioBean() {
-        HttpSession session = SessionUtils.getSession();
-        this.usuario = (Usuario) session.getAttribute("usuario");
-        this.historialPujas = new ArrayList<>();
-    }
+    
+}
 
+
+   
     public Usuario getUsuario() {
         if (usuario == null) {
             HttpSession session = SessionUtils.getSession();
@@ -223,7 +239,27 @@ public class UsuarioBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario no autenticado o ID no válido."));
         }
     }
+    
+    
+      public void  cargarSubastasPorUsuario() {
+        if (selectUsuario != null && selectUsuario.getIdUsuario() != null) {
+            this.todasLasSubastas = servicioSubasta.listaSubastasPorUsuario(selectedUsuario.getIdUsuario());
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario no autenticado o ID no válido."));
+        }
+    }
 
+      public List<Subasta> getSubastasActivas() {
+    if (todasLasSubastas != null) {
+        return todasLasSubastas.stream()
+                .filter(subasta -> "activo".equalsIgnoreCase(subasta.getEstadoSubasta()))
+                .collect(Collectors.toList());
+    }
+    return new ArrayList<>();
+}
+
+      
+  
     public void setServicioUsuario(ServicioUsuario servicioUsuario) {
         this.servicioUsuario = servicioUsuario;
     }
@@ -234,6 +270,7 @@ public class UsuarioBean implements Serializable {
 
     public void setSelectUsuario(Usuario selectUsuario) {
         this.selectUsuario = selectUsuario;
+        cargarSubastasPorUsuario();
     }
 
     public UploadedFile getFiles() {
@@ -308,4 +345,24 @@ public class UsuarioBean implements Serializable {
         this.calificacionPromedio = calificacionPromedio;
     }
 
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public void setPuedeCalificar(boolean puedeCalificar) {
+        this.puedeCalificar = puedeCalificar;
+    }
+
+     public List<Subasta> getTodasLasSubastas() {
+        return todasLasSubastas;
+    }
+
+    public void setTodasLasSubastas(List<Subasta> todasLasSubastas) {
+        this.todasLasSubastas = todasLasSubastas;
+    }
+    
 }
+    
+    
+
