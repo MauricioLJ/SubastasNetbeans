@@ -7,7 +7,7 @@
     <h:head>
         <title>Historial de Pujas</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <link rel="stylesheet" href="resources/css/historial.css" />
+        <link rel="stylesheet" href="resources/css/pagprin.css" />
     </h:head>
     <h:body>
         <f:metadata>
@@ -18,25 +18,48 @@
         <div id="header-container"></div>
         <div class="background-blur"></div>
         
-        <div class="container my-5">
-            <div class="historial">
-                <p:dataTable value="#{usuarioBean.historialPujas}" var="puja" paginator="true" rows="5">
-                    <p:column headerText="Subasta">
-                        #{puja.subasta.nombre}
-                    </p:column>
-                    <p:column headerText="Monto Ofrecido">
-                        #{puja.monto}
-                    </p:column>
-                    <p:column headerText="Fecha">
-                        #{puja.fechaPuja}
-                    </p:column>
-                    <p:column headerText="Ganador">
-                        #{puja.subasta.pujaGanadora != null &amp;&amp; puja.subasta.pujaGanadora.idPuja == puja.idPuja ? 'Sí' : 'No'}
-                    </p:column>
-                </p:dataTable>
+         <div class="container my-3">
+        
+             
+             
+        <p:dataView id="dv-historial" var="puja" value="#{usuarioBean.historialPujas}" layout="grid">
+    <p:dataViewGridItem>
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <i class="pi pi-tag text-primary me-2"></i>
+                    <span class="badge bg-primary me-2">#{puja.subasta.nombre}</span>
+                </div>
+
+                <div class="text-center">
+                    <h:panelGroup rendered="#{not empty puja.subasta.imagen}">
+                        <h:graphicImage value="#{puja.subasta.imagen}" width="290" height="150" styleClass="img-fluid" />
+                    </h:panelGroup>
+                </div>
+
+                <p class="text-muted mb-2">
+                    <small>Fecha: #{puja.fechaPuja}</small>
+                </p>
+
+                <p class="text-muted mb-2">
+                    <h:link outcome="perfiles" value="#{puja.subasta.propietario.nombre}" styleClass="text-decoration-none">
+                        <f:param name="id" value="#{puja.subasta.propietario.idUsuario}" />
+                    </h:link>
+                </p>
+
+                <h5 class="card-title mb-2">#{puja.subasta.nombre}</h5>
+                <p class="card-text text-muted">#{puja.subasta.descripcion}</p>
+
+                <div class="text-muted">
+                    <p>Monto ofrecido: <strong>#{puja.monto}</strong></p>
+                    <p>Ganador: <strong>#{puja.subasta.pujaGanadora != null and puja.subasta.pujaGanadora.idPuja == puja.idPuja ? 'Sí' : 'No'}</strong></p>
+                </div>
             </div>
         </div>
-        
+    </p:dataViewGridItem>
+</p:dataView>
+
+        </div>
         <script>
             // Cargar el header desde un archivo externo
             fetch('header.xhtml')
