@@ -1,0 +1,83 @@
+ .custom-accordion .ui-accordion {
+                width: 100%;
+                max-width: 900px;
+                margin: 20px auto;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            
+            .custom-accordion .ui-accordion .ui-accordion-header {
+                background: linear-gradient(135deg, #613860, #5c4f79);
+                color: white;
+                border: none;
+                margin: 5px 0;
+                padding: 15px 20px;
+                font-size: 1.1em;
+                transition: all 0.3s ease;
+                border-radius: 8px;
+            }
+            
+            .custom-accordion .ui-accordion .ui-accordion-header:hover {
+                background: linear-gradient(135deg, #4f8b89, #536c8d);
+                transform: translateY(-2px);
+            }
+            
+            .custom-accordion .ui-accordion .ui-accordion-content {
+                background-color: rgba(255, 255, 255, 0.95);
+                border: 2px solid #613860;
+                padding: 20px;
+                line-height: 1.6;
+                border-radius: 0 0 8px 8px;
+                animation: fadeIn 0.5s ease-in-out;
+            }
+            
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            .custom-accordion .ui-accordion .ui-accordion-header .ui-icon {
+                margin-right: 10px;
+            }
+            
+            .feature-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .feature-list li {
+                margin: 10px 0;
+                padding-left: 25px;
+                position: relative;
+            }
+            
+            .feature-list li:before {
+                content: '→';
+                position: absolute;
+                left: 0;
+                color: #8B5CF6;
+            }
+            
+            .accordion-container {
+                padding: 20px;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                border-radius: 12px;
+                margin: 20px auto;
+                max-width: 1000px;
+            }
+            
+            .section-title {
+                color: #472947;
+                text-align: center;
+                margin-bottom: 30px;
+                font-size: 2em;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            }
+        
