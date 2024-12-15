@@ -42,7 +42,6 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h5 class="card-title">Información de Usuario</h5>
-
                                 </div>
                                 <div class="mb-3">
                                     <p class="text-muted mb-0">Correo electrónico</p>
@@ -53,42 +52,51 @@
                                     <p>#{usuarioBean.selectedUsuario.pais}</p>
                                 </div>
                                 <div>
-                                    <p class="text-muted mb-0">Calificación actual</p>
+                                   
                                     <div class="d-flex align-items-center">
-                                        
 
-                                            <h:form id="formCalificar">
-                                                <h:inputHidden id="idUsuarioACalificar" value="#{usuarioBean.selectedUsuario.idUsuario}" />
+                                        <h:form id="formCalificar">
+                                            <h:inputHidden id="idUsuarioACalificar" value="#{usuarioBean.selectedUsuario.idUsuario}" />
 
-                                                <!-- Sistema de calificación visible solo si puedeCalificar es true -->
-                                                <p:rating value="#{usuarioBean.rating}" cancel="true" 
-                                                          rendered="#{usuarioBean.puedeCalificar}">
-                                                    <p:ajax event="rate" listener="#{usuarioBean.calificarUsuario}" update="@form" />
-                                                </p:rating>
-                                                
-                                                <p>#{usuarioBean.selectedUsuario.calificacionPromedio}  
+                                            <!-- Sistema de calificación visible solo si puedeCalificar es true -->
+                                            <p:rating value="#{usuarioBean.rating}" cancel="true" 
+                                                      rendered="#{usuarioBean.puedeCalificar}">
+                                                <p:ajax event="rate" listener="#{usuarioBean.calificarUsuario}" update="@form" />
+                                            </p:rating>
+
+                                            <!-- Mensaje alternativo si no puede calificar -->
+                                            <h:outputText value="No puedes calificar a este usuario." 
+                                                          rendered="#{!usuarioBean.puedeCalificar}" style="color: gray;" />
+
+                                            <p>Calificación actual: #{usuarioBean.selectedUsuario.calificacionPromedio}  
                                                 <span style="color: gold;">★</span>
                                             </p>
 
-                                                <!-- Mensaje alternativo si no puede calificar -->
-                                                <h:outputText value="No puedes calificar a este usuario." 
-                                                              rendered="#{!usuarioBean.puedeCalificar}" style="color: gray;" />
-                                            </h:form>
+                                        </h:form>
 
-                     
 
-                                           
-                                    
+
+
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
-
-                   
                 </div>
             </main>
+
+            <div class="grid">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h5 class="card-title">Visualizar subastas activas</h5>
+                            <span class="badge"></span>
+                        </div>
+                        <h:button value="Ver historial completo" styleClass="button" outcome="historialPerfiles.xhtml" />
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <script>
