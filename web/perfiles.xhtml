@@ -80,17 +80,16 @@
                 </div>
             </main>
 
-            <div class="grid">
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-header">
-                            <h5 class="card-title">Visualizar subastas activas</h5>
-                            <span class="badge"></span>
-                        </div>
-                        <h:button value="Ver historial completo" styleClass="button" outcome="historialPerfiles.xhtml" />
-                    </div>
-                </div>
-            </div>
+           <div class="subastas-activas-container">
+    <div class="subastas-activas-card">
+        <div class="subastas-activas-header">
+            <h3 class="subastas-activas-title">Visualizar subastas activas de #{usuarioBean.selectedUsuario.nombre}</h3>
+            <span class="subastas-activas-badge">Nuevas</span>
+        </div>
+        <p class="subastas-activas-description">Explora las subastas en curso y participa en emocionantes oportunidades.</p>
+        <h:button value="Ver historial completo" styleClass="button" outcome="historialPerfiles.xhtml" />
+    </div>
+</div>
 
         </div>
 
