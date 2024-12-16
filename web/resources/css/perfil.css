@@ -418,3 +418,68 @@ body .ui-selectonemenu-panel {
 .button.w-100:hover {
     background: linear-gradient(90deg, #536c8d, #5c4f79);
 }
+
+
+
+.card-activos {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.subastas-activas-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2rem;
+    padding: 0 1rem;
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.subastas-activas-card {
+    background: linear-gradient(135deg, #ffffff, #f0f4f8);
+    border-radius: 1rem;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    width: 100%;
+    max-width: 700px;
+    margin-right: calc(20% - 2rem); 
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.subastas-activas-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.subastas-activas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.subastas-activas-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0;
+}
+
+.subastas-activas-badge {
+    background-color: #4f8b89;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.subastas-activas-description {
+    color: #4a5568;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+}
