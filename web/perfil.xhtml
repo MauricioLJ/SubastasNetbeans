@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Perfil</title>
         <link rel="stylesheet" href="resources/css/perfil.css" />
@@ -39,7 +40,8 @@
                                                      oncomplete="PF('editarPerfilDialog').show()" 
                                                      update=":formEditarPerfil:formEditarPerfilContent" 
                                                      icon="pi pi-user-edit"
-                                                     styleClass="btn btn-outline-primary" />
+                                                     styleClass="btn btn-outline-primary"
+                                                     style="background-color: #5c4f79; border-color: #5c4f79; color: white;"/>
                                 </div>
                                 <div class="mb-3">
                                     <p class="text-muted mb-0">Correo electrónico</p>
@@ -70,41 +72,52 @@
                 </div>
             </main>
 
-          <!-- Historial de transacciones -->
-          
-           <f:metadata>
-            <f:event type="preRenderView" listener="#{usuarioBean.cargarHistorial}" />
-        </f:metadata>
-          
-<div class="grid centered-content">
-    <div class="offer-history-card">
-        <div class="card-content">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="card-title">Historial de Ofertas</h5>
-            </div>
-            <p:dataView id="dv-historial" var="puja" value="#{usuarioBean.historialPujas}" layout="grid" rows="1">
-                <p:dataViewGridItem>
-                    <div class="transaction-item">
-                        <div class="transaction-info">
-                            <p class="transaction-title">
-                                <strong>#{puja.subasta.nombre}</strong>
-                            </p>
-                            <p class="transaction-date">Fecha: #{puja.fechaPuja}</p>
+            <!-- Historial de transacciones -->
+
+            <f:metadata>
+                <f:event type="preRenderView" listener="#{usuarioBean.cargarHistorial}" />
+            </f:metadata>
+
+            <div class="history-container">
+                <div class="history-card">
+                    <div class="history-card-content">
+
+                        <div class="title-badge-container">
+                            <h5 class="history-title">Historial de Ofertas</h5>
+                            <span class="badge">#{usuarioBean.historialPujas.size()} Ofertas</span>
                         </div>
-                        <div class="transaction-amount">
-                            $#{puja.monto}
+
+                        <!-- Muestra las primeras 2 ofertas -->
+                        <ui:repeat value="#{usuarioBean.historialPujas}" var="puja" varStatus="status">
+                            <h:panelGroup rendered="#{status.index lt 2}">
+                                <div class="history-item">
+                                    <div class="history-item-info">
+                                        <p class="history-item-title">
+                                            <strong>#{puja.subasta.nombre}</strong>
+                                        </p>
+                                        <p class="history-item-date">
+                                            Fecha: #{puja.fechaPuja}
+                                        </p>
+                                    </div>
+                                    <div class="history-item-amount">
+                                        <h:outputText value="#{puja.monto}">
+                                            <f:convertNumber type="currency" currencySymbol="$" />
+                                        </h:outputText>
+                                    </div>
+                                </div>
+                            </h:panelGroup>
+                        </ui:repeat>
+
+                        <!-- Botón para ver historial completo -->
+                        <div class="history-footer">
+                            <h:button value="Ver historial completo" styleClass="button" outcome="historialTrans.xhtml" />
                         </div>
                     </div>
-                </p:dataViewGridItem>
-            </p:dataView>
-            <h:button value="Ver historial completo" styleClass="button" outcome="historialTrans.xhtml" />
-        </div>
-    </div>
-</div>
+                </div>
+            </div>
 
 
 
-            
         </div>
 
         <!-- editar perfil -->
@@ -123,7 +136,7 @@
                             <p:fileUpload id="files" requiredMessage="Por favor, seleccione una imagen." 
                                           value="#{usuarioBean.files}" mode="simple" skinSimple="true" 
                                           allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
-                            <p:commandButton value="Submit" actionListener="#{usuarioBean.handleFileUpload}" styleClass="mt-3 ui-button-outlined block" process="@form"/>
+                            <p:commandButton value="Confirma aquí tu foto" actionListener="#{usuarioBean.handleFileUpload}" styleClass="mt-3 ui-button-outlined block" process="@form"/>
                         </div>
                     </div>
                     <div class="form-group">
