@@ -56,22 +56,26 @@
                                     <div class="d-flex align-items-center">
 
                                         <h:form id="formCalificar">
+                                            <!-- Campo oculto para ID del usuario -->
                                             <h:inputHidden id="idUsuarioACalificar" value="#{usuarioBean.selectedUsuario.idUsuario}" />
 
-                                            <!-- Sistema de calificación visible solo si puedeCalificar es true -->
-                                            <p:rating value="#{usuarioBean.rating}" cancel="true" 
-                                                      rendered="#{usuarioBean.puedeCalificar}">
-                                                <p:ajax event="rate" listener="#{usuarioBean.calificarUsuario}" update="@form" />
+                                            <!-- Sistema de calificación -->
+                                            <p:rating value="#{usuarioBean.rating}" cancel="true" rendered="#{usuarioBean.puedeCalificar}">
+                                                <p:ajax event="rate" 
+                                                        listener="#{usuarioBean.calificarUsuario}" 
+                                                        oncomplete="window.location.reload();" />
                                             </p:rating>
 
                                             <!-- Mensaje alternativo si no puede calificar -->
                                             <h:outputText value="No puedes calificar a este usuario." 
                                                           rendered="#{!usuarioBean.puedeCalificar}" style="color: gray;" />
 
+                                            <!-- Calificación actual -->
                                             <p>Calificación actual: #{usuarioBean.selectedUsuario.calificacionPromedio}  
                                                 <span style="color: gold;">★</span>
                                             </p>
                                         </h:form>
+
                                     </div>
                                 </div>
                             </div>
