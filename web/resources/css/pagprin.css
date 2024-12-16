@@ -455,3 +455,11 @@ body .ui-tabs.ui-tabs-top > .ui-tabs-nav {
 .ui-dialog {
     z-index: 9999 !important;
 }
+
+.intro-text p {
+    font-size: 1.1rem; /* Tamaño de fuente más claro */
+    font-weight: 500; /* Peso de la fuente */
+    margin-bottom: 1rem; /* Espaciado hacia el DataView */
+    text-align: center; /* Centrado opcional */
+    color: #6c757d; /* Color gris suave */
+}
