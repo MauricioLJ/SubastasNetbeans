@@ -73,7 +73,6 @@
             </main>
 
             <!-- Historial de transacciones -->
-
             <f:metadata>
                 <f:event type="preRenderView" listener="#{usuarioBean.cargarHistorial}" />
             </f:metadata>
@@ -108,7 +107,6 @@
                             </h:panelGroup>
                         </ui:repeat>
 
-                        <!-- Botón para ver historial completo -->
                         <div class="history-footer">
                             <h:button value="Ver historial completo" styleClass="button" outcome="historialTrans.xhtml" />
                         </div>
@@ -120,7 +118,6 @@
 
         </div>
 
-        <!-- editar perfil -->
         <p:dialog header="Editar Perfil" widgetVar="editarPerfilDialog" modal="true" responsive="true"
                   dynamic="true" styleClass="custom-dialog" resizable="false">
             <h:form id="formEditarPerfil" enctype="multipart/form-data">
@@ -172,17 +169,14 @@
             </h:form>
         </p:dialog>
 
-        <!-- Diálogo de confirmación -->
         <p:confirmDialog header="Confirmación" message="¿Está seguro de que desea actualizar sus datos?" 
                          widgetVar="confirmUpdateDialog">
             <h:form>
-                <!-- Botón Sí -->
                 <p:commandButton value="Sí" icon="pi pi-check" 
                                  action="#{usuarioBean.actualizarPerfil}" 
                                  update=":formEditarPerfil:formEditarPerfilContent"
                                  oncomplete="PF('confirmUpdateDialog').hide(); PF('editarPerfilDialog').hide(); window.location.reload();"
                                  styleClass="ui-button-success" />
-                <!-- Botón No -->
                 <p:commandButton value="No" icon="pi pi-times" 
                                  onclick="PF('confirmUpdateDialog').hide()" 
                                  styleClass="ui-button-secondary" type="button" />
