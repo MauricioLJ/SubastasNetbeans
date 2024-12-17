@@ -14,6 +14,21 @@
     --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
+*{
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    overflow-x: hidden;
+}
+
+.container {
+    margin-top: 2rem;
+}
+
 .background-blur {
     position: fixed;
     top: 0;
@@ -21,28 +36,16 @@
     width: 100%;
     height: 100%;
     backdrop-filter: blur(3px);
-    z-index: 0; /* Asegura que esté detrás del contenido */
+    z-index: -1; /* Asegura que esté detrás del contenido */
     pointer-events: none; /* Evita bloquear interacciones */
-}
-
-.main-container {
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-}
-
-.container {
-    max-width: 1200px;
-    padding: 2rem;
-    z-index: 1;
 }
 
 
 .auction-details {
-    background-color: white;
+    background: rgba(255, 255, 255, 0.9);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    overflow: hidden;
+    padding: 1.5rem;
     transition: all 0.3s ease;
 }
 
@@ -54,72 +57,97 @@
 }
 
 .auction-image-container {
-    border-radius: var(--border-radius);
-    overflow: hidden;
     position: relative;
-    padding: 1.5rem;
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
 }
 
-#auction-image {
+.auction-image-container img {
     width: 100%;
-    height: 500px;
+    height: auto;
     object-fit: cover;
     transition: transform 0.4s ease;
 }
 
-.auction-image-container:hover #auction-image {
+.auction-image-container:hover img {
     transform: scale(1.05);
 }
 
 .auction-info {
-    padding: 2rem;
+    padding: 1rem;
+    text-align: left;
+}
+
+#auction-name {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.details-section ul {
+    list-style: none;
+    padding: 0;
 }
 
 .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
     border: none;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 5px;
 }
 
 .list-group-item:last-child {
     border-bottom: none;
 }
 
+.list-group-item .title {
+    font-weight: bold;
+}
+
 .badge {
-    background-color: var(--secondary-color);
+    background-color: var(--accent-color);
+    font-size: 0.85rem;
+}
+
+
+.bid-section .btn {
+    width: 100%;
+    font-weight: bold;
+    font-size: 1rem;
+    border-radius: var(--border-radius);
+    transition: all 0.3s ease;
 }
 
 .bid-section .btn-primary {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
-    transition: all 0.3s ease;
-    width: 100%;
-    font-size: 12px;
-    font-weight: 600;
-    border-radius: 8px;
 }
 
 .bid-section .btn-primary:hover {
     background-color: var(--secondary-color);
     border-color: var(--secondary-color);
-    transform: translateY(-3px);
-    box-shadow: 0 4px 17px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow);
 }
 
 .bids-list-section {
-    background-color: #f8f9fa;
+    background: #ffffff;
     border-radius: var(--border-radius);
-    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    padding: 1rem;
 }
 
 .bids-list-section .list-group-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: white;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
     margin-bottom: 0.5rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: var(--box-shadow);
 }
 
 .bids-list-section .bid-details {
@@ -133,8 +161,8 @@
 }
 
 .bids-list-section .bid-user {
-    font-size: 0.9rem;
     color: var(--text-muted);
+    font-size: 0.9rem;
 }
 
 .bids-list-section .bid-time {
@@ -144,12 +172,12 @@
 }
 
 @media (max-width: 768px) {
-    #auction-image {
-        height: 300px;
+    .auction-info {
+        padding: 1rem 0.5rem;
     }
 
-    .auction-info {
-        padding: 1rem;
+    .bid-section .btn {
+        font-size: 0.875rem;
     }
 }
 

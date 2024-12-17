@@ -8,64 +8,65 @@
         <title>Historial de Pujas</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <link rel="stylesheet" href="resources/css/pagprin.css" />
+        <link rel="stylesheet" href="resources/css/carga.css"/>
     </h:head>
     <h:body>
         <f:metadata>
             <f:event type="preRenderView" listener="#{usuarioBean.cargarSubastasPorUsuario()}" />
         </f:metadata>
-
+        <div class="loading-screen"></div>
         <div id="particles-js"></div>
         <div id="header-container"></div>
         <div class="background-blur"></div>
-        
-         <div class="container my-3">
-         
+        <input type="hidden" id="currentUserId" value="#{sessionScope.usuario.idUsuario}" />
 
-    <h:outputText value="No se encontraron registros." rendered="#{empty usuarioBean.todasLasSubastas}" />
-   <p:dataView id="dv-subastas" var="subas" value="#{usuarioBean.subastasActivas}" layout="grid">
-    <p:dataViewGridItem>
-        <div class="card mb-4">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <i class="pi pi-tag text-primary me-2"></i>
-                    <p:dataList value="#{subas.categorias}" var="categoria" styleClass="m-0">
-                        <span class="badge bg-primary me-2">#{categoria.nombre}</span>
-                    </p:dataList>
-                </div>
+        <div class="container my-3">
 
-                <div class="text-center">
-                    <h:panelGroup rendered="#{not empty subas.imagen}">
-                        <h:graphicImage value="#{subas.imagen}" width="290" height="150" styleClass="img-fluid" />
-                    </h:panelGroup>
-                </div>
+            <h:outputText value="No se encontraron registros." rendered="#{empty usuarioBean.todasLasSubastas}" />
+            <p:dataView id="dv-subastas" var="subas" value="#{usuarioBean.subastasActivas}" layout="grid">
+                <p:dataViewGridItem>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <i class="pi pi-tag text-primary me-2"></i>
+                                <p:dataList value="#{subas.categorias}" var="categoria" styleClass="m-0">
+                                    <span class="badge bg-primary me-2">#{categoria.nombre}</span>
+                                </p:dataList>
+                            </div>
 
-                <p class="text-muted mb-2">
-                    <small>Fecha de inicio: #{subas.fechaInicio}</small>
-                </p>
+                            <div class="text-center">
+                                <h:panelGroup rendered="#{not empty subas.imagen}">
+                                    <h:graphicImage value="#{subas.imagen}" width="290" height="150" styleClass="img-fluid" />
+                                </h:panelGroup>
+                            </div>
 
-                <p class="text-muted mb-2">
-                    <h:link outcome="perfiles" value="Propietario: #{subas.propietario.nombre}" styleClass="text-decoration-none">
-                        <f:param name="id" value="#{subas.propietario.idUsuario}" />
-                    </h:link>
-                </p>
+                            <p class="text-muted mb-2">
+                                <small>Fecha de inicio: #{subas.fechaInicio}</small>
+                            </p>
 
-                <h5 class="card-title mb-2">#{subas.nombre}</h5>
-                <p class="card-text text-muted">#{subas.descripcion}</p>
+                            <p class="text-muted mb-2">
+                                <h:link outcome="perfiles" value="Propietario: #{subas.propietario.nombre}" styleClass="text-decoration-none">
+                                    <f:param name="id" value="#{subas.propietario.idUsuario}" />
+                                </h:link>
+                            </p>
 
-                <div class="d-flex justify-content-between align-items-center">
-                    <h:outputText value="Precio Inicial: #{subas.precioInicial}" styleClass="text-primary fw-bold">
-                        <f:convertNumber currencySymbol="$" type="currency" />
-                    </h:outputText>
+                            <h5 class="card-title mb-2">#{subas.nombre}</h5>
+                            <p class="card-text text-muted">#{subas.descripcion}</p>
 
-                   
-                    <h:link outcome="verSubasta" value="Ver subasta" styleClass="btn btn-primary btn-sm">
-                        <f:param name="id" value="#{subas.idSubasta}" />
-                    </h:link>
-                </div>
-            </div>
-        </div>
-    </p:dataViewGridItem>
-</p:dataView>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h:outputText value="Precio Inicial: #{subas.precioInicial}" styleClass="text-primary fw-bold">
+                                    <f:convertNumber currencySymbol="$" type="currency" />
+                                </h:outputText>
+
+
+                                <h:link outcome="verSubasta" value="Ver subasta" styleClass="btn btn-primary btn-sm">
+                                    <f:param name="id" value="#{subas.idSubasta}" />
+                                </h:link>
+                            </div>
+                        </div>
+                    </div>
+                </p:dataViewGridItem>
+            </p:dataView>
 
 
         </div>
@@ -78,11 +79,13 @@
                     })
                     .catch(error => console.error('Error al cargar el header:', error));
         </script>
+        <script src="resources/js/header-websocket.js"></script>
+        <script src="resources/js/websocket-connection.js"></script>
         <script src="resources/js/particles.js"></script>
         <script src="resources/js/app.js"></script>
         <!-- Add these scripts in the <h:head> section -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-        
+
     </h:body>
 </html>

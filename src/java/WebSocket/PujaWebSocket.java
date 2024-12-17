@@ -1,9 +1,11 @@
 package WebSocket;
 
+import Controller.NotificacionController;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.websocket.OnClose;
@@ -34,11 +36,13 @@ public class PujaWebSocket {
     @OnOpen
     public void onOpen(Session session) {
         activeSessions.add(session);
+        System.out.println("Sesión abierta para WebSocket de pujas.");
     }
     
     @OnClose
     public void onClose(Session session) {
         activeSessions.remove(session);
+        System.out.println("Sesión cerrada para WebSocket de pujas.");
     }
     
     @OnMessage
@@ -46,36 +50,38 @@ public class PujaWebSocket {
         try {
             JSONObject jsonMessage = new JSONObject(message);
             
-            // Validate message type
+            // Validar tipo de mensaje
             if (!"placeBid".equals(jsonMessage.getString("type"))) {
                 return;
             }
             
-            // Extract bid details
+            // Extraer detalles de la puja
             int subastaId = jsonMessage.getInt("subastaId");
             int usuarioId = jsonMessage.getInt("usuarioId");
             double monto = jsonMessage.getDouble("monto");
             
-            // Validate bid
+            // Obtener subasta y usuario
             ServicioSubasta servicioSubasta = new ServicioSubasta();
             Subasta subasta = servicioSubasta.leerSubasta(subastaId);
             
             ServicioUsuario servicioUsuario = new ServicioUsuario();
             Usuario usuario = servicioUsuario.leerUsuario(usuarioId);
             
-            // Validate auction and user exist
             if (subasta == null || usuario == null) {
-                sendErrorMessage(session, "Invalid auction or user");
+                sendErrorMessage(session, "Subasta o usuario no válido");
                 return;
             }
             
-            // Check auction status and bid validity
+            // Validar si la puja es válida
             if (!isValidBid(subasta, monto)) {
-                sendErrorMessage(session, "Invalid bid amount");
+                sendErrorMessage(session, "El monto de la puja no es válido");
                 return;
             }
+
+            // Obtener al usuario que tenía la puja más alta antes de la nueva puja
+            Usuario usuarioAnterior = getUsuarioConPujaMasAlta(subasta);
             
-            // Create and save bid
+            // Crear y guardar la nueva puja
             Puja puja = new Puja();
             puja.setSubasta(subasta);
             puja.setUsuario(usuario);
@@ -83,8 +89,17 @@ public class PujaWebSocket {
             
             ServicioPuja servicioPuja = new ServicioPuja();
             servicioPuja.crearPuja(puja);
+
+            // 🔥 Notificar al usuario superado (solo si no es el mismo usuario)
+            if (usuarioAnterior != null && !Objects.equals(usuarioAnterior.getIdUsuario(), usuario.getIdUsuario())) {
+                System.out.println("Usuario superado: " + usuarioAnterior.getIdUsuario());
+                
+                // Usar NotificacionController para enviar la notificación
+                NotificacionController notificacionController = new NotificacionController();
+                notificacionController.processBidNotification(subasta, usuarioAnterior, monto);
+            }
             
-            // Broadcast successful bid
+            // 🔥 Broadcast de la nueva puja a todos los usuarios
             broadcastBid(puja);
             
         } catch (JSONException e) {
@@ -93,12 +108,10 @@ public class PujaWebSocket {
     }
     
     private boolean isValidBid(Subasta subasta, double monto) {
-        // Check if auction is active
         if (!"Activo".equals(subasta.getEstadoSubasta())) {
             return false;
         }
         
-        // Get highest existing bid
         ServicioPuja servicioPuja = new ServicioPuja();
         List<Puja> existingBids = servicioPuja.listaPujasPorSubasta(subasta.getIdSubasta());
         
@@ -109,8 +122,22 @@ public class PujaWebSocket {
                 .max()
                 .orElse(subasta.getPrecioInicial());
         
-        // New bid must be higher than current highest bid
         return monto > highestBid;
+    }
+    
+    private Usuario getUsuarioConPujaMasAlta(Subasta subasta) {
+        ServicioPuja servicioPuja = new ServicioPuja();
+        List<Puja> existingBids = servicioPuja.listaPujasPorSubasta(subasta.getIdSubasta());
+        
+        if (existingBids.isEmpty()) {
+            return null;
+        }
+        
+        Puja highestBid = existingBids.stream()
+            .max((p1, p2) -> Double.compare(p1.getMonto(), p2.getMonto()))
+            .orElse(null);
+        
+        return highestBid != null ? highestBid.getUsuario() : null;
     }
     
     private void sendErrorMessage(Session session, String errorMessage) {

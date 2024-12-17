@@ -10,10 +10,13 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
         <script src="resources/js/websocket-connection.js"></script>
+        <link rel="stylesheet" href="resources/css/carga.css"/>
     </h:head>
     <h:body>
+        <div class="loading-screen"></div>
         <div id="particles-js"></div>
         <div id="header-container"></div>
+        <input type="hidden" id="currentUserId" value="#{sessionScope.usuario.idUsuario}" />
 
         <div class="min-vh-100">
             <h:inputHidden id="currentUserId" value="#{usuarioBean.usuario.idUsuario}" />
@@ -54,16 +57,20 @@
                                 <div>
                                     <p class="text-muted mb-0">Mi calificación</p>
                                     <div class="d-flex align-items-center">
-                                        
-                                        
+
+
                                         <h:form id="formCalificar">
                                             <h:inputHidden id="idUsuarioACalificar" value="#{usuarioBean.usuario.idUsuario}" />
-                                            
-                                            <p>#{usuarioBean.usuario.calificacionPromedio}  
+
+                                            <p>
+                                                Calificación actual: 
+                                                <h:outputText value="#{usuarioBean.selectedUsuario.calificacionPromedio}">
+                                                    <f:convertNumber minFractionDigits="1" maxFractionDigits="1" />
+                                                </h:outputText>
                                                 <span style="color: gold;">★</span>
                                             </p>
                                         </h:form>
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -73,6 +80,7 @@
             </main>
 
             <!-- Historial de transacciones -->
+
             <f:metadata>
                 <f:event type="preRenderView" listener="#{usuarioBean.cargarHistorial}" />
             </f:metadata>
@@ -83,7 +91,6 @@
 
                         <div class="title-badge-container">
                             <h5 class="history-title">Historial de Ofertas</h5>
-                            <span class="badge">#{usuarioBean.historialPujas.size()} Ofertas</span>
                         </div>
 
                         <!-- Muestra las primeras 2 ofertas -->
@@ -107,6 +114,7 @@
                             </h:panelGroup>
                         </ui:repeat>
 
+                        <!-- Botón para ver historial completo -->
                         <div class="history-footer">
                             <h:button value="Ver historial completo" styleClass="button" outcome="historialTrans.xhtml" />
                         </div>
@@ -118,6 +126,7 @@
 
         </div>
 
+        <!-- editar perfil -->
         <p:dialog header="Editar Perfil" widgetVar="editarPerfilDialog" modal="true" responsive="true"
                   dynamic="true" styleClass="custom-dialog" resizable="false">
             <h:form id="formEditarPerfil" enctype="multipart/form-data">
@@ -169,31 +178,38 @@
             </h:form>
         </p:dialog>
 
+        <!-- Diálogo de confirmación -->
         <p:confirmDialog header="Confirmación" message="¿Está seguro de que desea actualizar sus datos?" 
                          widgetVar="confirmUpdateDialog">
             <h:form>
+                <!-- Botón Sí -->
                 <p:commandButton value="Sí" icon="pi pi-check" 
                                  action="#{usuarioBean.actualizarPerfil}" 
                                  update=":formEditarPerfil:formEditarPerfilContent"
                                  oncomplete="PF('confirmUpdateDialog').hide(); PF('editarPerfilDialog').hide(); window.location.reload();"
                                  styleClass="ui-button-success" />
+                <!-- Botón No -->
                 <p:commandButton value="No" icon="pi pi-times" 
                                  onclick="PF('confirmUpdateDialog').hide()" 
                                  styleClass="ui-button-secondary" type="button" />
             </h:form>
         </p:confirmDialog>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-                                     // Cargar el header desde un archivo externo
-                                     fetch('header.xhtml')
-                                             .then(response => response.text())
-                                             .then(data => {
-                                                 document.getElementById('header-container').innerHTML = data;
-                                             })
-                                             .catch(error => console.error('Error al cargar el header:', error));
+            // Cargar el header desde un archivo externo
+            fetch('header.xhtml')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('header-container').innerHTML = data;
+                    })
+                    .catch(error => console.error('Error al cargar el header:', error));
         </script>
+        <script src="resources/js/header-websocket.js"></script>
+        <script src="resources/js/websocket-connection.js"></script>
         <script src="resources/js/particles.js"></script>
         <script src="resources/js/app.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     </h:body>
 </html>

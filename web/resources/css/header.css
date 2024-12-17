@@ -178,3 +178,120 @@ nav ul li a {
 body .ui-autocomplete-panel .ui-autocomplete-items {
     z-index: 10000 !important;
 }
+/* Notification Styles */
+#notificationDropdown {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    transition: color 0.3s ease;
+}
+
+#notificationDropdown:hover {
+    color: #fff;
+}
+
+#notification-badge {
+    font-size: 0.7rem;
+    padding: 0.25em 0.6em;
+}
+
+#notification-container {
+    min-width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    /* Hide scrollbar but maintain scroll functionality */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+#notification-container::-webkit-scrollbar {
+    display: none;
+}
+
+#notification-container .dropdown-header {
+    font-weight: 600;
+    color: #fff;
+    padding: 0.5rem 1rem;
+}
+
+#notification-container .dropdown-item {
+    white-space: normal;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#notification-container .dropdown-item:last-child {
+    border-bottom: none;
+}
+
+/* Dropdown Styling */
+.dropdown-menu {
+    background: rgba(92, 79, 121, 0.9);
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(15px);
+    color: #fff;
+    margin-top: 10px;
+    padding: 0.5rem 0;
+}
+
+.dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid rgba(92, 79, 121, 0.8);
+}
+
+.dropdown-item {
+    color: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+    padding: 0.5rem 1.5rem;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0);
+    color: #fff;
+}
+
+.dropdown-item:focus {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.nav-link.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+.nav-link.dropdown-toggle::after {
+    margin-left: 0.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    transition: transform 0.3s ease;
+}
+
+.nav-link.dropdown-toggle[aria-expanded="true"]::after {
+    transform: rotate(180deg);
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .navbar {
+        width: calc(100% - 20px);
+        margin: 0 10px;
+    }
+}
+
+.custom-dialog {
+    z-index: 1050 !important; /* Asegura que el diálogo esté al frente */
+}
+
+body .ui-autocomplete-panel .ui-autocomplete-items {
+    z-index: 10000 !important;
+}

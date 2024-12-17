@@ -1,0 +1,87 @@
+/* Importación de Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+/* Variables de color */
+:root {
+    --primary-color: #4f8b89;
+    --secondary-color: #536c8d;
+    --text-muted: #6c757d;
+    --background-color: #f4f6f7;
+}
+
+/* General */
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-muted);
+    margin: 0;
+    padding: 0;
+}
+
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+}
+
+.background-blur {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(3px);
+    background-color: rgba(0, 0, 0, 0.1); /* Slight transparent overlay */
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Página principal del error */
+.container {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+    color: white !important;
+    padding: 12px 15px !important;
+    border-radius: 10px !important;
+    transition: all 0.3s ease !important;
+    outline: none !important;
+    max-width: 700px  !important;
+    width: 90% !important;
+    
+}
+
+h1.display-1 {
+    font-size: 8rem;
+    color: #613860 !important;
+}
+
+h2 {
+    font-weight: 600;
+    color: #fff !important;
+}
+
+.btn-primary {
+    background-color: #613860 !important;
+    border: none !important;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #5c4f79 !important;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    h1.display-1 {
+        font-size: 5rem;
+    }
+
+    .header {
+        flex-direction: column;
+        text-align: center;
+    }
+}

@@ -52,27 +52,23 @@ public class UsuarioBean implements Serializable {
     private boolean puedeCalificar;
     private List<Puja> historialPujas;
     private List<Subasta> todasLasSubastas;
-    
-    
-   public UsuarioBean() {
-    HttpSession session = SessionUtils.getSession();
-    this.usuario = (Usuario) session.getAttribute("usuario");
-    this.historialPujas = new ArrayList<>();
-    this.todasLasSubastas = new ArrayList<>();
-    
-  if (this.usuario != null) {
-    this.selectUsuario = this.usuario; 
-    this.selectedUsuario = this.usuario; 
-    cargarSubastasPorUsuario();
-} else {
-    this.selectUsuario = new Usuario();
-}
 
-    
-}
+    public UsuarioBean() {
+        HttpSession session = SessionUtils.getSession();
+        this.usuario = (Usuario) session.getAttribute("usuario");
+        this.historialPujas = new ArrayList<>();
+        this.todasLasSubastas = new ArrayList<>();
 
+        if (this.usuario != null) {
+            this.selectUsuario = this.usuario;
+            this.selectedUsuario = this.usuario;
+            cargarSubastasPorUsuario();
+        } else {
+            this.selectUsuario = new Usuario();
+        }
 
-   
+    }
+
     public Usuario getUsuario() {
         if (usuario == null) {
             HttpSession session = SessionUtils.getSession();
@@ -157,47 +153,42 @@ public class UsuarioBean implements Serializable {
         return null;
     }
 
-  public void calificarUsuario() {
-    if (rating == null) {
-        FacesContext.getCurrentInstance().addMessage(null, 
-            new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Calificación no válida."));
-        return;
-    }
-
-    try {
-       
-        if (selectedUsuario == null || selectedUsuario.getIdUsuario() == null) {
-            FacesContext.getCurrentInstance().addMessage(null, 
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario del perfil no encontrado."));
+    public void calificarUsuario() {
+        if (rating == null) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Calificación no válida."));
             return;
         }
 
-   
-        Usuario usuarioACalificar = servicioUsuario.leerUsuario(selectedUsuario.getIdUsuario());
-        if (usuarioACalificar == null) {
-            FacesContext.getCurrentInstance().addMessage(null, 
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario del perfil no encontrado en la base de datos."));
-            return;
+        try {
+
+            if (selectedUsuario == null || selectedUsuario.getIdUsuario() == null) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario del perfil no encontrado."));
+                return;
+            }
+
+            Usuario usuarioACalificar = servicioUsuario.leerUsuario(selectedUsuario.getIdUsuario());
+            if (usuarioACalificar == null) {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario del perfil no encontrado en la base de datos."));
+                return;
+            }
+
+            servicioUsuario.actualizarCalificacion(usuarioACalificar, rating);
+
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Calificación registrada con éxito."));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo registrar la calificación."));
+            e.printStackTrace();
         }
-
-    
-        servicioUsuario.actualizarCalificacion(usuarioACalificar, rating);
-
-        FacesContext.getCurrentInstance().addMessage(null, 
-            new FacesMessage("Calificación registrada con éxito."));
-    } catch (Exception e) {
-        FacesContext.getCurrentInstance().addMessage(null, 
-            new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo registrar la calificación."));
-        e.printStackTrace();
     }
-}
-
-    
-    
 
     public boolean isPuedeCalificar() {
-    return puedeCalificar;
-}
+        return puedeCalificar;
+    }
 
     public void llevarPefiles(int idUsuario) {
         try {
@@ -210,24 +201,23 @@ public class UsuarioBean implements Serializable {
         }
     }
 
-  public void cargarPerfiles() {
-    FacesContext context = FacesContext.getCurrentInstance();
-    Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-    String idParam = params.get("id");
+    public void cargarPerfiles() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String idParam = params.get("id");
 
-    if (idParam != null) {
-        int idUsuario = Integer.parseInt(idParam);
-        selectedUsuario = servicioUsuario.leerUsuario(idUsuario);
+        if (idParam != null) {
+            int idUsuario = Integer.parseInt(idParam);
+            selectedUsuario = servicioUsuario.leerUsuario(idUsuario);
+        }
+
+        historialPujas = servicioPuja.obtenerHistorialPorUsuario(usuario.getIdUsuario());
+
+        puedeCalificar = historialPujas.stream()
+                .anyMatch(puja -> puja.getSubasta().getPropietario().getIdUsuario().equals(selectedUsuario.getIdUsuario())
+                && "Finalizado".equals(puja.getSubasta().getEstadoSubasta()));
     }
 
-    historialPujas = servicioPuja.obtenerHistorialPorUsuario(usuario.getIdUsuario());
-
-    puedeCalificar = historialPujas.stream()
-            .anyMatch(puja -> puja.getSubasta().getPropietario().getIdUsuario().equals(selectedUsuario.getIdUsuario()) &&
-                              "Finalizado".equals(puja.getSubasta().getEstadoSubasta()));
-}
-  
-  
     public ServicioUsuario getServicioUsuario() {
         return servicioUsuario;
     }
@@ -239,9 +229,8 @@ public class UsuarioBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario no autenticado o ID no válido."));
         }
     }
-    
-    
-      public void  cargarSubastasPorUsuario() {
+
+    public void cargarSubastasPorUsuario() {
         if (selectUsuario != null && selectUsuario.getIdUsuario() != null) {
             this.todasLasSubastas = servicioSubasta.listaSubastasPorUsuario(selectedUsuario.getIdUsuario());
         } else {
@@ -249,17 +238,15 @@ public class UsuarioBean implements Serializable {
         }
     }
 
-      public List<Subasta> getSubastasActivas() {
-    if (todasLasSubastas != null) {
-        return todasLasSubastas.stream()
-                .filter(subasta -> "activo".equalsIgnoreCase(subasta.getEstadoSubasta()))
-                .collect(Collectors.toList());
+    public List<Subasta> getSubastasActivas() {
+        if (todasLasSubastas != null) {
+            return todasLasSubastas.stream()
+                    .filter(subasta -> "activo".equalsIgnoreCase(subasta.getEstadoSubasta()))
+                    .collect(Collectors.toList());
+        }
+        return new ArrayList<>();
     }
-    return new ArrayList<>();
-}
 
-      
-  
     public void setServicioUsuario(ServicioUsuario servicioUsuario) {
         this.servicioUsuario = servicioUsuario;
     }
@@ -345,7 +332,6 @@ public class UsuarioBean implements Serializable {
         this.calificacionPromedio = calificacionPromedio;
     }
 
-
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
@@ -354,15 +340,12 @@ public class UsuarioBean implements Serializable {
         this.puedeCalificar = puedeCalificar;
     }
 
-     public List<Subasta> getTodasLasSubastas() {
+    public List<Subasta> getTodasLasSubastas() {
         return todasLasSubastas;
     }
 
     public void setTodasLasSubastas(List<Subasta> todasLasSubastas) {
         this.todasLasSubastas = todasLasSubastas;
     }
-    
-}
-    
-    
 
+}

@@ -1,4 +1,5 @@
-/* Updated styles to remove white background completely */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
 :root {
     --primary-color: #3498db;
     --secondary-color: #2ecc71;
@@ -6,6 +7,10 @@
     --background-color: #f4f6f7;
     --border-radius: 8px;
     --transition-speed: 0.3s;
+}
+
+*{
+    font-family: 'Montserrat', sans-serif;
 }
 
 body {
@@ -17,17 +22,21 @@ body {
 
 .container {
     background-color: rgba(255, 255, 255, 0.3) !important;
-    border: 1px solid rgba(255, 255, 255, 0.5) !important;
     color: white !important;
     padding: 12px 15px !important;
     font-size: 16px !important;
     border-radius: 10px !important;
     transition: all 0.3s ease !important;
     outline: none !important;
+    width: 90%;
     max-width: 1650px !important;
     display: flex;
     justify-content: center; /* Esto centrará horizontalmente */
     align-items: center; /* Esto centrará verticalmente */
+}
+
+.my-3 {
+    width: 90% !important;
 }
 
 #particles-js {
@@ -55,7 +64,6 @@ body {
     display: flex;
     justify-content: center;
     margin: 0 auto;
-    max-width: 1500px; /* Coincide con el max-width de tu contenedor */
     width: 100%;
 }
 
@@ -171,11 +179,11 @@ body .ui-tabs.ui-tabs-top > .ui-tabs-nav {
     justify-content: center !important;
 }
 
-/* Modern Autocomplete Styles */
 .search-subas {
     width: 90%;
     margin-left: auto;
     margin-right: auto;
+    min-height: 60px;
 }
 
 

@@ -1,0 +1,39 @@
+/* Estilos generales */
+
+/* Contenedor de la pantalla de carga */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #5c4f79;
+    z-index: 9999;
+    animation: slideDown 0.3s ease-in-out forwards;
+}
+
+/* Animación que mueve la pantalla de arriba hacia abajo */
+@keyframes slideDown {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+/* Contenido de la página (esto se verá después de la animación) */
+.content {
+    opacity: 0;
+    animation: fadeIn 0.8s ease-in forwards 1.5s; /* Delay de 1.5s para que se muestre después de la animación */
+}
+
+/* Animación de aparición de la página */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

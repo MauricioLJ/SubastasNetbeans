@@ -256,18 +256,28 @@ public class SubastaController implements Serializable {
 
                 servicioNotificacion.crearNotificacion(notificacion);
 
-                // Enviar notificación en tiempo real
+                // Enviar notificacion en tiempo real
                 SubastaWebSocket.sendNotification(
                         ganador.getIdUsuario(),
-                        "¡Felicidades! Has ganado la subasta de " + subasta.getNombre());
+                        "¡Felicidades! Has ganado la subasta de " + subasta.getNombre()
+                );
+
+                String cuerpoCorreo = "<!DOCTYPE html>"
+                        + "<html>"
+                        + "<body style='font-family: Arial, sans-serif; background-color: #f4f4f9; color: #333;'>"
+                        + "<div style='max-width: 600px; margin: auto; background-color: #fff; padding: 20px; border-radius: 10px;'>"
+                        + "<h1 style='text-align: center; color: #27ae60;'>¡Felicidades, " + ganador.getNombre() + "!</h1>"
+                        + "<p style='font-size: 16px;'>Has ganado la subasta <strong>" + subasta.getNombre() + "</strong> con tu oferta de <strong>" + subasta.getPujaGanadora().getMonto() + "</strong>.</p>"
+                        + "<p style='font-size: 16px;'>Gracias por participar en nuestra plataforma. Te invitamos a seguir participando en nuestras subastas.</p>"
+                        + "<p style='font-size: 14px; color: #888;'>Este es un correo generado automáticamente, por favor no respondas a este mensaje.</p>"
+                        + "</div>"
+                        + "</body>"
+                        + "</html>";
 
                 EmailNotificacion.enviarNotificacion(
                         ganador.getCorreo(),
                         "¡Felicidades! Has ganado la subasta",
-                        "Hola " + ganador.getNombre() + ",\n\n"
-                        + "Has ganado la subasta '" + subasta.getNombre() + "' con tu oferta de "
-                        + subasta.getPujaGanadora().getMonto() + ". ¡Felicidades!\n\n"
-                        + "Gracias por participar en nuestra plataforma."
+                        cuerpoCorreo
                 );
             }
         }
@@ -276,11 +286,10 @@ public class SubastaController implements Serializable {
     public void enviarNotificacionVendedor(Subasta subasta) {
         if (subasta != null && subasta.getPropietario() != null) {
             Usuario vendedor = subasta.getPropietario();
-            String mensaje = "La subasta de " + subasta.getNombre()
-                    + " ha finalizado. "
+            String mensaje = "La subasta de " + subasta.getNombre() + " ha finalizado. "
                     + (subasta.getPujaGanadora() != null
-                    ? "El ganador es " + subasta.getPujaGanadora().getUsuario().getNombre() + " con una oferta de "
-                    + subasta.getPujaGanadora().getMonto() + "."
+                    ? "El ganador es " + subasta.getPujaGanadora().getUsuario().getNombre()
+                    + " con una oferta de " + subasta.getPujaGanadora().getMonto() + "."
                     : "No hubo ganador.");
 
             Notificacion notificacion = new Notificacion();
@@ -290,16 +299,31 @@ public class SubastaController implements Serializable {
 
             servicioNotificacion.crearNotificacion(notificacion);
 
-            // Enviar notificación en tiempo real
+            // Enviar notificacion en tiempo real
             SubastaWebSocket.sendNotification(
                     vendedor.getIdUsuario(),
-                    mensaje);
+                    mensaje
+            );
+
+            String cuerpoCorreo = "<!DOCTYPE html>"
+                    + "<html>"
+                    + "<body style='font-family: Arial, sans-serif; background-color: #f4f4f9; color: #333;'>"
+                    + "<div style='max-width: 600px; margin: auto; background-color: #fff; padding: 20px; border-radius: 10px;'>"
+                    + "<h1 style='text-align: center; color: #3498db;'>Resultado de la subasta</h1>"
+                    + "<p style='font-size: 16px;'>La subasta <strong>" + subasta.getNombre() + "</strong> ha finalizado.</p>"
+                    + "<p style='font-size: 16px;'>" + (subasta.getPujaGanadora() != null
+                    ? "El ganador es <strong>" + subasta.getPujaGanadora().getUsuario().getNombre() + "</strong> con una oferta de <strong>" + subasta.getPujaGanadora().getMonto() + "</strong>."
+                    : "No hubo ganador para esta subasta.") + "</p>"
+                    + "<p style='font-size: 16px;'>Gracias por utilizar nuestra plataforma. Esperamos que sigas subastando con nosotros.</p>"
+                    + "<p style='font-size: 14px; color: #888;'>Este es un correo generado automáticamente, por favor no respondas a este mensaje.</p>"
+                    + "</div>"
+                    + "</body>"
+                    + "</html>";
 
             EmailNotificacion.enviarNotificacion(
                     vendedor.getCorreo(),
                     "Resultado de la subasta: " + subasta.getNombre(),
-                    "Hola " + vendedor.getNombre() + ",\n\n"
-                    + mensaje + "\n\nGracias por utilizar nuestra plataforma."
+                    cuerpoCorreo
             );
         }
     }
@@ -323,7 +347,7 @@ public class SubastaController implements Serializable {
             if (fileName != null) {
                 String destinationFile = FacesContext.getCurrentInstance()
                         .getExternalContext()
-                        .getRealPath("C:\\Users\\Kirsten\\Documents\\NetBeansProjects\\SubastasNetbeans\\web\\resources\\imagenes\\");
+                        .getRealPath("C:\\Users\\Admin\\Documents\\NetBeansProjects\\SubastasNetbeans\\web\\resources\\imagenes\\");
 
                 destinationFile = "C:\\Users\\Admin\\Documents\\NetBeansProjects\\SubastasNetbeans\\web\\resources\\imagenes\\";
                 String[] partesArchivo = fileName.split(Pattern.quote("."));

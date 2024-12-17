@@ -7,17 +7,21 @@
     <h:head>
         <title>Ayuda</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <link rel="stylesheet" href="resources/css/ayuda.css" />    
+        <link rel="stylesheet" href="resources/css/ayuda.css" />
+        <link rel="stylesheet" href="resources/css/carga.css"/>
+
     </h:head>
     <h:body>
+        <div class="loading-screen"></div>
         <div id="particles-js"></div>
         <div id="header-container"></div>
         <div class="background-blur"></div>
-        
+        <input type="hidden" id="currentUserId" value="#{sessionScope.usuario.idUsuario}" />
+
         <div class="container my-3">
             <div class="accordion-container">
                 <h2 class="section-title">Preguntas Frecuentes - Plataforma de Subastas en Tiempo Real</h2>
-                
+
                 <h:form>
                     <div class="custom-accordion">
                         <p:accordionPanel dynamic="true" cache="true">
@@ -131,6 +135,8 @@
                     })
                     .catch(error => console.error('Error al cargar el header:', error));
         </script>
+        <script src="resources/js/header-websocket.js"></script>
+        <script src="resources/js/websocket-connection.js"></script>
         <script src="resources/js/particles.js"></script>
         <script src="resources/js/app.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>

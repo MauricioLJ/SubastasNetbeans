@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controller;
 
 import jakarta.mail.Authenticator;
@@ -23,7 +19,7 @@ import javax.faces.context.FacesContext;
 public class EmailNotificacion {
 
     public static void enviarNotificacion(String destinatario, String asunto, String mensaje) {
-        String user = "daguilarzeledon.23@gmail.com";
+        String user = "mauriciolj128@gmail.com";
         String host = "smtp.gmail.com";
 
         Properties properties = System.getProperties();
@@ -35,7 +31,7 @@ public class EmailNotificacion {
         Session session = Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("daguilarzeledon.23@gmail.com", "olcq afyr gmmv basq");
+                return new PasswordAuthentication("mauriciolj128@gmail.com", "wpzh hpvo xcdk pvrb");
             }
         });
 
@@ -44,11 +40,15 @@ public class EmailNotificacion {
             message.setFrom(new InternetAddress(user));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatario));
             message.setSubject(asunto);
-            message.setText(mensaje);
             
+            // Cambio importante: Usar setContent para enviar el mensaje como HTML
+            message.setContent(mensaje, "text/html; charset=utf-8");
             
             Transport.send(message);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "Se han notificado a los usuarios por correo electrónico."));
+            
+            FacesContext.getCurrentInstance().addMessage(null, 
+                new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", 
+                "Se han notificado a los usuarios por correo electrónico."));
         } catch (MessagingException e) {
             e.printStackTrace();
         }
