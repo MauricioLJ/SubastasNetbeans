@@ -71,6 +71,7 @@ public class SubastaController implements Serializable {
     @PostConstruct
     public void init() {
         try {
+            finalizarSubastasViejas();
             cargarSubasta();
             listarSubastas();
             listaCategorias = servicioCategoria.listarCategorias();
@@ -208,6 +209,42 @@ public class SubastaController implements Serializable {
         }
     }
 
+    public void finalizarSubastasViejas() {
+        try {
+            List<Subasta> subastasVie = servicioSubasta.listarSubastas()
+                    .stream()
+                    .filter(subasta -> "Activo".equals(subasta.getEstadoSubasta()) && subasta.getFechaFin().before(new Date()))
+                    .collect(Collectors.toList());
+
+            for (Subasta subasta : subastasVie) {
+                List<Puja> pujas = servicioPuja.listaPujasPorSubasta(subasta.getIdSubasta());
+
+                Puja pujaGanadora = pujas.stream()
+                        .max((p1, p2) -> Double.compare(p1.getMonto(), p2.getMonto()))
+                        .orElse(null);
+
+                if (pujaGanadora != null) {
+                    subasta.setPujaGanadora(pujaGanadora);
+                }
+
+                subasta.setEstadoSubasta("Finalizado");
+                subasta.setFechaFin(new Date());
+
+                servicioSubasta.actualizarSubasta(subasta);
+
+                if (pujaGanadora != null) {
+                    enviarNotificacionGanador(subasta);
+                }
+                enviarNotificacionVendedor(subasta);
+
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error al finalizar subasta: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     public void enviarNotificacionGanador(Subasta subasta) {
         if (subasta != null && subasta.getPujaGanadora() != null) {
             Usuario ganador = subasta.getPujaGanadora().getUsuario();
@@ -286,7 +323,7 @@ public class SubastaController implements Serializable {
             if (fileName != null) {
                 String destinationFile = FacesContext.getCurrentInstance()
                         .getExternalContext()
-                        .getRealPath("/resources/imagenes/");
+                        .getRealPath("C:\\Users\\Kirsten\\Documents\\NetBeansProjects\\SubastasNetbeans\\web\\resources\\imagenes\\");
 
                 destinationFile = "C:\\Users\\Admin\\Documents\\NetBeansProjects\\SubastasNetbeans\\web\\resources\\imagenes\\";
                 String[] partesArchivo = fileName.split(Pattern.quote("."));
@@ -354,7 +391,6 @@ public class SubastaController implements Serializable {
                 this.subasta = this.selectedSubasta;
 
                 registrarInteraccion(selectedSubasta, "VER");
-                System.out.println("Subasta cargada: " + (subasta != null ? subasta.getNombre() : "No auction found"));
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
